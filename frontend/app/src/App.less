@@ -1,0 +1,59 @@
+@font-face {
+    font-family: "Montserrat";
+    src: url("../fonts/Montserrat.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Montserrat";
+    src: url("../fonts/Montserrat-Italic.ttf") format("truetype");
+    font-style: italic;
+}
+
+
+:root {
+    --bg: hsl(240, 14%, 10%);
+    --bg-light: hsl(240, 14%, 12%);
+    --acc: #365dc9;
+    --acc-: 54, 93, 201;
+    --acc-light: #4a7df0;
+    --acc-dark: #21356d;
+    --text: #eee;
+    --text-dark: #ccc;
+
+}
+
+// Default styling
+* {
+    // Disable default padding & margin (i.e. on body element)
+    margin: 0;
+    padding: 0;
+
+    // Disable default borders & outlines (i.e. on buttons)
+    border: none;
+    outline: none;
+
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+}
+
+
+// Make sure the app takes up the whole window
+body {
+    width: 100vw;
+    height: 100vh;
+}
+
+#root {
+    background: var(--bg);
+    width: 100%;
+    height: 100%;
+
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+#app-content-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
