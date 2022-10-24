@@ -1,2 +1,4 @@
-package logic;public class StrengthAnalyzer {
+package logic;
+
+public class StrengthAnalyzer {
 }
