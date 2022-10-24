@@ -1,0 +1,55 @@
+{
+    "passwords": {
+        "Social": [
+            {
+                "name": "Facebook",
+                "username": "test",
+                "password": "a-password-hash",
+                "url": "https://facebook.com",
+                "notes": "This is a note"
+            },
+            {
+                "name": "Twitter",
+                "username": "test",
+                "password": "a-password-hash",
+                "url": "https://twitter.com",
+                "notes": "This is a note"
+            }
+        ],
+        "Business": [
+            {
+                "name": "GitLab",
+                "username": "test",
+                "password": "a-password-hash",
+                "url": "https://gitlab.com",
+                "notes": "This is a note"
+            },
+            {
+                "name": "Jira",
+                "username": "test",
+                "password": "a-password-hash",
+                "url": "https://jira.com",
+
+                "notes": "This is a note"
+            }
+        ],
+        "Banking": [
+            {
+                "name": "Bank of America",
+                "username": "test",
+                "password": "a-password-hash",
+                "url": "https://bankofamerica.com",
+                "notes": "This is a note"
+            }
+        ],
+        "Other": [
+            {
+                "name": "Reddit",
+                "username": "test",
+                "password": "a-password-hash",
+                "url": "https://reddit.com",
+                "notes": "This is a note"
+            }
+        ]
+    }
+  }
