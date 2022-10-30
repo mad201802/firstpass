@@ -1,5 +1,7 @@
 package encryption;
 
+import encryption.symmetric.ISymmetricEncryptionAlgorithm;
+import encryption.symmetric.SymmetricEncryptionFactory;
 import encryption.symmetric.algos.AES256;
 import encryption.symmetric.models.CipherData;
 import org.junit.jupiter.api.Assertions;
@@ -10,7 +12,7 @@ public class TestAES256 {
     @Test
     public void test_encryption() {
         String text = "hello";
-        AES256 aes256 = new AES256("secretsalt", 1000);
+        ISymmetricEncryptionAlgorithm aes256 = SymmetricEncryptionFactory.getSymmetricEncryption("aes256");
         CipherData cipherData = aes256.encryptText(text, "password");
         String decrypted = aes256.decryptText(cipherData, "password");
 
@@ -20,7 +22,7 @@ public class TestAES256 {
     @Test
     public void test_encryption_with_wrong_iv_length() {
         String text = "hello";
-        AES256 aes256 = new AES256("secretsalt", 1000);
+        ISymmetricEncryptionAlgorithm aes256 = SymmetricEncryptionFactory.getSymmetricEncryption("aes256");
         CipherData cipherData = aes256.encryptText(text, "password");
         cipherData.iv = "";
         Exception ex = Assertions.assertThrows(RuntimeException.class, () -> {
@@ -36,7 +38,7 @@ public class TestAES256 {
     @Test
     public void test_encryption_with_wrong_iv_content() {
         String text = "hello";
-        AES256 aes256 = new AES256("secretsalt", 1000);
+        ISymmetricEncryptionAlgorithm aes256 = SymmetricEncryptionFactory.getSymmetricEncryption("aes256");
         CipherData cipherData = aes256.encryptText(text, "password");
         cipherData.iv = "jkvTzRDW+rG3m8Y/Wz3F6Q==";
 
@@ -53,7 +55,7 @@ public class TestAES256 {
     @Test
     public void test_encryption_with_wrong_password() {
         String text = "hello";
-        AES256 aes256 = new AES256("secretsalt", 1000);
+        ISymmetricEncryptionAlgorithm aes256 = SymmetricEncryptionFactory.getSymmetricEncryption("aes256");
         CipherData cipherData = aes256.encryptText(text, "password");
         Exception ex = Assertions.assertThrows(RuntimeException.class, () -> {
             String decrypted = aes256.decryptText(cipherData, "not password");
