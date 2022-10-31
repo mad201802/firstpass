@@ -14,6 +14,34 @@
                 "password": "a-password-hash",
                 "url": "https://twitter.com",
                 "notes": "This is a note"
+            },
+            {
+                "name": "Instagram",
+                "username": "test",
+                "password": "a-password-hash",
+                "url": "https://instagram.com",
+                "notes": "This is a note"
+            },
+            {
+                "name": "LinkedIn",
+                "username": "test",
+                "password": "a-password-hash",
+                "url": "https://linkedin.com",
+                "notes": "This is a note"
+            },
+            {
+                "name": "Reddit",
+                "username": "test",
+                "password": "a-password-hash",
+                "url": "https://reddit.com",
+                "notes": "This is a note"
+            },
+            {
+                "name": "Tiktok",
+                "username": "test",
+                "password": "a-password-hash",
+                "url": "https://tiktok.com",
+                "notes": "This is a note"
             }
         ],
         "Business": [
@@ -25,10 +53,10 @@
                 "notes": "This is a note"
             },
             {
-                "name": "Jira",
+                "name": "Confluence",
                 "username": "test",
                 "password": "a-password-hash",
-                "url": "https://jira.com",
+                "url": "https://confluence.atlassian.com",
 
                 "notes": "This is a note"
             }
