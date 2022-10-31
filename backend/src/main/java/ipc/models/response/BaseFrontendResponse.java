@@ -1,10 +1,10 @@
-package json.models;
+package ipc.models.response;
 
 import java.util.ArrayList;
 
-public class FrontendResponse {
+public class BaseFrontendResponse<T> {
     public int status;
     public String message;
-    public Object data;
+    public T data;
     public ArrayList<String> errors;
 }
