@@ -31,5 +31,28 @@ public class SQLiteDriver {
         categoryDAO = DaoManager.createDao(connectionSource, CategoryModel.class);
     }
 
+    //add normal entry
+    public void addEntry(String name, String password) throws SQLException {
+        EntryModel entryModel = new EntryModel(name, password);
+        entryDAO.create(entryModel);
+    }
+    //delete entry
+    public void deleteEntry(int id) throws SQLException {
+        entryDAO.deleteById(id);
+    }
+    //update entry
+    public void updateEntry(int id, String name, String password) throws SQLException {
+        EntryModel entryModel = new EntryModel(name, password);
+        entryModel.setId(id);
+        entryDAO.update(entryModel);
+    }
+    //get entry by id
+    public EntryModel getEntry(int id) throws SQLException {
+        return entryDAO.queryForId(id);
+    }
+    //get entry by name
+    public EntryModel getEntry(String name) throws SQLException {
+        return entryDAO.queryForEq("username", name).get(0);
+    }
 
 }
