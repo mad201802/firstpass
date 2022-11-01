@@ -55,4 +55,8 @@ public class SQLiteDriver {
         return entryDAO.queryForEq("username", name).get(0);
     }
 
+    //delete all entries by name
+    public void deleteAllEntries(String name) throws SQLException {
+        entryDAO.delete(entryDAO.queryForEq("username", name));
+    }
 }
