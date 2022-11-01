@@ -19,6 +19,11 @@ public class Firstpass {
         SQLiteDriver driver = new SQLiteDriver();
         driver.deleteAllEntries("Jan Hopsken");
         driver.addEntry("Jan Hopsken", "SuperCoolesPassword123");
+
+        System.out.println(driver.getEntry("Jan Hopsken").getId());
+        driver.updateEntry(7, "Jan Hopsken", "ASDFGHJKL");
+
+        System.out.println(driver.getAllEntries());
         System.out.println("Entry: " + driver.getEntry("Jan Hopsken").getUsername() + ", " +
                 driver.getEntry("Jan Hopsken").getPassword());
 

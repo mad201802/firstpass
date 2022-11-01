@@ -38,25 +38,41 @@ public class SQLiteDriver {
     }
     //delete entry
     public void deleteEntry(int id) throws SQLException {
-        entryDAO.deleteById(id);
+        if (entryDAO.idExists(id)) {
+            entryDAO.deleteById(id);
+        }
     }
     //update entry
     public void updateEntry(int id, String name, String password) throws SQLException {
-        EntryModel entryModel = new EntryModel(name, password);
-        entryModel.setId(id);
-        entryDAO.update(entryModel);
+        if (entryDAO.idExists(id)) {
+            EntryModel entryModel = entryDAO.queryForId(id);
+            entryModel.setUsername(name);
+            entryModel.setPassword(password);
+            entryDAO.update(entryModel);
+        }
     }
+
     //get entry by id
     public EntryModel getEntry(int id) throws SQLException {
-        return entryDAO.queryForId(id);
+        if (entryDAO.idExists(id)) {
+            return entryDAO.queryForId(id);
+        }
+        return null;
     }
     //get entry by name
     public EntryModel getEntry(String name) throws SQLException {
-        return entryDAO.queryForEq("username", name).get(0);
+        if (entryDAO.queryForEq("username", name).size() > 0) {
+            return entryDAO.queryForEq("username", name).get(0);
+        }
+        return null;
     }
 
     //delete all entries by name
     public void deleteAllEntries(String name) throws SQLException {
         entryDAO.delete(entryDAO.queryForEq("username", name));
+    }
+    //get all entries by in an array
+    public EntryModel[] getAllEntries() throws SQLException {
+        return entryDAO.queryForAll().toArray(new EntryModel[0]);
     }
 }
