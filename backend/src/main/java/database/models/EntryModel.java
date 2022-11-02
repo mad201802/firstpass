@@ -3,7 +3,7 @@ package database.models;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "passwords")
+@DatabaseTable(tableName = "entries")
 public class EntryModel {
 
     @DatabaseField(id = true)

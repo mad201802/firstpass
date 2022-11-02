@@ -16,7 +16,7 @@ public class Firstpass {
         System.out.println("Strength: " + analyzer.checkStrength(testPass));
 
         //Driver test/demo
-        SQLiteDriver driver = new SQLiteDriver();
+        SQLiteDriver driver = new SQLiteDriver("jdbc:sqlite:database.db");
         driver.deleteAllEntries("Jan Hopsken");
         driver.addEntry("Jan Hopsken", "SuperCoolesPassword123");
 
