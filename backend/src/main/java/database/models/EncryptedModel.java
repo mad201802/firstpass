@@ -4,7 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "encrypted")
-public class EncryptedDatabase {
+public class EncryptedModel {
 
     @DatabaseField(id = true)
     private Integer id;
