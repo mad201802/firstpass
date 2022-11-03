@@ -1,4 +1,4 @@
-package ipc.models.response;
+package io.firstpass.ipc.models.response;
 
 import java.util.ArrayList;
 

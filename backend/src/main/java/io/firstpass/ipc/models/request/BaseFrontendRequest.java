@@ -1,4 +1,4 @@
-package ipc.models.request;
+package io.firstpass.ipc.models.request;
 
 public class BaseFrontendRequest<T> {
     public String type;
