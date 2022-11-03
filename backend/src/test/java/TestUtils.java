@@ -1,6 +1,6 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import utils.Utils;
+import io.firstpass.utils.Utils;
 
 public class TestUtils {
 

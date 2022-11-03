@@ -1,19 +1,19 @@
-package database.drivers;
+package io.firstpass.database.drivers;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import database.IEncryptedDatabase;
-import database.models.EncryptedModel;
-import database.models.CategoryModel;
-import database.models.EntryModel;
-import encryption.symmetric.models.CipherData;
+import io.firstpass.database.IEncryptedDatabase;
+import io.firstpass.database.models.EncryptedModel;
+import io.firstpass.database.models.CategoryModel;
+import io.firstpass.database.models.EntryModel;
+import io.firstpass.encryption.symmetric.models.CipherData;
 
 import java.sql.SQLException;
 
 /**
- * This class is used to connect to a SQLite database.
+ * This class is used to connect to a SQLite io.firstpass.database.
  */
 public class SQLiteDriver implements IEncryptedDatabase {
     Dao<CategoryModel, Integer> categoryDAO;
@@ -21,8 +21,8 @@ public class SQLiteDriver implements IEncryptedDatabase {
     Dao<EncryptedModel, Integer> encryptedDAO;
 
     /**
-     * This method is used to connect to a SQLite database.
-     * @param filepath The path to the database file.
+     * This method is used to connect to a SQLite io.firstpass.database.
+     * @param filepath The path to the io.firstpass.database file.
      * @throws SQLException If the connection fails.
      */
     public  SQLiteDriver(String filepath) throws SQLException {
@@ -39,7 +39,7 @@ public class SQLiteDriver implements IEncryptedDatabase {
     }
 
     /**
-     * This method is used to add a new entry to the database.
+     * This method is used to add a new entry to the io.firstpass.database.
      * @param name The name of the entry.
      * @param username The username of the entry.
      * @param password The password of the entry.
@@ -67,7 +67,7 @@ public class SQLiteDriver implements IEncryptedDatabase {
     }
 
     /**
-     * Deletes a entry from the database.
+     * Deletes a entry from the io.firstpass.database.
      * @param id The ID of the entry.
      * @return True if the entry was deleted, false otherwise.
      */
@@ -81,7 +81,7 @@ public class SQLiteDriver implements IEncryptedDatabase {
     }
 
     /**
-     * Gets a entry from the database.
+     * Gets a entry from the io.firstpass.database.
      * @param id The ID of the entry.
      * @return The entry.
      */
@@ -109,7 +109,7 @@ public class SQLiteDriver implements IEncryptedDatabase {
     }
 
     /**
-     * Gets all entries from the database.
+     * Gets all entries from the io.firstpass.database.
      * @return All entries.
      */
     @Override

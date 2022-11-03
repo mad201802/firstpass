@@ -1,7 +1,7 @@
-package encryption.symmetric;
+package io.firstpass.encryption.symmetric;
 
-import encryption.exceptions.UnknownAlgorithmException;
-import encryption.symmetric.algos.AES256;
+import io.firstpass.encryption.exceptions.UnknownAlgorithmException;
+import io.firstpass.encryption.symmetric.algos.AES256;
 
 public class SymmetricEncryptionFactory {
 

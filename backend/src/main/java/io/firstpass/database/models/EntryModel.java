@@ -1,8 +1,7 @@
-package database.models;
+package io.firstpass.database.models;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import encryption.symmetric.models.CipherData;
 
 /**
  * This class represents an entry that is encrypted.
