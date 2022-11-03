@@ -1,10 +1,10 @@
-package database;
+package io.firstpass.database;
 
-import database.models.EntryModel;
-import encryption.symmetric.models.CipherData;
+import io.firstpass.database.models.EntryModel;
+import io.firstpass.encryption.symmetric.models.CipherData;
 
 /**
- * Interface for an encrypted database.
+ * Interface for an encrypted io.firstpass.database.
  */
 public interface IEncryptedDatabase {
     int addEntry(String name, CipherData username, CipherData password);

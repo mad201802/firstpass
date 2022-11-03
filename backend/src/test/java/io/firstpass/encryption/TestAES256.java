@@ -1,9 +1,8 @@
-package encryption;
+package io.firstpass.encryption;
 
-import encryption.symmetric.ISymmetricEncryptionAlgorithm;
-import encryption.symmetric.SymmetricEncryptionFactory;
-import encryption.symmetric.algos.AES256;
-import encryption.symmetric.models.CipherData;
+import io.firstpass.encryption.symmetric.ISymmetricEncryptionAlgorithm;
+import io.firstpass.encryption.symmetric.SymmetricEncryptionFactory;
+import io.firstpass.encryption.symmetric.models.CipherData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

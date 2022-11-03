@@ -1,4 +1,4 @@
-package logic;
+package io.firstpass.logic;
 
 public class StrengthAnalyzer {
     /**
