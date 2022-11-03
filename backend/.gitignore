@@ -27,4 +27,6 @@ hs_err_pid*
 replay_pid*
 
 target/
+*.iml
+dependency-reduced-pom.xml
 
