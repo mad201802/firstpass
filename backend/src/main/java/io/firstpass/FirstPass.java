@@ -5,8 +5,6 @@ import io.firstpass.encryption.symmetric.SymmetricEncryptionFactory;
 
 public class FirstPass {
 
-    public static void main(String[] args) {
-        ISymmetricEncryptionAlgorithm aes256 = SymmetricEncryptionFactory.getSymmetricEncryption("aes256");
-    }
+    public static void main(String[] args) {}
 
 }
