@@ -4,72 +4,120 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import database.IEncryptedDatabase;
 import database.models.EncryptedModel;
 import database.models.CategoryModel;
 import database.models.EntryModel;
+import encryption.symmetric.models.CipherData;
 
 import java.sql.SQLException;
 
-public class SQLiteDriver {
-    //static String url = "jdbc:sqlite:database.db";
+/**
+ * This class is used to connect to a SQLite database.
+ */
+public class SQLiteDriver implements IEncryptedDatabase {
     Dao<CategoryModel, Integer> categoryDAO;
     Dao<EntryModel, Integer> entryDAO;
     Dao<EncryptedModel, Integer> encryptedDAO;
-    public  SQLiteDriver(String url) throws SQLException {
-        ConnectionSource connectionSource = new JdbcConnectionSource(url);
 
-        TableUtils.createTableIfNotExists(connectionSource, EntryModel.class);
-        entryDAO = DaoManager.createDao(connectionSource, EntryModel.class);
+    /**
+     * This method is used to connect to a SQLite database.
+     * @param filepath The path to the database file.
+     * @throws SQLException If the connection fails.
+     */
+    public  SQLiteDriver(String filepath) throws SQLException {
+        ConnectionSource connectionSource = new JdbcConnectionSource("jdbc:sqlite:" + filepath);
 
-        TableUtils.createTableIfNotExists(connectionSource, EncryptedModel.class);
         encryptedDAO = DaoManager.createDao(connectionSource, EncryptedModel.class);
+        TableUtils.createTableIfNotExists(connectionSource, EncryptedModel.class);
 
-        TableUtils.createTableIfNotExists(connectionSource, CategoryModel.class);
         categoryDAO = DaoManager.createDao(connectionSource, CategoryModel.class);
+        TableUtils.createTableIfNotExists(connectionSource, CategoryModel.class);
+
+        entryDAO = DaoManager.createDao(connectionSource, EntryModel.class);
+        TableUtils.createTableIfNotExists(connectionSource, EntryModel.class);
     }
 
-    //add normal entry
-    public void addEntry(String name, String password) throws SQLException {
-        EntryModel entryModel = new EntryModel(name, password);
-        entryDAO.create(entryModel);
-    }
-    //delete entry
-    public void deleteEntry(int id) throws SQLException {
-        if (entryDAO.idExists(id)) {
-            entryDAO.deleteById(id);
+    /**
+     * This method is used to add a new entry to the database.
+     * @param name The name of the entry.
+     * @param username The username of the entry.
+     * @param password The password of the entry.
+     * @return The ID of the entry.
+     */
+    @Override
+    public int addEntry(String name, CipherData username, CipherData password) {
+        try {
+            EncryptedModel usernameModel = new EncryptedModel(username.text, username.iv);
+            encryptedDAO.create(usernameModel);
+
+            EncryptedModel passwordModel = new EncryptedModel(password.text, password.iv);
+            encryptedDAO.create(passwordModel);
+
+            EntryModel entryModel = new EntryModel(name);
+            entryModel.setUsername(usernameModel);
+            entryModel.setPassword(passwordModel);
+            if (entryDAO.create(entryModel) == 1) {
+                return entryModel.getId();
+            }
+        } catch (SQLException e) {
+            return -1;
         }
+        return -1;
     }
-    //update entry
-    public void updateEntry(int id, String name, String password) throws SQLException {
-        if (entryDAO.idExists(id)) {
-            EntryModel entryModel = entryDAO.queryForId(id);
-            entryModel.setUsername(name);
-            entryModel.setPassword(password);
-            entryDAO.update(entryModel);
+
+    /**
+     * Deletes a entry from the database.
+     * @param id The ID of the entry.
+     * @return True if the entry was deleted, false otherwise.
+     */
+    @Override
+    public boolean deleteEntry(int id) {
+        try {
+            return entryDAO.deleteById(id) == 1;
+        } catch (SQLException e) {
+            return false;
         }
     }
 
-    //get entry by id
-    public EntryModel getEntry(int id) throws SQLException {
-        if (entryDAO.idExists(id)) {
+    /**
+     * Gets a entry from the database.
+     * @param id The ID of the entry.
+     * @return The entry.
+     */
+    @Override
+    public EntryModel getEntry(int id) {
+        try {
             return entryDAO.queryForId(id);
+        } catch (SQLException e) {
+            return null;
         }
-        return null;
-    }
-    //get entry by name
-    public EntryModel getEntry(String name) throws SQLException {
-        if (entryDAO.queryForEq("username", name).size() > 0) {
-            return entryDAO.queryForEq("username", name).get(0);
-        }
-        return null;
     }
 
-    //delete all entries by name
-    public void deleteAllEntries(String name) throws SQLException {
-        entryDAO.delete(entryDAO.queryForEq("username", name));
+    /**
+     * Gets a entrie based on the name.
+     * @param name The name of the entry.
+     * @return The entry.
+     */
+    @Override
+    public EntryModel getEntry(String name) {
+        try {
+            return entryDAO.queryForEq("name", name).get(0);
+        } catch (SQLException e) {
+            return null;
+        }
     }
-    //get all entries by in an array
-    public EntryModel[] getAllEntries() throws SQLException {
-        return entryDAO.queryForAll().toArray(new EntryModel[0]);
+
+    /**
+     * Gets all entries from the database.
+     * @return All entries.
+     */
+    @Override
+    public EntryModel[] getEntries() {
+        try {
+            return entryDAO.queryForAll().toArray(new EntryModel[0]);
+        } catch (SQLException e) {
+            return null;
+        }
     }
 }
