@@ -1,11 +1,32 @@
-package utils;
+package io.firstpass.utils;
+
+import io.firstpass.database.IEncryptedDatabase;
+import io.firstpass.database.drivers.SQLiteDriver;
+import io.firstpass.encryption.symmetric.ISymmetricEncryptionAlgorithm;
+import io.firstpass.encryption.symmetric.SymmetricEncryptionFactory;
+import io.firstpass.manager.PasswordManager;
 
 import java.io.*;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class CLI {
 
     public static Scanner scanner = new Scanner(System.in);
+    public static IEncryptedDatabase database;
+
+    static {
+        try {
+            database = new SQLiteDriver("passwords.db");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ISymmetricEncryptionAlgorithm encryptionAlgorithm = SymmetricEncryptionFactory.getSymmetricEncryption("aes256");
+
+
+    public static PasswordManager passwordManager= new PasswordManager(database, encryptionAlgorithm, "masterpassword");
 
     public static void run() {
         line("Firstpass CLI v1.0");
@@ -23,9 +44,8 @@ public class CLI {
             line("2. Add password");
             line("3. Exit");
             line();
-            System.out.print("Action: ");
 
-            action = scanner.nextInt();
+            action = Integer.parseInt(getUserInput("Action: "));
             handleAction(action);
         }
     }
@@ -33,10 +53,10 @@ public class CLI {
     private static void handleAction(int action) {
         switch (action) {
             case 1:
-                line("View passwords");
+                getAllPasswords();
                 break;
             case 2:
-                line("Add password");
+                addPassword();
                 break;
             case 3:
                 line("Exiting...");
@@ -47,18 +67,38 @@ public class CLI {
         }
     }
 
+    public static void getAllPasswords() {
+        line("View passwords");
+        line("--------------");
+        passwordManager.getAllEntries().forEach(entryModel -> {
+            line("ID: " + entryModel.getId());
+            line("Name: " + entryModel.getName());
+            line("Username: " + entryModel.getUsername());
+            line("Password: " + entryModel.getPassword());
+            line();
+        });
+    }
+
+    public static void addPassword(){
+        line("Add password");
+        String name = getUserInput("Name:");
+        String username = getUserInput("Username:");
+        String password = getUserInput("Password:");
+        passwordManager.addEntry(name, username, password);
+    }
+
     private static void login() {
         boolean unauthorized = true;
 
         line("Please enter your credentials to continue.");
         line();
         while (unauthorized) {
-            String username = getUsername();
-            String password = getPassword();
+
+            String masterpassword = getPassword();
             line();
 
             line("Logging in...");
-            if (isValidLogin(username, password)) {
+            if (isValidLogin(masterpassword)) {
                 unauthorized = false;
             } else {
                 line("Invalid credentials.");
@@ -85,13 +125,14 @@ public class CLI {
         }
     }
 
-    private static String getUsername() {
-        System.out.print("Username: ");
+
+    private static String getUserInput(String prompt) {
+        System.out.print(prompt);
         return scanner.nextLine();
     }
 
-    private static boolean isValidLogin(String username, String password) {
-        return username.equals("admin") && password.equals("password");
+    private static boolean isValidLogin(String masterpassword) {
+        return masterpassword.equals("masterpassword");
     }
 
     private static void line(String message) {
