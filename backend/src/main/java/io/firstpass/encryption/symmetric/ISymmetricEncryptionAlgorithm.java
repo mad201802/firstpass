@@ -1,15 +1,15 @@
-package encryption.symmetric;
+package io.firstpass.encryption.symmetric;
 
-import encryption.symmetric.models.CipherData;
+import io.firstpass.encryption.symmetric.models.CipherData;
 
 /**
- * Interface for symmetric encryption algorithms.
+ * Interface for symmetric io.firstpass.encryption algorithms.
  */
 public interface ISymmetricEncryptionAlgorithm {
     /**
      * Encrypts the given data.
      * @param text The String to encrypt.
-     * @param password The password to use for encryption.
+     * @param password The password to use for io.firstpass.encryption.
      * @return The encrypted data.
      */
     public CipherData encryptText(String text, String password);

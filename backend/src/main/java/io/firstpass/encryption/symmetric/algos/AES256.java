@@ -1,8 +1,8 @@
-package encryption.symmetric.algos;
+package io.firstpass.encryption.symmetric.algos;
 
-import encryption.symmetric.ISymmetricEncryptionAlgorithm;
-import encryption.symmetric.models.CipherData;
-import utils.Utils;
+import io.firstpass.encryption.symmetric.ISymmetricEncryptionAlgorithm;
+import io.firstpass.encryption.symmetric.models.CipherData;
+import io.firstpass.utils.Utils;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
@@ -18,7 +18,7 @@ import java.security.spec.InvalidParameterSpecException;
 import java.security.spec.KeySpec;
 
 /**
- * AES 256 encryption algorithm
+ * AES 256 io.firstpass.encryption algorithm
  */
 public class AES256 implements ISymmetricEncryptionAlgorithm {
 
@@ -28,8 +28,8 @@ public class AES256 implements ISymmetricEncryptionAlgorithm {
 
     /**
      * Constructor for AES256
-     * @param salt Salt to use for encryption
-     * @param iterations Number of iterations to use for encryption
+     * @param salt Salt to use for io.firstpass.encryption
+     * @param iterations Number of iterations to use for io.firstpass.encryption
      */
     public AES256(String salt, int iterations) {
         this._salt = salt.getBytes(StandardCharsets.UTF_8);
@@ -40,7 +40,7 @@ public class AES256 implements ISymmetricEncryptionAlgorithm {
     /**
      * Encrypts the given data
      * @param text The String to encrypt.
-     * @param password The password to use for encryption.
+     * @param password The password to use for io.firstpass.encryption.
      * @return The encrypted data.
      */
     @Override
@@ -90,8 +90,8 @@ public class AES256 implements ISymmetricEncryptionAlgorithm {
     }
 
     /**
-     * Generates a random IV for encryption based on the given cipher
-     * @param cipher The cipher to use for encryption
+     * Generates a random IV for io.firstpass.encryption based on the given cipher
+     * @param cipher The cipher to use for io.firstpass.encryption
      * @return The generated IV
      */
     private byte[] generateRandomIV(Cipher cipher) {
@@ -105,7 +105,7 @@ public class AES256 implements ISymmetricEncryptionAlgorithm {
 
     /**
      * Generate the expanded key for the given password
-     * @param password The password to use for encryption
+     * @param password The password to use for io.firstpass.encryption
      * @return The expanded key
      */
     private SecretKeySpec generateExpandedKey(String password) {
@@ -119,7 +119,7 @@ public class AES256 implements ISymmetricEncryptionAlgorithm {
     }
 
     /**
-     * Initialize the encryption cipher
+     * Initialize the io.firstpass.encryption cipher
      * @param secret The KeySpecs for the chosen algorithm
      * @return The initialized cipher
      */

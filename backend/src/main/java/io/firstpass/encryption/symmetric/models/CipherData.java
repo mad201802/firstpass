@@ -1,4 +1,4 @@
-package encryption.symmetric.models;
+package io.firstpass.encryption.symmetric.models;
 
 /**
  * This class represents the cipher data with the cipher text and the initialization vector.

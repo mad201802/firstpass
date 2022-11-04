@@ -1,4 +1,4 @@
-package utils;
+package io.firstpass.utils;
 
 import java.util.Base64;
 
