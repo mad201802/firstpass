@@ -7,7 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
  * This class represents an entry that is encrypted.
  */
 @DatabaseTable(tableName = "entries")
-public class EntryModel {
+public class EncryptedEntryModel {
 
     @DatabaseField(generatedId = true, canBeNull = false)
     private Integer id;
@@ -36,9 +36,9 @@ public class EntryModel {
 //    @DatabaseField()
 //    private String notes;
 
-    public EntryModel() {}
+    public EncryptedEntryModel() {}
 
-    public EntryModel(String name) {
+    public EncryptedEntryModel(String name) {
         this.name = name;
     }
 
@@ -60,5 +60,9 @@ public class EntryModel {
 
     public Integer getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
     }
 }

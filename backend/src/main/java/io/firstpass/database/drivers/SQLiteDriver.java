@@ -2,12 +2,14 @@ package io.firstpass.database.drivers;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.logger.Level;
+import com.j256.ormlite.logger.Logger;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import io.firstpass.database.IEncryptedDatabase;
 import io.firstpass.database.models.EncryptedModel;
 import io.firstpass.database.models.CategoryModel;
-import io.firstpass.database.models.EntryModel;
+import io.firstpass.database.models.EncryptedEntryModel;
 import io.firstpass.encryption.symmetric.models.CipherData;
 
 import java.sql.SQLException;
@@ -17,7 +19,7 @@ import java.sql.SQLException;
  */
 public class SQLiteDriver implements IEncryptedDatabase {
     Dao<CategoryModel, Integer> categoryDAO;
-    Dao<EntryModel, Integer> entryDAO;
+    Dao<EncryptedEntryModel, Integer> entryDAO;
     Dao<EncryptedModel, Integer> encryptedDAO;
 
     /**
@@ -26,6 +28,7 @@ public class SQLiteDriver implements IEncryptedDatabase {
      * @throws SQLException If the connection fails.
      */
     public  SQLiteDriver(String filepath) throws SQLException {
+        Logger.setGlobalLogLevel(Level.WARNING);
         ConnectionSource connectionSource = new JdbcConnectionSource("jdbc:sqlite:" + filepath);
 
         encryptedDAO = DaoManager.createDao(connectionSource, EncryptedModel.class);
@@ -34,8 +37,8 @@ public class SQLiteDriver implements IEncryptedDatabase {
         categoryDAO = DaoManager.createDao(connectionSource, CategoryModel.class);
         TableUtils.createTableIfNotExists(connectionSource, CategoryModel.class);
 
-        entryDAO = DaoManager.createDao(connectionSource, EntryModel.class);
-        TableUtils.createTableIfNotExists(connectionSource, EntryModel.class);
+        entryDAO = DaoManager.createDao(connectionSource, EncryptedEntryModel.class);
+        TableUtils.createTableIfNotExists(connectionSource, EncryptedEntryModel.class);
     }
 
     /**
@@ -54,11 +57,11 @@ public class SQLiteDriver implements IEncryptedDatabase {
             EncryptedModel passwordModel = new EncryptedModel(password.text, password.iv);
             encryptedDAO.create(passwordModel);
 
-            EntryModel entryModel = new EntryModel(name);
-            entryModel.setUsername(usernameModel);
-            entryModel.setPassword(passwordModel);
-            if (entryDAO.create(entryModel) == 1) {
-                return entryModel.getId();
+            EncryptedEntryModel encryptedEntryModel = new EncryptedEntryModel(name);
+            encryptedEntryModel.setUsername(usernameModel);
+            encryptedEntryModel.setPassword(passwordModel);
+            if (entryDAO.create(encryptedEntryModel) == 1) {
+                return encryptedEntryModel.getId();
             }
         } catch (SQLException e) {
             return -1;
@@ -86,7 +89,7 @@ public class SQLiteDriver implements IEncryptedDatabase {
      * @return The entry.
      */
     @Override
-    public EntryModel getEntry(int id) {
+    public EncryptedEntryModel getEntry(int id) {
         try {
             return entryDAO.queryForId(id);
         } catch (SQLException e) {
@@ -100,7 +103,7 @@ public class SQLiteDriver implements IEncryptedDatabase {
      * @return The entry.
      */
     @Override
-    public EntryModel getEntry(String name) {
+    public EncryptedEntryModel getEntry(String name) {
         try {
             return entryDAO.queryForEq("name", name).get(0);
         } catch (SQLException e) {
@@ -113,9 +116,9 @@ public class SQLiteDriver implements IEncryptedDatabase {
      * @return All entries.
      */
     @Override
-    public EntryModel[] getEntries() {
+    public EncryptedEntryModel[] getEntries() {
         try {
-            return entryDAO.queryForAll().toArray(new EntryModel[0]);
+            return entryDAO.queryForAll().toArray(new EncryptedEntryModel[0]);
         } catch (SQLException e) {
             return null;
         }
