@@ -4,6 +4,7 @@ import io.firstpass.database.IEncryptedDatabase;
 import io.firstpass.database.drivers.SQLiteDriver;
 import io.firstpass.encryption.symmetric.ISymmetricEncryptionAlgorithm;
 import io.firstpass.encryption.symmetric.SymmetricEncryptionFactory;
+import io.firstpass.logic.StrengthAnalyzer;
 import io.firstpass.manager.PasswordManager;
 import io.firstpass.manager.models.EntryModel;
 
@@ -30,6 +31,7 @@ public class CLI {
     public static ISymmetricEncryptionAlgorithm encryptionAlgorithm = SymmetricEncryptionFactory.getSymmetricEncryption("aes256");
 
     public static PasswordManager passwordManager= new PasswordManager(database, encryptionAlgorithm, MASTER_PASSWORD);
+    public static StrengthAnalyzer strengthAnalyzer = new StrengthAnalyzer();
 
     public static void run() {
         line("Firstpass CLI v1.0.0");
@@ -40,12 +42,13 @@ public class CLI {
         login();
 
         int action = -1;
-        while (action != 3) {
+        while (action != 4) {
             line();
             line("Please select an action:");
             line("1. View passwords");
             line("2. Add password");
-            line("3. Exit");
+            line("3. Test a password's strength");
+            line("4. Exit");
             line();
 
             action = Integer.parseInt(getUserInput("Action: "));
@@ -55,10 +58,21 @@ public class CLI {
 
     private static void handleAction(int action) {
         switch (action) {
-            case 1 -> getAllPasswords();
-            case 2 -> addPassword();
-            case 3 -> line("Exiting...");
-            default -> line("Invalid action.");
+            case 1:
+                getAllPasswords();
+                break;
+            case 2:
+                addPassword();
+                break;
+            case 3:
+                checkPasswordStrength();
+                break;
+            case 4:
+                line("Exiting...");
+                break;
+            default:
+                line("Invalid action.");
+                break;
         }
     }
 
@@ -77,6 +91,7 @@ public class CLI {
             line("===== " + entryModel.getId() + ": " + entryModel.getName() + " =====");
             line("Username/E-Mail: " + entryModel.getUsername());
             line("Password: " + entryModel.getPassword());
+            line();
         });
     }
 
@@ -90,6 +105,12 @@ public class CLI {
         } else {
             line("Failed to add password.");
         }
+    }
+
+    public static void checkPasswordStrength() {
+        line("Check password strength");
+        String password = getUserInput("Password to test:");
+        line(strengthAnalyzer.checkStrength(password));
     }
 
     private static void login() {
@@ -142,6 +163,9 @@ public class CLI {
 
     private static void line(String message) {
         System.out.println("   " + message);
+    }
+    private static void line(StrengthAnalyzer.PasswordStrength strength) {
+        System.out.println("   The password you entered is " + strength);
     }
     private static void line() {
         System.out.println("  ");
