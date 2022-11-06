@@ -2,6 +2,8 @@ package io.firstpass.database.drivers;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.logger.Level;
+import com.j256.ormlite.logger.Logger;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import io.firstpass.database.IEncryptedDatabase;
@@ -26,6 +28,7 @@ public class SQLiteDriver implements IEncryptedDatabase {
      * @throws SQLException If the connection fails.
      */
     public  SQLiteDriver(String filepath) throws SQLException {
+        Logger.setGlobalLogLevel(Level.WARNING);
         ConnectionSource connectionSource = new JdbcConnectionSource("jdbc:sqlite:" + filepath);
 
         encryptedDAO = DaoManager.createDao(connectionSource, EncryptedModel.class);
