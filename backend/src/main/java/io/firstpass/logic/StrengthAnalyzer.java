@@ -5,7 +5,7 @@ public class StrengthAnalyzer {
      * Provides utilities to rate the strength of a provided password.
      */
 
-    static enum PasswordStrength {
+    public static enum PasswordStrength {
         VERY_WEAK(1),
         WEAK(2),
         MEDIUM(3),
