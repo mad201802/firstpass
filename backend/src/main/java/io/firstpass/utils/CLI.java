@@ -5,19 +5,23 @@ import io.firstpass.database.drivers.SQLiteDriver;
 import io.firstpass.encryption.symmetric.ISymmetricEncryptionAlgorithm;
 import io.firstpass.encryption.symmetric.SymmetricEncryptionFactory;
 import io.firstpass.manager.PasswordManager;
+import io.firstpass.manager.models.EntryModel;
 
 import java.io.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CLI {
 
+    public static final String MASTER_PASSWORD = "password";
+    public static final String DATABASE_PATH = "mypasswords.db";
     public static Scanner scanner = new Scanner(System.in);
     public static IEncryptedDatabase database;
 
     static {
         try {
-            database = new SQLiteDriver("passwords.db");
+            database = new SQLiteDriver(DATABASE_PATH);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -25,11 +29,10 @@ public class CLI {
 
     public static ISymmetricEncryptionAlgorithm encryptionAlgorithm = SymmetricEncryptionFactory.getSymmetricEncryption("aes256");
 
-
-    public static PasswordManager passwordManager= new PasswordManager(database, encryptionAlgorithm, "masterpassword");
+    public static PasswordManager passwordManager= new PasswordManager(database, encryptionAlgorithm, MASTER_PASSWORD);
 
     public static void run() {
-        line("Firstpass CLI v1.0");
+        line("Firstpass CLI v1.0.0");
         line("(c) 2022, Firstpass, Inc.");
         line("All rights reserved.");
         line();
@@ -52,39 +55,41 @@ public class CLI {
 
     private static void handleAction(int action) {
         switch (action) {
-            case 1:
-                getAllPasswords();
-                break;
-            case 2:
-                addPassword();
-                break;
-            case 3:
-                line("Exiting...");
-                break;
-            default:
-                line("Invalid action.");
-                break;
+            case 1 -> getAllPasswords();
+            case 2 -> addPassword();
+            case 3 -> line("Exiting...");
+            default -> line("Invalid action.");
         }
     }
 
     public static void getAllPasswords() {
+        ArrayList<EntryModel> entries = passwordManager.getAllEntries();
+        if (entries.size() == 0) {
+            line("=====");
+            line("No passwords found.");
+            line("=====");
+            return;
+        }
+
         line("View passwords");
         line("--------------");
-        passwordManager.getAllEntries().forEach(entryModel -> {
-            line("ID: " + entryModel.getId());
-            line("Name: " + entryModel.getName());
-            line("Username: " + entryModel.getUsername());
+        entries.forEach(entryModel -> {
+            line("===== " + entryModel.getId() + ": " + entryModel.getName() + " =====");
+            line("Username/E-Mail: " + entryModel.getUsername());
             line("Password: " + entryModel.getPassword());
-            line();
         });
     }
 
     public static void addPassword(){
         line("Add password");
-        String name = getUserInput("Name:");
-        String username = getUserInput("Username:");
-        String password = getUserInput("Password:");
-        passwordManager.addEntry(name, username, password);
+        String name = getUserInput("Name: ");
+        String username = getUserInput("Username/E-Mail: ");
+        String password = getUserInput("Password: ");
+        if (passwordManager.addEntry(name, username, password) != -1) {
+            line("Password added successfully.");
+        } else {
+            line("Failed to add password.");
+        }
     }
 
     private static void login() {
@@ -132,13 +137,13 @@ public class CLI {
     }
 
     private static boolean isValidLogin(String masterpassword) {
-        return masterpassword.equals("masterpassword");
+        return masterpassword.equals(MASTER_PASSWORD);
     }
 
     private static void line(String message) {
-        System.out.println("## " + message);
+        System.out.println("   " + message);
     }
     private static void line() {
-        System.out.println("##");
+        System.out.println("  ");
     }
 }
