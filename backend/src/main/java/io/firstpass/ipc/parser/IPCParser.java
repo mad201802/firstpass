@@ -1,35 +1,31 @@
 package io.firstpass.ipc.parser;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class IPCParser {
 
-    private final InputStream inputStream;
-    private final OutputStream outputStream;
+    private final Scanner inputStream;
+    private final PrintStream outputStream;
 
     public IPCParser(InputStream inputStream, OutputStream outputStream) {
-        this.inputStream = inputStream;
-        this.outputStream = outputStream;
+        this.inputStream = new Scanner(inputStream);
+        this.outputStream = new PrintStream(outputStream);
     }
 
-    public void start() throws IOException {
-        PrintStream out = new PrintStream(this.outputStream);
-        try (Scanner scanner = new Scanner(inputStream)) {
-            while (scanner.hasNext()) {
-                String line = scanner.nextLine();
-                if(line.equals("exit")) break;
-                out.println(this.handleMessage(line));
-            }
-        } catch(Exception ex) {
-            out.close();
-            ex.printStackTrace();
+    public String readLine() {
+        if(inputStream.hasNextLine()) {
+            return inputStream.nextLine();
         }
+        throw new IllegalStateException("No more input to read");
     }
 
-    private String handleMessage(String message) {
-        // Get message type
-        return "Hello World!";
+    public void writeLine(String line) {
+        if(!outputStream.checkError()) {
+            outputStream.println(line);
+        }
+        throw new IllegalStateException("Error writing to output stream");
     }
 
 }

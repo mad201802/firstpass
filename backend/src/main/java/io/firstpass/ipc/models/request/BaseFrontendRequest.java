@@ -1,6 +1,8 @@
 package io.firstpass.ipc.models.request;
 
-public class BaseFrontendRequest<T> {
+import com.google.gson.JsonObject;
+
+public class BaseFrontendRequest {
     public String type;
-    public T data;
+    public JsonObject data;
 }
