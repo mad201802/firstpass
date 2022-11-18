@@ -1,18 +1,14 @@
-import React from 'react'
+import React, { useState } from "react";
 
 import "./App.less";
-import SideBar from './components/SideBar/SideBar';
-import TitleBar from './components/TitleBar/TitleBar';
+
+import MainPage from "./pages/MainPage/MainPage";
+import LoginPage from "./pages/LoginPage/LoginPage";
 
 const App = () => {
-  return (
-    <>
-        <TitleBar />
-        <div id="app-content-wrapper">
-          <SideBar />
-        </div>
-    </>
-  )
-}
+    const [db, setDb] = useState(null);
 
-export default App
+    return db ? <MainPage db={db} /> : <LoginPage setDb={setDb} />;
+};
+
+export default App;

@@ -1,0 +1,31 @@
+
+.button(@secondary: false) {
+
+    --button-clr: var(--primary);
+    
+    & when (@secondary = true) {
+        color: var(--button-clr);
+        background: transparent;
+        border: 2px solid var(--button-clr);
+    }
+    & when (@secondary = false) {
+        color: var(--text);
+        color: black;
+        background: var(--button-clr);
+    }
+
+    padding: 12px 40px;
+    border-radius: var(--radius);
+    font-weight: bold;
+
+    transition: background-color 200ms ease
+                border-color 200ms ease
+                color 200ms ease;
+
+    &:hover {
+        --button-clr: var(--primary-light);
+    }
+    &:active {
+        --button-clr: var(--primary-dark);
+    }
+}

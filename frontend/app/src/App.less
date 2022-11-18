@@ -1,3 +1,5 @@
+@import url("./theme.less");
+
 @font-face {
     font-family: "Montserrat";
     src: url("../fonts/Montserrat.ttf") format("truetype");
@@ -11,32 +13,8 @@
 
 
 :root {
-    --bg: hsl(240, 14%, 10%);
-    --bg-light: hsl(240, 14%, 12%);
-    --bg-lighter: hsl(240, 14%, 16%);
-    --acc: #365dc9;
-    --acc-: 54, 93, 201;
-    --acc-light: #4a7df0;
-    --acc-dark: #21356d;
-    --text: #eee;
-    --text-dark: #ccc;
-    --highlight: #96b3f7;
-
-    --bg: hsl(240, 4%, 9%);
-    --bg-light: hsl(240, 4%, 12%);
-    --bg-lighter: hsl(240, 4%, 14%);
-    --text: #ffffff;
-    --text-dark: #d8d8d8;
-    --acc: #21da74;
-    --acc-: 33, 218, 116;
-    --acc-light: #3bea8f;
-    --highlight: #a0f7ca;
-
-    // --acc: #9d46e4;
-    // --acc-: 157, 70, 228;
-    // --acc-light: #b56af0;
-    // --highlight: #d9b1ff;
-
+    // adds all themes color to root element
+    .theme;
 }
 
 // Default styling
@@ -51,6 +29,12 @@
 
     box-sizing: border-box;
     font-family: "Montserrat", sans-serif;
+
+    color: var(--text);
+}
+
+code {
+    font-family: "Courier New", Courier, monospace;
 }
 
 
@@ -65,17 +49,8 @@ body {
     width: 100%;
     height: 100%;
 
-    border-radius: 15px;
     overflow: hidden;
 
     display: flex;
     flex-direction: column;
-}
-
-#app-content-wrapper {
-    width: 100%;
-    flex-grow: 1;
-    // flex-basis: 0;
-    overflow: hidden;
-    display: flex;
 }

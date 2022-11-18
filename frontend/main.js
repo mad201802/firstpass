@@ -16,8 +16,8 @@ app.on("ready", () => {
             preload: path.join(__dirname, "/preload.js"),
         },
 
-        frame: false,
-        transparent: true,
+        // frame: false,
+        backgroundColor: "#00000000",
 
         show: false,
 
