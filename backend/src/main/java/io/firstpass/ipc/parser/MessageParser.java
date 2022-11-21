@@ -13,7 +13,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MessageParser {
+public class MessageParser implements IMessageParser {
     private final Gson gson;
     private final HashMap<String, ClassMessageObject> onMessageHashMap;
 
@@ -25,6 +25,8 @@ public class MessageParser {
     public String onMessage(String message) {
         try {
             BaseFrontendRequest request = this.parseRequest(message);
+            if(!this.onMessageHashMap.containsKey(request.type))
+                throw new IPCException(404, "Message type not found");
             ClassMessageObject classMessageObject = this.onMessageHashMap.get(request.type);
             Object data = this.gson.fromJson(request.data.toString(), classMessageObject.requestClass.getClass());
             return gson.toJson(new BaseFrontendResponse(classMessageObject.onMessage.call(data)));
