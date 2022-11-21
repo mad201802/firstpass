@@ -100,7 +100,7 @@ public class CLI {
         String name = getUserInput("Name: ");
         String username = getUserInput("Username/E-Mail: ");
         String password = getUserInput("Password: ");
-        if (passwordManager.addEntry(name, username, password) != -1) {
+        if (passwordManager.addEntry(name, username, password, 0) != -1) {
             line("Password added successfully.");
         } else {
             line("Failed to add password.");

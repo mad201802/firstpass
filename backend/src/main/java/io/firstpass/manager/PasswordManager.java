@@ -20,10 +20,10 @@ public class PasswordManager {
         this.masterpassword = masterpassword;
     }
 
-    public int addEntry(String name,String username, String password) {
+    public int addEntry(String name,String username, String password, int category_id) {
         CipherData encryptedUsername = encryptionAlgorithm.encryptText(username, masterpassword);
         CipherData encryptedPassword = encryptionAlgorithm.encryptText(password, masterpassword);
-        return database.addEntry(name, encryptedUsername, encryptedPassword);
+        return database.addEntry(name, encryptedUsername, encryptedPassword, category_id);
     }
 
    public void removeEntryByID(int id) {
