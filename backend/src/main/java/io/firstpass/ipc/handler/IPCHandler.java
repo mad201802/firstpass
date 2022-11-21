@@ -1,15 +1,16 @@
-package io.firstpass.ipc.parser;
+package io.firstpass.ipc.handler;
+
+import io.firstpass.ipc.handler.interfaces.IHandler;
 
 import java.io.*;
-import java.util.HashMap;
 import java.util.Scanner;
 
-public class IPCParser {
+public class IPCHandler implements IHandler {
 
     private final Scanner inputStream;
     private final PrintStream outputStream;
 
-    public IPCParser(InputStream inputStream, OutputStream outputStream) {
+    public IPCHandler(InputStream inputStream, OutputStream outputStream) {
         this.inputStream = new Scanner(inputStream);
         this.outputStream = new PrintStream(outputStream);
     }
@@ -24,8 +25,9 @@ public class IPCParser {
     public void writeLine(String line) {
         if(!outputStream.checkError()) {
             outputStream.println(line);
+        } else {
+            throw new IllegalStateException("Error writing to output stream");
         }
-        throw new IllegalStateException("Error writing to output stream");
     }
 
 }
