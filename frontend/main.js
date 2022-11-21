@@ -2,6 +2,7 @@ const electron = require("electron");
 const { ipcMain } = require("electron/main");
 
 const path = require("path");
+const backend = require("./util/backend");
 
 const { app, BrowserWindow } = electron;
 
@@ -11,9 +12,9 @@ app.on("ready", () => {
 
     mainWindow = new BrowserWindow({
         webPreferences: {
-            nodeIntegration: false,
-            contextIsolation: true,
-            preload: path.join(__dirname, "/preload.js"),
+            nodeIntegration: true,
+            contextIsolation: false,
+            // preload: path.join(__dirname, "/preload.js"),
         },
 
         // frame: false,
@@ -28,6 +29,13 @@ app.on("ready", () => {
     mainWindow.loadURL(`file://${__dirname}/app/build/index.html`).then(() => {
         mainWindow.show();
         mainWindow.webContents.openDevTools({ mode: "detach" });
+
+        backend.onError((e) => {
+            console.log("sending error", e);
+            mainWindow.webContents.send("backend-error", e);
+        });
+        console.log("connecting");
+        backend.connect();
     });
 
     ipcMain.on("minimize", () => {

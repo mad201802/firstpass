@@ -11,19 +11,17 @@ function timeoutPromise(promise, timeout, message) {
 
 class IPC {
 
-    /** No error occurred */
-    static ERR_OK = 0;
-    /** An unknown error occurred */
-    static ERR_GENERIC = 1;
-    /** The process took too long to respond */
-    static ERR_TIMEOUT = 2;
-     /** Could not spawn the child process */ 
-    static ERR_SPAWN = 3;
+    static ERR_OK = { code: 0, message: "No error occurred", id: "ERR_OK" };
+    static ERR_GENERIC = { code: 1, message: "An unknown error occurred", id: "ERR_GENERIC" };
+    static ERR_TIMEOUT = { code: 2, message: "The process took too long to respond", id: "ERR_TIMEOUT" };
+    static ERR_SPAWN = { code: 3, message: "Could not spawn the child process", id: "ERR_SPAWN" };
 
 
-    _cmd;
-    _args;
-    _process;
+    $cmd;
+    $args;
+
+    process;
+
     _onMessage;
     _onError;
     _onExit;
@@ -35,8 +33,8 @@ class IPC {
      * @param {string[]} args The arguments to pass to the command
      */
     constructor(cmd, args) {
-        this._cmd = cmd;
-        this._args = args;
+        this.$cmd = cmd;
+        this.$args = args;
 
         this._onMessage = () => {};
         this._onError = () => {};
@@ -45,54 +43,44 @@ class IPC {
 
     /**
      * Spawn the child process
-     * @returns {Promise} A promise that resolves when the process is connected
+     * @returns {Promise} A promise that resolves when the process is spawned
      */
     connect() {
-        this._process = spawn(this._cmd, this._args);
+        console.log("Spawning process: " + this.$cmd + " " + this.$args.join(" "));
+        this.process = spawn(this.$cmd, this.$args);
 
         this._registerEvents();
 
         return new Promise((resolve, reject) => {
             const errcb = () => reject(IPC.ERR_SPAWN);
                 
-            this._process.once("error", errcb);
-            this._process.once("spawn", () => {
+            this.process.once("error", errcb);
+            this.process.once("spawn", () => {
                 resolve();
-                this._process.removeListener("error", errcb);
+                this.process.removeListener("error", errcb);
             });
         });
     }
 
     /**
-     * Kill the child process
-     * @returns A promise that resolves when the process is killed
+     * Wait for the child process to terminate
+     * @param {boolean} kill Whether to send a kill signal (default: true)
      */
-    terminate() {
-        this._process.kill();
+    terminate(kill = true) {
+        if (kill) this.process.kill();
 
-        // return new Promise((resolve, reject) => {
-        //     const errcb = () => reject(IPC.ERR_GENERIC, err);
-        //     this._process.once("exit", () => {
-        //         resolve();
-        //         this._process.removeListener("error", errcb);
-        //     });
-        //     this._process.once("error", errcb);
-        // });
-    }
-
-    /**
-     * Wait for the child process to exit
-     * @returns A promise that resolves when the process exits
-     */
-    awaitTermination() {
-        return new Promise((resolve, reject) => {
-            const errcb = () => reject(IPC.ERR_GENERIC, err);
-            this._process.once("exit", () => {
-                resolve();
-                this._process.removeListener("error", errcb);
+        if (!this.$terminationPromise) {
+            this.$terminationPromise = new Promise((resolve, reject) => {
+                const errcb = () => reject(IPC.ERR_GENERIC, err);
+                this.process.once("exit", () => {
+                    resolve();
+                    this.process.removeListener("error", errcb);
+                });
+                this.process.once("error", errcb);
             });
-            this._process.once("error", errcb);
-        });
+        }
+        
+        return this.$terminationPromise;
     }
 
     /**
@@ -100,7 +88,8 @@ class IPC {
      * @param {string} msg The message to send
      */
     send(msg) {
-        this._process.stdin.write(msg + "\n");
+        console.log("Sending message: " + msg);
+        this.process.stdin.write(msg + "\n");
     }
     
     /**
@@ -110,11 +99,11 @@ class IPC {
     recv(timeout) {
         const promise = new Promise((resolve, reject) => {
             const errcb = () => reject(IPC.ERR_GENERIC);
-            this._process.stdout.once("data", (data) => {
+            this.process.stdout.once("data", (data) => {
                 resolve(data.toString().slice(0, -1));
-                this._process.removeListener("error", errcb);
+                this.process.removeListener("error", errcb);
             });
-            this._process.once("error", errcb);
+            this.process.once("error", errcb);
         });
 
         return timeout
@@ -123,9 +112,13 @@ class IPC {
     }
 
     _registerEvents() {
-        this._process.stdout.on("data", (data) => this._onMessage(data.toString()));
-        this._process.stderr.on("data", (data) => this._onError(data.toString()));
-        this._process.on("close", (code) => this._onExit());
+        this.process.stdout.on("data", (data) => this._onMessage(data.toString()));
+        this.process.stderr.on("data", (data) => this._onError(data.toString()));
+        this.process.on("exit", (code) => {
+            this.exitCode = code;
+            console.log("Process exited with code " + code);
+            this._onExit(code);
+        });
     }
 }
 
