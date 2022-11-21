@@ -4,18 +4,18 @@ import java.util.ArrayList;
 
 public class IPCException extends Exception {
     private final int status;
-    private final ArrayList<String> errors = new ArrayList<>();
+    private final String error;
 
     public IPCException(int status, String error) {
         this.status = status;
-        this.errors.add(error);
+        this.error = error;
     }
 
     public int getStatus() {
         return status;
     }
 
-    public ArrayList<String> getErrors() {
-        return errors;
+    public String getError() {
+        return error;
     }
 }

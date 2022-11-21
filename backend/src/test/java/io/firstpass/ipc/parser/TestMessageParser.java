@@ -13,49 +13,49 @@ public class TestMessageParser {
     public void test_message_parser_correct() {
         IMessageParser parser = new MessageParser();
         AtomicBoolean executed = new AtomicBoolean(false);
-        parser.addMessageListener("test", new TestMessage(), new TestMessage(), (data) -> {
+        parser.addMessageListener("test", TestMessage.class, TestMessage.class, (data) -> {
             executed.set(true);
             return data;
         });
         String response = parser.onMessage("{\"type\": \"test\", \"data\":{\"data\": \"itworks\"}}");
         Assertions.assertTrue(executed.get());
-        Assertions.assertEquals(response , "{\"status\":200,\"data\":{\"data\":\"itworks\"},\"errors\":[]}");
+        Assertions.assertEquals(response , "{\"data\":{\"data\":\"itworks\"}}");
     }
 
     @Test()
     public void test_message_parser_wrong_type() {
         IMessageParser parser = new MessageParser();
         AtomicBoolean executed = new AtomicBoolean(false);
-        parser.addMessageListener("test", new TestMessage(), new TestMessage(), (data) -> {
+        parser.addMessageListener("test", TestMessage.class, TestMessage.class, (data) -> {
             executed.set(true);
             return data;
         });
         String response = parser.onMessage("{\"type\": \"nottest\", \"data\":{\"data\": \"itworks\"}}");
         Assertions.assertFalse(executed.get());
-        Assertions.assertEquals(response, "{\"status\":404,\"errors\":[\"Message type not found\"]}");
+        Assertions.assertEquals(response, "{\"error\":{\"code\":404,\"message\":\"Message type not found\"}}");
     }
 
     @Test()
     public void test_message_parser_wrong_message_format() {
         IMessageParser parser = new MessageParser();
         AtomicBoolean executed = new AtomicBoolean(false);
-        parser.addMessageListener("test", new TestMessage(), new TestMessage(), (TestMessage data) -> {
+        parser.addMessageListener("test", TestMessage.class, TestMessage.class, (data) -> {
             executed.set(true);
-            return data.data;
+            return data;
         });
         String response = parser.onMessage("{\"type\": \"test\", \"data\":{\"notdata\": \"itworks\"}}");
         Assertions.assertTrue(executed.get());
-        Assertions.assertEquals(response, "{\"status\":200,\"errors\":[]}");
+        Assertions.assertEquals(response, "{\"data\":{}}");
     }
 
     @Test()
     public void test_message_parser_throws_error() {
         IMessageParser parser = new MessageParser();
-        parser.addMessageListener("test", new TestMessage(), new TestMessage(), (TestMessage data) -> {
+        parser.addMessageListener("test", TestMessage.class, TestMessage.class, (TestMessage data) -> {
             throw new IPCException(400, "Oh crap!");
         });
         String response = parser.onMessage("{\"type\": \"test\", \"data\":{\"data\": \"itworks\"}}");
-        Assertions.assertEquals(response, "{\"status\":400,\"errors\":[\"Oh crap!\"]}");
+        Assertions.assertEquals(response, "{\"error\":{\"code\":400,\"message\":\"Oh crap!\"}}");
     }
 
 }
