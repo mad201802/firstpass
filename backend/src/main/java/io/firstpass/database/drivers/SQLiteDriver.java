@@ -13,6 +13,7 @@ import io.firstpass.database.models.EncryptedEntryModel;
 import io.firstpass.encryption.symmetric.models.CipherData;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * This class is used to connect to a SQLite io.firstpass.database.
@@ -136,6 +137,42 @@ public class SQLiteDriver implements IEncryptedDatabase {
     public EncryptedEntryModel getEntry(String name) {
         try {
             return entryDAO.queryForEq("name", name).get(0);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    //get category
+    public CategoryModel getCategory(int id) {
+        try {
+            return categoryDAO.queryForId(id);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    //get category
+    public CategoryModel getCategory(String name) {
+        try {
+            return categoryDAO.queryForEq("name", name).get(0);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    //get all categories
+    public List<CategoryModel> getAllCategories() {
+        try {
+            return categoryDAO.queryForAll();
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    //get all entries
+    public List<EncryptedEntryModel> getAllEntries() {
+        try {
+            return entryDAO.queryForAll();
         } catch (SQLException e) {
             return null;
         }
