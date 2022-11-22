@@ -29,7 +29,7 @@ public class MessageParser implements IMessageParser {
             ClassMessageObject classMessageObject = this.onMessageHashMap.get(request.type);
             Object data = this.gson.fromJson(request.data.toString(), classMessageObject.requestClass);
             return gson.toJson(new BaseIPCResponse(classMessageObject.onMessage.call(data)));
-        } catch (JsonSyntaxException ex) {
+        } catch (NullPointerException ex) {
             return this.constructErrorMessage(500, "Json has wrong data");
         } catch (IllegalStateException ex) {
             return this.constructErrorMessage(500, "Invalid JSON");

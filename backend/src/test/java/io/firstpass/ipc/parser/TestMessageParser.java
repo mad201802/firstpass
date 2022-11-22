@@ -58,4 +58,20 @@ public class TestMessageParser {
         Assertions.assertEquals(response, "{\"error\":{\"code\":400,\"message\":\"Oh crap!\"}}");
     }
 
+    @Test()
+    public void test_message_parser_invalid_json() {
+        IMessageParser parser = new MessageParser();
+        parser.addMessageListener("test", TestMessage.class, TestMessage.class, (TestMessage data) -> data);
+        String response = parser.onMessage("{\"type\": \"test\", \"data\":{\"data\": \"itworks\"}");
+        Assertions.assertEquals(response, "{\"error\":{\"code\":500,\"message\":\"Invalid JSON\"}}");
+    }
+
+    @Test()
+    public void test_message_parser_invalid_data() {
+        IMessageParser parser = new MessageParser();
+        parser.addMessageListener("test", TestMessage.class, TestMessage.class, (TestMessage data) -> data);
+        String response = parser.onMessage("{\"type\": \"test\", \"datas\":{\"data\": \"itworks\"}}");
+        Assertions.assertEquals(response, "{\"error\":{\"code\":500,\"message\":\"Json has wrong data\"}}");
+    }
+
 }

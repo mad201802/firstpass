@@ -7,12 +7,6 @@ import io.firstpass.ipc.parser.MessageParser;
 
 public class FirstPass {
 
-    public static void main(String[] args) {
-        MessageParser messageParser = new MessageParser();
-        messageParser.addMessageListener("masterpassword", MasterpasswordRequest.class, MasterpasswordResponse.class, (data) -> {
-            throw new IPCException(500, "Test");
-        });
-        System.out.println(messageParser.onMessage("{\"type\":\"masterpassword\",\"data\":{\"password\":\"test\"}}"));
-    }
+    public static void main(String[] args) {}
 
 }
