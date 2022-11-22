@@ -1,0 +1,36 @@
+.formInput {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 10px;
+    background-color: var(--bg-light);
+    border-radius: var(--radius-lg);
+
+    border: 1px solid var(--divider);
+    transition: border-color 200ms ease;
+
+    & > input {
+        background: none;
+        color: var(--text);
+        height: 100%;
+        flex-grow: 1;
+
+        &::selection {
+            background-color: var(--primary);
+            color: var(--text);
+        }
+    }
+
+    & > svg {
+        fill: var(--text-dark);
+        transition: fill 200ms ease;
+    }
+
+    &:focus-within {
+        border-color: var(--primary);
+
+        & > svg {
+            fill: var(--primary);
+        }
+    }
+}
