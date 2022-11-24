@@ -4,12 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import io.firstpass.ipc.exceptions.IPCException;
 import io.firstpass.ipc.interfaces.IOnMessageRecieve;
-import io.firstpass.ipc.models.ClassMessageObject;
-import io.firstpass.ipc.models.request.BaseIPCRequest;
-import io.firstpass.ipc.models.response.BaseIPCResponse;
-import io.firstpass.ipc.models.response.IPCErrorResponse;
+import io.firstpass.ipc.communication.ClassMessageObject;
+import io.firstpass.ipc.communication.request.BaseIPCRequest;
+import io.firstpass.ipc.communication.response.BaseIPCResponse;
+import io.firstpass.ipc.communication.response.IPCErrorResponse;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MessageParser implements IMessageParser {

@@ -1,4 +1,4 @@
-package io.firstpass.ipc.models;
+package io.firstpass.ipc.communication;
 
 import io.firstpass.ipc.interfaces.IOnMessageRecieve;
 

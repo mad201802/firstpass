@@ -1,4 +1,4 @@
-package io.firstpass.ipc.models.request;
+package io.firstpass.ipc.communication.request;
 
 import com.google.gson.JsonObject;
 

@@ -9,10 +9,10 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "categories")
 public class CategoryModel {
     @DatabaseField(id = true)
-    private Integer id;
+    public Integer id;
 
     @DatabaseField()
-    private String category;
+    public String category;
 
     public CategoryModel() {}
 

@@ -1,6 +1,4 @@
-package io.firstpass.ipc.models.response;
-
-import java.util.ArrayList;
+package io.firstpass.ipc.communication.response;
 
 public class BaseIPCResponse {
     public Object data;
