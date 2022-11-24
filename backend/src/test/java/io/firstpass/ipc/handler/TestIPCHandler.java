@@ -7,10 +7,7 @@ import io.firstpass.ipc.handler.interfaces.IHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 public class TestIPCHandler {
 
@@ -34,5 +31,4 @@ public class TestIPCHandler {
         handler.writeLine(message);
         Assertions.assertEquals(message, outputStream.toString().strip());
     }
-
 }
