@@ -1,29 +1,23 @@
-.dropdownMenu {
 
-    user-select: none;
+.dropdown {
 
-    display: grid;
-    place-items: center;
-
-    grid-template-columns: 1fr 2fr;
-
-    & .label {
-        font-size: 12px;
-        height: 100%;
-        width: 100%;
-
-        display: grid;
-        place-items: center;
-    }
+    font-size: 16px;
 
     & .currentOption {
-        font-size: 12px;
-        display: grid;
-        place-items: center;
-        padding: 0 5px;
+        display: flex;
+        align-items: center;
+        // max-width: calc(100% - 44px);
+        overflow: hidden;
+        flex-grow: 1;
     }
 
-    & svg {
+    & .dropdownIcon {
+        margin-left: 10px;
+        display: grid;
+        place-items: center;
+    }
+
+    & .dropdownCaret {
         transform: rotate(90deg);
         transition: transform 0.2s ease;
 
@@ -32,105 +26,66 @@
         }
     }
 
-    
-    & .dropdown {
+    transition: border-color 200ms ease;
+    border: 1px solid var(--divider);
 
-        border-top: 1px solid rgba(255,255,255, 0.1);
-
-        &:before {
-            z-index: 0;
-            content: "";
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
+    &:hover {
+        border-color: var(--primary);
+    }
     
-            border-radius: 10px;
-    
-            background: linear-gradient(to right, var(--primary) 0%, var(--primary) 100%);
-            opacity: 0;
-    
-            transition: opacity 0.2s ease;
-    
-        }
-    
-        &:hover::before {
-            opacity: 1;
-        }
-        
+    cursor: pointer;
+    & > * {
         cursor: pointer;
-        & > * {
-            cursor: pointer;
-            z-index: 1;
-        }
-        // margin-left: 10px;
-        height: 100%;
-        background: var(--bg-light);
-        width: 100%;
+        z-index: 1;
+    }
+    // margin-left: 10px;
+    background: var(--bg-light);
+    width: 100%;
 
-        border-radius: 10px;
-        padding: 0 10px;
+    min-height: 50px;
+    border-radius: var(--radius-lg);
+    padding: 0 15px 0 5px;
 
 
-        position: relative;
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    & .dropdownOptionList {
+        opacity: 0;
+        border: 1px solid var(--divider);
+        
+        pointer-events: none;
+        // display: none;
         display: flex;
-        align-items: center;
-        justify-content: space-between;
+        flex-direction: column;
+        gap: 5px;
+        position: absolute;
+        top: calc(100% + 12px);
+        left: -1px; // correct for border
+        right: -1px;
+        transform: scale(0.95) translateY(-10px);
+        transition: transform 0.2s ease, opacity 0.2s ease;
 
-        & .dropdownOptionList {
-            opacity: 0;
-            pointer-events: none;
-            // display: none;
-            position: absolute;
-            top: calc(100% + 10px);
-            left: 0;
-            right: 0;
-            transform: scale(0.95) translateY(-10px);
-            transition: transform 0.2s ease, opacity 0.2s ease;
+        background: var(--bg-light);
+        border-radius: 10px;
+        padding: 5px;
 
-            background: var(--bg-light);
-            border-radius: 10px;
-            padding: 10px;
+        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.3);
 
-            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.3);
+        &.visible {
+            // display: block;
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: all;
+        }
 
-            &.visible {
-                // display: block;
-                opacity: 1;
-                transform: scale(1) translateY(0);
-                pointer-events: all;
-            }
+        .dropdownOption {
+            border-radius: var(--radius);
+            transition: background-color 200ms ease;
 
-            & .dropdownOption {
-                padding: 7px 10px;
-                cursor: pointer;
-                transition: background-color 0.1s ease-in-out, transform 0.1s ease;
-
-                background: var(--bg-lighter);
-                background: none;
-                border-radius: 5px;
-                font-size: 12px;
-
-                &.selected {
-                    // outline: 2px solid var(--col1);
-                    // box-sizing: content-box;
-                    outline: 2px solid var(--primary);
-                    outline-offset: -2px;
-                }
-
-                &:hover {
-                    background: linear-gradient(to right, var(--primary) 0%, var(--secondary) 100%);
-                    outline: none;
-                }
-
-                &:active {
-                    transform: scale(0.95);
-                }
-            }
-
-            & .dropdownOption + .dropdownOption {
-                margin-top: 5px;
+            &:hover {
+                background-color: var(--bg-lighter);
             }
         }
     }

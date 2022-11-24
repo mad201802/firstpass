@@ -1,23 +1,22 @@
 import React, { useState } from 'react'
 
-import { ChevronRightRounded } from '@mui/icons-material';
+import { ChevronRightRounded, DnsRounded } from '@mui/icons-material';
 
 import "./DropdownMenu.less";
 
-const DropdownMenu = ({ default: df, onChange, options, label, placeholder, component: DropdownItem }) => {
+const DropdownMenu = ({ default: df, onChange, options, placeholder, component: DropdownItem, icon }) => {
 
     const [currentValue, setCurrentValue] = useState(df);
     const [isOpen, setIsOpen] = useState(false);
 
     const selectOption = (value) => {
-        onChange ?? onChange(value, options[value]);
+        console.log("Selecting option", value);
+        onChange && onChange(value, options[value]);
         setCurrentValue(value);
         setIsOpen(false);
     }
 
     return (
-        <div className="dropdownMenu">
-            { label && <span className="label">{label}</span> }
             <div
                 className="dropdown"
                 onClick={(e) => {
@@ -25,13 +24,14 @@ const DropdownMenu = ({ default: df, onChange, options, label, placeholder, comp
                     setIsOpen(!isOpen);
                 }}
             >
+                {icon && <div className="dropdownIcon">{icon}</div>}
                 <div className="currentOption">
                     {!isNaN(currentValue)
                         ? <DropdownItem data={options[currentValue]} />
                         : placeholder}
                 </div>
                 {/* TODO: use data attributes to style */}
-                <ChevronRightRounded className={isOpen ? "active" : ""} />
+                <ChevronRightRounded className="dropdownCaret" data-visible={isOpen} />
                 <div
                     className={
                         isOpen
@@ -40,11 +40,12 @@ const DropdownMenu = ({ default: df, onChange, options, label, placeholder, comp
                     }
                 >
                     {Object.entries(options).map(([v, n]) => (
-                        <DropdownItem key={v} data={n} onClick={() => selectOption(v)} />
+                        <div className="dropdownOption" key={v} onClick={() => selectOption(v)}>
+                            <DropdownItem data={n} />
+                        </div>
                     ))}
                 </div>
             </div>
-        </div>
     );
 }
 

@@ -5,10 +5,39 @@ import FirstpassLogo from "../../../assets/svg/logo_full.svg"
 import WavesSvg from "../../../assets/svg/waves.svg"
 import FormInput from "../../components/FormInput/FormInput"
 
-import { KeyRounded } from "@mui/icons-material"
+import { KeyRounded, DnsRounded } from "@mui/icons-material"
 import Button from "../../components/Button/Button"
 
 import backend from "../../backend"
+import DropdownMenu from "../../components/DropdownMenu/DropdownMenu"
+
+
+const recentDBs = [
+    {
+        name: "Firstpass Default Database",
+        date: "2021-10-10",
+        filename: "C:\\Users\\test\\Documents\\test.fp",
+    },
+    {
+        name: "Online Banking",
+        date: "2021-10-10",
+        filename: "C:\\Users\\test\\Documents\\ein\\wirklich\\sehr\\langer\\pfad\\test2.fp",
+    },
+    {
+        name: "Arbeit",
+        date: "2021-10-10",
+        filename: "C:\\Users\\test\\Documents\\test3.fp",
+    },
+]
+
+const RecentDB = ({ data }) => {
+    return (
+        <div className="recentDB">
+            <div className="name">{data.name}</div>
+            <div className="filename">{data.filename}</div>
+        </div>
+    );
+}
 
 
 const LoginPage = ({ setDb }) => {
@@ -34,7 +63,7 @@ const LoginPage = ({ setDb }) => {
     
     }
 
-    
+
     return (
         <div className="loginPage">
             <div className="titleBar">Title Bar</div>
@@ -42,16 +71,23 @@ const LoginPage = ({ setDb }) => {
                 <div className="loginForm">
                     <FirstpassLogo className="firstpassLogo" />
 
-                    <FormInput
-                        placeholder="Enter Masterpassword"
-                        type="password"
-                        iconLeft={<KeyRounded />}
-                    />
-                    <FormInput
-                        placeholder="Enter Masterpassword"
-                        type="password"
-                        iconLeft={<KeyRounded />}
-                    />
+                    <div className="loginFormInputs">
+                        <DropdownMenu
+                            options={recentDBs}
+                            placeholder={
+                                <span style={{ paddingLeft: "10px" }}>
+                                    Select a database...
+                                </span>
+                            }
+                            icon={<DnsRounded />}
+                            component={RecentDB}
+                        />
+                        <FormInput
+                            placeholder="Enter Masterpassword"
+                            type="password"
+                            iconLeft={<KeyRounded />}
+                        />
+                    </div>
 
                     <Button onClick={login}>Login</Button>
                 </div>

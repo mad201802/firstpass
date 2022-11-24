@@ -2,22 +2,29 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 5px 10px;
+    padding: 0 15px;
+    height: 50px;
     background-color: var(--bg-light);
     border-radius: var(--radius-lg);
 
     border: 1px solid var(--divider);
     transition: border-color 200ms ease;
-
+    
     & > input {
+        font-size: 14px;
         background: none;
         color: var(--text);
         height: 100%;
         flex-grow: 1;
+        // font-size: ;
 
         &::selection {
             background-color: var(--primary);
             color: var(--text);
+        }
+
+        &::placeholder {
+            color: var(--text-darker);
         }
     }
 
