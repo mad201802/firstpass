@@ -21,7 +21,7 @@
         transform: rotate(90deg);
         transition: transform 0.2s ease;
 
-        &.active {
+        &[data-open="true"] {
             transform: rotate(270deg);
         }
     }
@@ -61,7 +61,7 @@
         flex-direction: column;
         gap: 5px;
         position: absolute;
-        top: calc(100% + 12px);
+        top: calc(100% + 11px);
         left: -1px; // correct for border
         right: -1px;
         transform: scale(0.95) translateY(-10px);
@@ -73,7 +73,7 @@
 
         box-shadow: 0 10px 10px rgba(0, 0, 0, 0.3);
 
-        &.visible {
+        &[data-open="true"] {
             // display: block;
             opacity: 1;
             transform: scale(1) translateY(0);

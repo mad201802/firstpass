@@ -10,35 +10,25 @@ const DropdownMenu = ({ default: df, onChange, options, placeholder, component: 
     const [isOpen, setIsOpen] = useState(false);
 
     const selectOption = (value) => {
-        console.log("Selecting option", value);
         onChange && onChange(value, options[value]);
         setCurrentValue(value);
         setIsOpen(false);
     }
 
     return (
-            <div
-                className="dropdown"
-                onClick={(e) => {
-                    if (e.target.className == "dropdownOptionList visible") return;
-                    setIsOpen(!isOpen);
-                }}
-            >
+            <div className="dropdown" onClick={(e) => setIsOpen(!isOpen) } >
+
                 {icon && <div className="dropdownIcon">{icon}</div>}
+
                 <div className="currentOption">
                     {!isNaN(currentValue)
                         ? <DropdownItem data={options[currentValue]} />
                         : placeholder}
                 </div>
-                {/* TODO: use data attributes to style */}
-                <ChevronRightRounded className="dropdownCaret" data-visible={isOpen} />
-                <div
-                    className={
-                        isOpen
-                            ? "dropdownOptionList visible"
-                            : "dropdownOptionList"
-                    }
-                >
+
+                <ChevronRightRounded className="dropdownCaret" data-open={isOpen} />
+
+                <div className="dropdownOptionList" data-open={isOpen}>
                     {Object.entries(options).map(([v, n]) => (
                         <div className="dropdownOption" key={v} onClick={() => selectOption(v)}>
                             <DropdownItem data={n} />
