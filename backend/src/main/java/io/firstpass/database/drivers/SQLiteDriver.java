@@ -52,7 +52,8 @@ public class SQLiteDriver implements IEncryptedDatabase {
             categoryDAO.createIfNotExists(new CategoryModel(4, "Shopping"));
             categoryDAO.createIfNotExists(new CategoryModel(5, "Gaming"));
             categoryDAO.createIfNotExists(new CategoryModel(6, "Email"));
-            categoryDAO.createIfNotExists(new CategoryModel(7, "Other"));
+            categoryDAO.createIfNotExists(new CategoryModel(7, "Streaming"));
+            categoryDAO.createIfNotExists(new CategoryModel(8, "Other"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -71,6 +72,8 @@ public class SQLiteDriver implements IEncryptedDatabase {
         try {
             CategoryModel category = categoryDAO.queryForId(categoryID);
 
+
+            //if category is null, set it to Uncategorized
             if(category == null) {
                 category = categoryDAO.queryForId(1);
             }
@@ -177,6 +180,34 @@ public class SQLiteDriver implements IEncryptedDatabase {
             return null;
         }
     }
+
+    //get all entries in a category
+    public List<EncryptedEntryModel> getAllEntries(int categoryID) {
+        try {
+            return entryDAO.queryForEq("category_id", categoryID);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    //count all entries in a category
+    public int countAllEntries(int categoryID) {
+        try {
+            return (int) entryDAO.countOf(entryDAO.queryBuilder().where().eq("category_id", categoryID).prepare());
+        } catch (SQLException e) {
+            return 0;
+        }
+    }
+
+    //count all entries
+    public int countAllEntries() {
+        try {
+            return (int) entryDAO.countOf();
+        } catch (SQLException e) {
+            return 0;
+        }
+    }
+
 
     /**
      * Gets all entries from the io.firstpass.database.

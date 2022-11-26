@@ -20,6 +20,9 @@ public class FirstPass {
         CipherData password = aes256.encryptText("password123", "test");
 
         sqLiteDriver.addEntry("Netflix", username, password, -9);
+
+
     }
 
 }
+
