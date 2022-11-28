@@ -21,20 +21,20 @@ public class EncryptedEntryModel {
     @DatabaseField(foreign = true, canBeNull = false, foreignAutoCreate = true, foreignAutoRefresh = true)
     private EncryptedModel password;
 
-//    @DatabaseField()
-//    private String url;
-//
-//    @DatabaseField(foreign = true, foreignAutoRefresh = true)
-//    private CategoryModel category;
-//
-//    @DatabaseField()
-//    private String createdAt;
-//
-//    @DatabaseField()
-//    private String expiresAt;
-//
-//    @DatabaseField()
-//    private String notes;
+    @DatabaseField()
+    private String url;
+
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    private CategoryModel category;
+
+    @DatabaseField()
+    private String createdAt;
+
+    @DatabaseField()
+    private String expiresAt;
+
+    @DatabaseField()
+    private String notes;
 
     public EncryptedEntryModel() {}
 
@@ -64,5 +64,14 @@ public class EncryptedEntryModel {
 
     public String getName() {
         return name;
+    }
+
+
+    public CategoryModel getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryModel category) {
+        this.category = category;
     }
 }

@@ -13,6 +13,7 @@ import io.firstpass.database.models.EncryptedEntryModel;
 import io.firstpass.encryption.symmetric.models.CipherData;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * This class is used to connect to a SQLite io.firstpass.database.
@@ -39,7 +40,25 @@ public class SQLiteDriver implements IEncryptedDatabase {
 
         entryDAO = DaoManager.createDao(connectionSource, EncryptedEntryModel.class);
         TableUtils.createTableIfNotExists(connectionSource, EncryptedEntryModel.class);
+
+        init_categories();
     }
+
+    private void init_categories() {
+        try {
+            categoryDAO.createIfNotExists(new CategoryModel(1, "Uncategorized"));
+            categoryDAO.createIfNotExists(new CategoryModel(2, "Social Media"));
+            categoryDAO.createIfNotExists(new CategoryModel(3, "Banking"));
+            categoryDAO.createIfNotExists(new CategoryModel(4, "Shopping"));
+            categoryDAO.createIfNotExists(new CategoryModel(5, "Gaming"));
+            categoryDAO.createIfNotExists(new CategoryModel(6, "Email"));
+            categoryDAO.createIfNotExists(new CategoryModel(7, "Streaming"));
+            categoryDAO.createIfNotExists(new CategoryModel(8, "Other"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * This method is used to add a new entry to the io.firstpass.database.
@@ -49,8 +68,19 @@ public class SQLiteDriver implements IEncryptedDatabase {
      * @return The ID of the entry.
      */
     @Override
-    public int addEntry(String name, CipherData username, CipherData password) {
+    public int addEntry(String name, CipherData username, CipherData password, int categoryID) {
         try {
+            CategoryModel category = categoryDAO.queryForId(categoryID);
+
+
+            //if category is null, set it to Uncategorized
+            if(category == null) {
+                category = categoryDAO.queryForId(1);
+            }
+
+
+
+
             EncryptedModel usernameModel = new EncryptedModel(username.text, username.iv);
             encryptedDAO.create(usernameModel);
 
@@ -60,10 +90,14 @@ public class SQLiteDriver implements IEncryptedDatabase {
             EncryptedEntryModel encryptedEntryModel = new EncryptedEntryModel(name);
             encryptedEntryModel.setUsername(usernameModel);
             encryptedEntryModel.setPassword(passwordModel);
+            encryptedEntryModel.setCategory(category);
             if (entryDAO.create(encryptedEntryModel) == 1) {
                 return encryptedEntryModel.getId();
             }
+
+
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             return -1;
         }
         return -1;
@@ -110,6 +144,70 @@ public class SQLiteDriver implements IEncryptedDatabase {
             return null;
         }
     }
+
+    //get category
+    public CategoryModel getCategory(int id) {
+        try {
+            return categoryDAO.queryForId(id);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    //get category
+    public CategoryModel getCategory(String name) {
+        try {
+            return categoryDAO.queryForEq("name", name).get(0);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    //get all categories
+    public List<CategoryModel> getAllCategories() {
+        try {
+            return categoryDAO.queryForAll();
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    //get all entries
+    public List<EncryptedEntryModel> getAllEntries() {
+        try {
+            return entryDAO.queryForAll();
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    //get all entries in a category
+    public List<EncryptedEntryModel> getAllEntries(int categoryID) {
+        try {
+            return entryDAO.queryForEq("category_id", categoryID);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    //count all entries in a category
+    public int countAllEntries(int categoryID) {
+        try {
+            return (int) entryDAO.countOf(entryDAO.queryBuilder().where().eq("category_id", categoryID).prepare());
+        } catch (SQLException e) {
+            return 0;
+        }
+    }
+
+    //count all entries
+    public int countAllEntries() {
+        try {
+            return (int) entryDAO.countOf();
+        } catch (SQLException e) {
+            return 0;
+        }
+    }
+
 
     /**
      * Gets all entries from the io.firstpass.database.
