@@ -1,0 +1,46 @@
+.titleBar{
+    height: 35px;
+    background-color: var(--bg);
+    color: var(--text);
+    display: flex;
+    justify-content: right;
+
+    .dragqueen{
+        -webkit-app-region: drag;
+        flex-grow: 1;
+    }
+
+    #windowControls{
+        display: flex;
+        align-items: stretch;
+    
+        #minimize{
+            width: 19px;
+        }
+        #maximize{
+            width: 16px;
+        }
+
+        #close{
+            width: 20px;
+        }
+
+        #minimizebox,#maximizebox{
+           &:hover{
+                background-color: var(--bg-lighter);
+            }
+        }
+
+        #closebox{
+            &:hover{
+                background-color: var(--error);
+            }
+        }
+
+        & > div{
+          width: 40px;
+          display: grid;
+          place-items: center;
+        }
+    }
+}
