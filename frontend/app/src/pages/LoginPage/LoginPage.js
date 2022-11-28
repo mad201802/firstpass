@@ -10,6 +10,7 @@ import Button from "../../components/Button/Button"
 
 import backend from "../../backend"
 import DropdownMenu from "../../components/DropdownMenu/DropdownMenu"
+import TitleBar from "../../components/TitleBar/TitleBar"
 
 
 const recentDBs = [
@@ -66,7 +67,8 @@ const LoginPage = ({ setDb }) => {
 
     return (
         <div className="loginPage">
-            <div className="titleBar">Title Bar</div>
+           <TitleBar/>
+
             <div className="loginForm-wrapper">
                 <div className="loginForm">
                     <FirstpassLogo className="firstpassLogo" />
