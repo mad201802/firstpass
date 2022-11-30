@@ -100,4 +100,59 @@ public class StrengthAnalyzer {
         }
 
     }
+
+    public double computeEntropy(String password) {
+        // Iterate through all characters and count
+        // them in categories
+        int upChars = 0, lowChars = 0, digits = 0, special = 0;
+        for(int i=0; i<password.length(); i++)
+        {
+            char ch = password.charAt(i);
+            if(Character.isUpperCase(ch))
+                upChars++;
+            else if(Character.isLowerCase(ch))
+                lowChars++;
+            else if(Character.isDigit(ch))
+                digits++;
+            else
+                special++;
+        }
+
+        int charsetSize = 0;
+
+        // Add security points based on the number of special characters:
+        if(upChars > 0) {
+            charsetSize += 29;
+        }
+        if(lowChars > 0) {
+            charsetSize += 29;
+        }
+        if (digits > 0) {
+            charsetSize += 10;
+        }
+        if(special > 0) {
+            charsetSize += 27;
+        }
+
+
+        int length = password.length();
+
+        double numberOfCombinations = Math.pow(charsetSize, length);
+        double entropy = Math.log(numberOfCombinations) / Math.log(2);
+        return entropy;
+    }
+
+    public PasswordStrength entropyToStrength(double entropy) {
+        if (entropy < 30) {
+            return PasswordStrength.VERY_WEAK;
+        } else if (entropy < 60) {
+            return PasswordStrength.WEAK;
+        } else if (entropy < 80) {
+            return PasswordStrength.STRONG;
+        } else {
+            return PasswordStrength.VERY_STRONG;
+        }
+    }
+
+    
 }

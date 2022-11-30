@@ -110,7 +110,9 @@ public class CLI {
     public static void checkPasswordStrength() {
         line("Check password strength");
         String password = getUserInput("Password to test:");
-        line(strengthAnalyzer.checkStrength(password));
+        // line(strengthAnalyzer.checkStrength(password));
+        line(strengthAnalyzer.computeEntropy(password));
+        line(strengthAnalyzer.entropyToStrength(strengthAnalyzer.computeEntropy(password)));
     }
 
     private static void login() {
@@ -166,6 +168,9 @@ public class CLI {
     }
     private static void line(StrengthAnalyzer.PasswordStrength strength) {
         System.out.println("   The password you entered is " + strength);
+    }
+    private static void line(double passwordEntropy) {
+        System.out.println("  Entropy of your password: " + passwordEntropy);
     }
     private static void line() {
         System.out.println("  ");
