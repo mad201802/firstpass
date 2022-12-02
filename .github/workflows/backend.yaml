@@ -1,10 +1,8 @@
 name: Build Maven Backend
 
 on:
-  push:
-    branches: [ "feature/cicd" ]
-#  pull_request:
-#    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
 
 env:
   BACKEND_PATH: "backend"
