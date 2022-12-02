@@ -1,0 +1,27 @@
+name: Build Maven Backend
+
+on:
+  push:
+    branches: [ "feature/cicd" ]
+#  pull_request:
+#    branches: [ "develop" ]
+
+env:
+  BACKEND_PATH: "backend"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+      defaults:
+        run:
+          working-directory: ${{ env.BACKEND_PATH }}
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
