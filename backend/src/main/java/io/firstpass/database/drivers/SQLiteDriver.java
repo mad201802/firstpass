@@ -244,5 +244,58 @@ public class SQLiteDriver implements IEncryptedDatabase {
         }
     }
 
+    public MetaModel getMeta(int id) {
+        try {
+            return metaDAO.queryForId(id);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public MetaModel getMeta(String name) {
+        try {
+            return metaDAO.queryForEq("name", name).get(0);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public List<MetaModel> getAllMeta() {
+        try {
+            return metaDAO.queryForAll();
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public int countAllMeta() {
+        try {
+            return (int) metaDAO.countOf();
+        } catch (SQLException e) {
+            return 0;
+        }
+    }
+
+    public boolean updateMeta(int id, String key, String value) {
+        try {
+            MetaModel metaModel = metaDAO.queryForId(id);
+            metaModel.setKey(key);
+            metaModel.setValue(value);
+            return metaDAO.update(metaModel) == 1;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    public boolean updateMetaFirst(String name, String value) {
+        try {
+            MetaModel metaModel = metaDAO.queryForEq("name", name).get(0);
+            metaModel.setValue(value);
+            return metaDAO.update(metaModel) == 1;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
 
 }
