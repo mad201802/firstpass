@@ -10,6 +10,7 @@ import io.firstpass.database.IEncryptedDatabase;
 import io.firstpass.database.models.EncryptedModel;
 import io.firstpass.database.models.CategoryModel;
 import io.firstpass.database.models.EncryptedEntryModel;
+import io.firstpass.database.models.MetaModel;
 import io.firstpass.encryption.symmetric.models.CipherData;
 
 import java.sql.SQLException;
@@ -22,6 +23,7 @@ public class SQLiteDriver implements IEncryptedDatabase {
     Dao<CategoryModel, Integer> categoryDAO;
     Dao<EncryptedEntryModel, Integer> entryDAO;
     Dao<EncryptedModel, Integer> encryptedDAO;
+    Dao<MetaModel, Integer> metaDAO;
 
     /**
      * This method is used to connect to a SQLite io.firstpass.database.
@@ -221,4 +223,26 @@ public class SQLiteDriver implements IEncryptedDatabase {
             return null;
         }
     }
+
+    //New functions for MetaModel
+    public int addMeta(String name, String value) {
+        try {
+            MetaModel metaModel = new MetaModel(name, value);
+            metaDAO.create(metaModel);
+            return metaModel.getId();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return -1;
+        }
+    }
+
+    public boolean deleteMeta(int id) {
+        try {
+            return metaDAO.deleteById(id) == 1;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+
 }

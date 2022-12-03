@@ -8,6 +8,10 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 @DatabaseTable(tableName = "categories")
 public class MetaModel {
+
+
+    @DatabaseField(id = true)
+    public Integer id;
     @DatabaseField()
     public String key;
     @DatabaseField()
@@ -27,6 +31,17 @@ public class MetaModel {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    //methods for id
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+        System.out.println("id set to " + id);
+        //should not really be used
     }
 
     public MetaModel(String key, String value) {
