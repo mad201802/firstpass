@@ -8,32 +8,36 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 @DatabaseTable(tableName = "categories")
 public class MetaModel {
-    @DatabaseField(id = true)
-    public Integer id;
-
     @DatabaseField()
-    public String category;
+    public String key;
+    @DatabaseField()
+    public String value;
 
-    public Integer getId() {
-        return id;
+    public String getKey() {
+        return key;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public String getValue() {
+        return value;
     }
 
-    public String getCategory() {
-        return category;
+    public void setKey(String key) {
+        this.key = key;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setValue(String value) {
+        this.value = value;
     }
 
-    public MetaModel(Integer id, String category) {
-        this.id = id;
-        this.category = category;
+    public MetaModel(String key, String value) {
+        this.key = key;
+        this.value = value;
     }
 
+
+
+    //empty constructor for ormlite
     public MetaModel() {}
+
+
 }
