@@ -10,6 +10,8 @@ import io.firstpass.database.IEncryptedDatabase;
 import io.firstpass.database.models.EncryptedModel;
 import io.firstpass.database.models.CategoryModel;
 import io.firstpass.database.models.EncryptedEntryModel;
+import io.firstpass.database.models.MetaModel;
+import io.firstpass.encryption.hashing.SHA256;
 import io.firstpass.encryption.symmetric.models.CipherData;
 
 import java.sql.SQLException;
@@ -19,16 +21,18 @@ import java.util.List;
  * This class is used to connect to a SQLite io.firstpass.database.
  */
 public class SQLiteDriver implements IEncryptedDatabase {
+    private static final String DATABASE_VERSION = "0.1.0";
     Dao<CategoryModel, Integer> categoryDAO;
     Dao<EncryptedEntryModel, Integer> entryDAO;
     Dao<EncryptedModel, Integer> encryptedDAO;
+    Dao<MetaModel, Integer> metaDAO;
 
     /**
      * This method is used to connect to a SQLite io.firstpass.database.
      * @param filepath The path to the io.firstpass.database file.
      * @throws SQLException If the connection fails.
      */
-    public  SQLiteDriver(String filepath) throws SQLException {
+    public  SQLiteDriver(String filepath, String masterpassword) throws SQLException {
         Logger.setGlobalLogLevel(Level.WARNING);
         ConnectionSource connectionSource = new JdbcConnectionSource("jdbc:sqlite:" + filepath);
 
@@ -41,7 +45,35 @@ public class SQLiteDriver implements IEncryptedDatabase {
         entryDAO = DaoManager.createDao(connectionSource, EncryptedEntryModel.class);
         TableUtils.createTableIfNotExists(connectionSource, EncryptedEntryModel.class);
 
+        metaDAO = DaoManager.createDao(connectionSource, MetaModel.class);
+        TableUtils.createTableIfNotExists(connectionSource, MetaModel.class);
+
+        init_meta(masterpassword);
+
         init_categories();
+    }
+
+    private void init_meta(String masterpassword) throws SQLException {
+        if (metaDAO.queryForEq("key", "masterpassword").isEmpty()) {
+            metaDAO.create(new MetaModel("masterpassword", SHA256.hash(masterpassword)));
+        } else {
+            if (!metaDAO.queryForEq("key", "masterpassword").get(0).getValue().equals(SHA256.hash(masterpassword))) {
+                throw new SQLException("Incorrect master password");
+            }
+        }
+
+        if (metaDAO.queryForEq("key", "version").isEmpty()) {
+            metaDAO.create(new MetaModel("version", DATABASE_VERSION));
+        } else {
+            if (!metaDAO.queryForEq("key", "version").get(0).getValue().equals(DATABASE_VERSION)) {
+                throw new SQLException("Incorrect database version");
+            }
+        }
+
+        if (metaDAO.queryForEq("key", "encryption_algorithm").isEmpty()) {
+            metaDAO.create(new MetaModel("encryption_algorithm", "aes256"));
+        }
+
     }
 
     private void init_categories() {
@@ -221,4 +253,69 @@ public class SQLiteDriver implements IEncryptedDatabase {
             return null;
         }
     }
+
+    //New functions for MetaModel
+    public int addMeta(String name, String value) {
+        try {
+            MetaModel metaModel = new MetaModel(name, value);
+            metaDAO.create(metaModel);
+            return metaModel.getId();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return -1;
+        }
+    }
+
+    public boolean deleteMeta(int id) {
+        try {
+            return metaDAO.deleteById(id) == 1;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    public MetaModel getMeta(int id) {
+        try {
+            return metaDAO.queryForId(id);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public MetaModel getMeta(String name) {
+        try {
+            return metaDAO.queryForEq("name", name).get(0);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public List<MetaModel> getAllMeta() {
+        try {
+            return metaDAO.queryForAll();
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public boolean updateMeta(int id, String key, String value) {
+        try {
+            MetaModel metaModel = metaDAO.queryForId(id);
+            metaModel.setKey(key);
+            metaModel.setValue(value);
+            return metaDAO.update(metaModel) == 1;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    public String getEncryptionAlgorithm() {
+        try {
+            return metaDAO.queryForEq("key", "encryption_algorithm").get(0).getValue();
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+
 }
