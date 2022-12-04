@@ -26,4 +26,12 @@ public class Utils {
         return Base64.getDecoder().decode(base64String);
     }
 
+    public static String bytesToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    }
+
 }

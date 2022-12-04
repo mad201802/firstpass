@@ -22,7 +22,7 @@ public class CLI {
 
     static {
         try {
-            database = new SQLiteDriver(DATABASE_PATH);
+            database = new SQLiteDriver(DATABASE_PATH, "");
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -6,10 +6,8 @@ import com.j256.ormlite.table.DatabaseTable;
 /**
  * This class is used to represent a category in the io.firstpass.database.
  */
-@DatabaseTable(tableName = "categories")
+@DatabaseTable(tableName = "meta")
 public class MetaModel {
-
-
     @DatabaseField(id = true)
     public Integer id;
     @DatabaseField()
@@ -40,8 +38,6 @@ public class MetaModel {
 
     public void setId(Integer id) {
         this.id = id;
-        System.out.println("id set to " + id);
-        //should not really be used
     }
 
     public MetaModel(String key, String value) {
@@ -49,10 +45,6 @@ public class MetaModel {
         this.value = value;
     }
 
-
-
     //empty constructor for ormlite
     public MetaModel() {}
-
-
 }
