@@ -59,8 +59,8 @@ jobs:
     - name: Package project
       run: mvn package
     - name: Archive package artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: dist-jar
-          path: |
-            target/*.jar
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist-jar
+        path: |
+          target/*.jar
