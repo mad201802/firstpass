@@ -2,7 +2,7 @@ name: Build Maven Backend
 
 on:
   pull_request:
-    branches: [ "develop" ]
+    branches: [ "feature/cicd" ]
 
 env:
   BACKEND_PATH: "backend"
@@ -21,7 +21,8 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    - name: Test with Maven
-      run: mvn -B test --file pom.xml
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+    - name: Build and Run Tests
+      run: mvn test --batch-mode --fail-at-end
+    - name: Publish Test Report
+      if: ${{ always() }}
+      uses: scacap/action-surefire-report@v1
