@@ -22,7 +22,6 @@ public class FirstPass {
         sqLiteDriver.addEntry("Netflix", username, password, -9);
 
 
-
     }
 
 }

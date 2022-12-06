@@ -2,7 +2,7 @@ name: Build and Test Maven Backend
 
 on:
   pull_request:
-    branches: [ "feature/cicd" ]
+    branches: [ "main" ]
     paths: 
     - 'backend/**'
 
