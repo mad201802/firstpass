@@ -20,21 +20,22 @@ on:
   schedule:
     - cron: '34 7 * * 2'
 
+env:
+  BACKEND_PATH: "backend"
+  FRONTEND_PATH: "frontend"
+
 jobs:
-  analyze:
+  analyze-backend:
     name: Analyze
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.BACKEND_PATH }}
+
     permissions:
       actions: read
       contents: read
       security-events: write
-
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [ 'java', 'javascript' ]
-        # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
-        # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
 
     steps:
     - name: Checkout repository
@@ -71,4 +72,4 @@ jobs:
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
       with:
-        category: "/language:${{matrix.language}}"
+        category: "/language:java"
