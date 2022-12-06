@@ -1,8 +1,10 @@
-name: Build Maven Backend
+name: Build and Test Maven Backend
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: [ "feature/cicd" ]
+    paths: 
+    - 'backend/**'
 
 env:
   BACKEND_PATH: "backend"
