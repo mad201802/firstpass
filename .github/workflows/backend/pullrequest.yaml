@@ -3,8 +3,6 @@ name: Build and Test Maven Backend
 on:
   pull_request:
     branches: [ "develop" ]
-    paths: 
-    - 'backend/**'
 
 env:
   BACKEND_PATH: "backend"
