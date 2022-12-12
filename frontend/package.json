@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "electron ./main.js",
+    "build": "webpack --config webpack.config.js",
     "dev": "concurrently \"webpack --config webpack.config.js --watch\" \"electronmon ./main.js\""
   },
   "electronmon": {

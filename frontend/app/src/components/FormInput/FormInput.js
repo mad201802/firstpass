@@ -13,10 +13,11 @@ const FormInput = ({
     value,
     spellCheck,
     readOnly,
-    onInput
+    onInput,
+    className
 }) => {
     return (
-        <div className="formInput">
+        <div className={className ? `formInput ${className}` : "formInput"} >
             {iconLeft}
             <input
                 {...{ placeholder, type, value, spellCheck, readOnly, onInput }}

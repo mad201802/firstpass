@@ -5,7 +5,7 @@ import FirstpassLogo from "../../../assets/svg/logo_full.svg"
 import WavesSvg from "../../../assets/svg/waves.svg"
 import FormInput from "../../components/FormInput/FormInput"
 
-import { KeyRounded, DnsRounded } from "@mui/icons-material"
+import { KeyRounded, DnsRounded, AddRounded} from "@mui/icons-material"
 import Button from "../../components/Button/Button"
 
 import backend from "../../backend"
@@ -41,7 +41,7 @@ const RecentDB = ({ data }) => {
 }
 
 
-const LoginPage = ({ setDb }) => {
+const LoginPage = ({ setDb, setLogin }) => {
     
 
     async function login() {
@@ -74,6 +74,7 @@ const LoginPage = ({ setDb }) => {
                     <FirstpassLogo className="firstpassLogo" />
 
                     <div className="loginFormInputs">
+                        <div className="databaseInput">
                         <DropdownMenu
                             options={recentDBs}
                             placeholder={
@@ -84,6 +85,8 @@ const LoginPage = ({ setDb }) => {
                             icon={<DnsRounded />}
                             component={RecentDB}
                         />
+                         <Button onClick={() => setLogin(false)}>{<AddRounded />}</Button>
+                         </div>
                         <FormInput
                             placeholder="Enter Masterpassword"
                             type="password"
