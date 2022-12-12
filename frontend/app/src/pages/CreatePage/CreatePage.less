@@ -1,6 +1,6 @@
 
 
-.loginPage {
+.createPage {
     width: 100%;
     height: 100%;
     
@@ -9,7 +9,7 @@
     align-items: stretch;
 }
 
-.loginForm-wrapper {
+.createForm-wrapper {
     flex-grow: 1;
 
     display: flex;
@@ -19,7 +19,7 @@
 
 }
 
-.loginForm {
+.createForm {
 
     width: min(90%, 400px);
 
@@ -29,11 +29,31 @@
     justify-content: center;
     gap: 50px;
 
-    & > .formInput {
-        width: 100%;
+  
+& > .buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+
+    &> #back{
+        background-color: var(--bg-light);
+        border: 1px solid var(--divider);
+        transition: border-color 200ms ease;
+        display: grid;
+        place-items: center;
+        &:hover{
+        
+            border-color:var(--primary) ;
+        }
     }
 
-    & > .loginFormInputs {
+    &> #create{
+        width: 50%;
+    }
+}
+
+    & > .createFormInputs {
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -45,18 +65,23 @@
             gap: 10px;
             width: 100%;
 
-        & > .button {
-            background-color: var(--bg-light);
-            border: 1px solid var(--divider);
-            transition: border-color 200ms ease;
-            display: grid;
-            place-items: center;
-            &:hover{
-            
-                border-color:var(--primary) ;
+            & > .dbPathInput {
+                flex-grow: 1;
+                width: 100%;
+            }
+
+            & > .button {
+                background-color: var(--bg-light);
+                border: 1px solid var(--divider);
+                transition: border-color 200ms ease;
+                display: grid;
+                place-items: center;
+                &:hover{
+                
+                    border-color:var(--primary) ;
+                }
             }
         }
-    }
     }
 
     & > .button {
