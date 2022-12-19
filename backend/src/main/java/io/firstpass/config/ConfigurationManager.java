@@ -17,14 +17,40 @@ import java.util.Properties;
 public class ConfigurationManager {
 
     private Properties sysProperties;
-    private String configDirectory;
-    public ConfigurationManager(String configDirectory) {
+    private String configDirectory, configFileName;
+    public ConfigurationManager(String configDirectory, String configFileName) {
         this.configDirectory = configDirectory;
+        this.configFileName = configFileName;
         if(this.initializeConfig()) {
             System.out.println("Config created or available!");
         } else {
             System.out.println("Config not available...");
         }
+    }
+
+    public String getProperty(String key) {
+        try{
+            this.sysProperties.getProperty(key);
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+        return null;
+    }
+
+    public void setProperty(String key, String value) {
+        try {
+            this.sysProperties.setProperty(key, value);
+        } catch(Exception e) {
+            System.out.println("An error occurred while setting property " + key + " to value " + value + " !");
+            System.out.println(e);
+            return;
+        }
+        System.out.println("Set property "+ key + " to value " + value);
+    }
+
+    public boolean propertyExists(String key) {
+        return this.sysProperties.containsKey(key);
     }
 
     public boolean initializeConfig() {
@@ -38,14 +64,14 @@ public class ConfigurationManager {
         if(configDirectory && configFile) {
             sysProperties = new Properties();
             try {
-                sysProperties.load(new FileInputStream("C:/users/Leo/AppData/Local/firstpass/run.properties"));
+                sysProperties.load(new FileInputStream(this.configDirectory + "/" + this.configFileName));
                 boolean hasReqKeys = this.hasRequiredKeys(sysProperties);
                 System.out.println("File has required keys: " + hasReqKeys);
 
                 if(!hasReqKeys) {
                     // TODO: Implement automatic creation of missing keys
                     sysProperties.setProperty("test", "wert");
-                    sysProperties.store(new FileWriter("C:/users/Leo/AppData/Local/firstpass/run.properties"), "Had to set missing keys...");
+                    sysProperties.store(new FileWriter(this.configDirectory + "/" + this.configFileName), "Had to set missing keys...");
                     System.out.println("Had to set missing keys...");
                 }
             } catch (IOException e) {
@@ -61,9 +87,9 @@ public class ConfigurationManager {
     }
 
     public boolean createConfigDirectory() throws FileSystemException {
-        File folderToCheck = new File("C:/users/Leo/AppData/Local/firstpass");
+        File folderToCheck = new File(this.configDirectory);
         if (!folderToCheck.isDirectory()) {
-            boolean createdDir = new File("C:/users/Leo/AppData/Local/firstpass").mkdirs();
+            boolean createdDir = new File(this.configDirectory).mkdirs();
             if (!createdDir) {
                 System.out.println("Couldn't create config directory!");
                 throw new FileSystemException(null);
@@ -73,10 +99,11 @@ public class ConfigurationManager {
     }
 
     public boolean createConfigFile() throws IOException {
-        boolean alreadyExists = this.fileInDirectory("run", "C:/users/Leo/AppData/Local/firstpass");
+        String[] fileNameSplitted = this.configFileName.split("\\.(?=[^\\.]+$)");
+        boolean alreadyExists = this.fileInDirectory(fileNameSplitted[0], this.configDirectory);
         System.out.println("File already exists: " + alreadyExists);
         if (!alreadyExists) {
-            boolean fileCreated = new File("C:/users/Leo/AppData/Local/firstpass/run.properties").createNewFile();
+            boolean fileCreated = new File(this.configDirectory + "/" + this.configFileName).createNewFile();
             System.out.println("Created new file: " + fileCreated);
             if(!fileCreated) {
                 return false;
