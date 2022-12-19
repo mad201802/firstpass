@@ -1,0 +1,87 @@
+
+
+.loginPage {
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.loginForm-wrapper {
+    flex-grow: 1;
+
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+
+
+}
+
+.loginForm {
+
+    width: min(90%, 400px);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+
+    & > .formInput {
+        width: 100%;
+    }
+
+    & > .loginFormInputs {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+
+        & > .databaseInput {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            width: 100%;
+
+        & > .button {
+            background-color: var(--bg-light);
+            border: 1px solid var(--divider);
+            transition: border-color 200ms ease;
+            display: grid;
+            place-items: center;
+            &:hover{
+            
+                border-color:var(--primary) ;
+            }
+        }
+    }
+    }
+
+    & > .button {
+        width: 50%;
+    }
+}
+
+.firstpassLogo {
+    width: 50%;
+}
+
+.recentDB {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    
+    & .name {
+        color: var(--primary);
+    }
+    & .filename {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 0.8rem;
+        opacity: 0.5;
+    }
+}
