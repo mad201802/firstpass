@@ -29,18 +29,21 @@ public class ConfigurationManager {
     }
 
     public String getProperty(String key) {
+        String result = "Nothing there!";
         try{
-            this.sysProperties.getProperty(key);
+             result = this.sysProperties.getProperty(key);
         } catch (Exception e) {
             System.out.println(e);
-            return null;
+            return result;
         }
-        return null;
+        return result;
     }
 
     public void setProperty(String key, String value) {
         try {
-            this.sysProperties.setProperty(key, value);
+            sysProperties.setProperty(key, value);
+            sysProperties.store(new FileWriter(this.configDirectory + "/" + this.configFileName), "Updated config via setProperty()...");
+
         } catch(Exception e) {
             System.out.println("An error occurred while setting property " + key + " to value " + value + " !");
             System.out.println(e);
