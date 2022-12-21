@@ -36,6 +36,24 @@ public class ConfigurationManager {
             System.out.println(e);
             return result;
         }
+        if(result.contains("|")) {
+            System.out.println("<---------------------------------------------->");
+            System.out.println("WARNING! Did you try to get a saved array?");
+            System.out.println("Use getPropertyArray() instead :)");
+            System.out.println("<---------------------------------------------->");
+        }
+        return result;
+    }
+    public String[] getPropertyArray(String key) {
+        String[] result = new String[] {};
+        String data;
+        try{
+            data = this.sysProperties.getProperty(key);
+        } catch (Exception e) {
+            System.out.println(e);
+            return result;
+        }
+        result = data.split("\\|");
         return result;
     }
 
@@ -50,6 +68,20 @@ public class ConfigurationManager {
             return;
         }
         System.out.println("Set property "+ key + " to value " + value);
+    }
+    public void setProperty(String key, String[] values) {
+        final String separator = "|";
+        StringBuilder dataToStore;
+        if(values == null || values.length == 0) {
+            dataToStore = new StringBuilder();
+        } else {
+            dataToStore = new StringBuilder(values[0]);
+            for(int i = 1; i < values.length; ++i) {
+
+                dataToStore.append(separator).append(values[i]);
+            }
+        }
+        setProperty(key, dataToStore.toString());
     }
 
     public boolean propertyExists(String key) {
