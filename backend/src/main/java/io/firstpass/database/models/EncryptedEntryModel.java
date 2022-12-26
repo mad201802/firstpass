@@ -2,10 +2,12 @@ package io.firstpass.database.models;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import io.firstpass.utils.decorators.Generated;
 
 /**
  * This class represents an entry that is encrypted.
  */
+@Generated
 @DatabaseTable(tableName = "entries")
 public class EncryptedEntryModel {
 

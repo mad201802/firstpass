@@ -1,5 +1,8 @@
 package io.firstpass.manager.models;
 
+import io.firstpass.utils.decorators.Generated;
+
+@Generated
 public class EntryModel {
     private int id;
     private String name;
