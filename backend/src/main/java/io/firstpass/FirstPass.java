@@ -4,7 +4,9 @@ import io.firstpass.database.IEncryptedDatabase;
 import io.firstpass.database.drivers.SQLiteDriver;
 import io.firstpass.encryption.hashing.SHA256;
 import io.firstpass.ipc.callbacks.CreateDatabaseCallback;
+import io.firstpass.ipc.callbacks.LoadDatabaseCallback;
 import io.firstpass.ipc.communication.request.CreateDatabaseRequest;
+import io.firstpass.ipc.communication.request.LoadDatabaseRequest;
 import io.firstpass.ipc.communication.response.OpenDatabaseResponse;
 import io.firstpass.ipc.handler.IPCHandler;
 import io.firstpass.ipc.parser.MessageParser;
@@ -20,6 +22,7 @@ public class FirstPass {
 
         MessageParser messageParser = new MessageParser();
         messageParser.addMessageListener("CREATE_DB", CreateDatabaseRequest.class, OpenDatabaseResponse.class, CreateDatabaseCallback::call);
+        messageParser.addMessageListener("OPEN_DB", LoadDatabaseRequest.class, OpenDatabaseResponse.class, LoadDatabaseCallback::call);
 
         while (true) {
             String message = ipcHandler.readLine();
