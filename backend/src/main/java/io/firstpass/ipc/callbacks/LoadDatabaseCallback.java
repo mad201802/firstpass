@@ -14,6 +14,7 @@ import io.firstpass.ipc.exceptions.IPCException;
 import io.firstpass.manager.PasswordManager;
 import io.firstpass.manager.models.EntryModel;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,13 +22,22 @@ import java.util.Collections;
 public class LoadDatabaseCallback {
 
     public static OpenDatabaseResponse call(LoadDatabaseRequest request) throws IPCException {
+        File file = new File(request.filepath);
+        boolean exists = file.exists();
+
+        if (!exists) {
+            throw new IPCException(404, "File not found");
+        }
+
+
         OpenDatabaseResponse response = new OpenDatabaseResponse();
         IEncryptedDatabase database;
         ISymmetricEncryptionAlgorithm algo;
+
         try {
             database = new SQLiteDriver(request.filepath, request.masterpassword);
         } catch (SQLException e) {
-            throw new IPCException(500, "Failed to create database: " + e.getMessage());
+            throw new IPCException(500, "Failed to load database: " + e.getMessage());
         }
 
         try {
