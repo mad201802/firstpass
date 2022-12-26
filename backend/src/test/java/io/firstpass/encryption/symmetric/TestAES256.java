@@ -1,4 +1,4 @@
-package io.firstpass.encryption;
+package io.firstpass.encryption.symmetric;
 
 import io.firstpass.encryption.symmetric.ISymmetricEncryptionAlgorithm;
 import io.firstpass.encryption.symmetric.SymmetricEncryptionFactory;
