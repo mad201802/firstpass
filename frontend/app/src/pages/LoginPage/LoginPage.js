@@ -64,6 +64,18 @@ const LoginPage = ({ setDb, setLogin }) => {
     
     }
 
+    const openFileOption = {
+        component: () => {
+            return (
+                <div className="openFileItem recentDB">
+                    Open File...
+                </div>
+            );
+        },
+        onClick: () => {
+            console.log("File:", backend.selectDBFile());
+        },
+    }
 
     return (
         <div className="loginPage">
@@ -84,6 +96,7 @@ const LoginPage = ({ setDb, setLogin }) => {
                             }
                             icon={<DnsRounded />}
                             component={RecentDB}
+                            customItems={[openFileOption]}
                         />
                          <Button onClick={() => setLogin(false)}>{<AddRounded />}</Button>
                          </div>

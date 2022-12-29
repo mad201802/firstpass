@@ -1,6 +1,6 @@
 const IPC = require("./ipc");
 
-const { ipcMain } = require("electron");
+const { ipcMain, dialog } = require("electron");
 
 const MAX_RESPONSE_TIME = 10000;
 
@@ -30,6 +30,10 @@ function connect() {
             });
         });
     });
+
+    ipcMain.handle("showOpenDialog", (e, opts) => {
+        return dialog.showOpenDialogSync(opts);
+    })
 
 }
 

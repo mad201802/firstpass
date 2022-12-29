@@ -55,6 +55,19 @@ const call = async (data) => {
 }
 
 /**
+ * Show a dialog to open a db file
+ * @returns {Promise<string[]|string>} The selected files
+ */
+function selectDBFile() {
+    return ipcRenderer.invoke("showOpenDialog",{
+        properties: ["openFile"],
+        filters: [
+            { name: "Firstpass Databse", extensions: ["fpdb"] },
+        ],
+    });
+}
+
+/**
  * Control the application's backend
  */
 export default {
@@ -62,5 +75,6 @@ export default {
     maximize,
     close,
     onError,
-    call
+    call,
+    selectDBFile,
 };

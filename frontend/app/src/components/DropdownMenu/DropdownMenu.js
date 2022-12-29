@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { ChevronRightRounded, DnsRounded } from '@mui/icons-material';
 
 import "./DropdownMenu.less";
 
-const DropdownMenu = ({ default: df, onChange, options, placeholder, component: DropdownItem, icon }) => {
+const DropdownMenu = ({ default: df, onChange, options, placeholder, component: DropdownItem, icon, customItems }) => {
 
     const [currentValue, setCurrentValue] = useState(df);
     const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +14,7 @@ const DropdownMenu = ({ default: df, onChange, options, placeholder, component: 
         setCurrentValue(value);
         setIsOpen(false);
     }
+    
 
     return (
             <div className="dropdown" onClick={(e) => setIsOpen(!isOpen) } >
@@ -32,6 +33,11 @@ const DropdownMenu = ({ default: df, onChange, options, placeholder, component: 
                     {Object.entries(options).map(([v, n]) => (
                         <div className="dropdownOption" key={v} onClick={() => selectOption(v)}>
                             <DropdownItem data={n} />
+                        </div>
+                    ))}
+                    {customItems.map((item, i) => (
+                        <div className="dropdownOption" key={i} onClick={() => item.onClick()}>
+                            {<item.component />}
                         </div>
                     ))}
                 </div>
