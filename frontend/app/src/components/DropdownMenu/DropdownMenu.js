@@ -4,9 +4,9 @@ import { ChevronRightRounded, DnsRounded } from '@mui/icons-material';
 
 import "./DropdownMenu.less";
 
-const DropdownMenu = ({ default: df, onChange, options, placeholder, component: DropdownItem, icon, customItems }) => {
+const DropdownMenu = ({ value: currentValue, onChange: setCurrentValue, onChange, options, placeholder, component: DropdownItem, icon, customItems }) => {
 
-    const [currentValue, setCurrentValue] = useState(df);
+    // const [currentValue, setCurrentValue] = useState(df);
     const [isOpen, setIsOpen] = useState(false);
 
     const selectOption = (value) => {

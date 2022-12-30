@@ -18,26 +18,36 @@ const CreatePage = ({ setDb, setLogin }) => {
     
 
     async function create() {
-        const masterpassword = document.querySelector(".formInput input").value;
+        const masterpassword = document.querySelector(".masterpasswordA input").value.trim();
+        const masterpassword2 = document.querySelector(".masterpasswordB input").value.trim();
+        const filepath = document.querySelector(".dbPathInput input").value.trim();
+
+        // TODO: Show error message
+        if (masterpassword !== masterpassword2) {
+            console.log("Passwords don't match");
+            return;
+        }
     
         try {
-            const db = await backend.call({
-                type: "OPEN_DB",
-                masterpassword,
-                filename: "C:\\Users\\test\\Documents\\test.fp",
+            const { data: db } = await backend.call({
+                type: "CREATE_DB",
+                data: {
+                    masterpassword,
+                    filepath,
+                }
             });
-            setDB(db);
+            setDb(db);
     
         } catch (e) {
-            console.log(e);
-            setDb({
-                categories: ["test", "1234", "wow"],
-            });
+            // TODO: Show error message
         }
     
     }
 
-    
+    async function selectFilePath() {
+        const filepath = await backend.selectDBFile("save");
+        if (filepath) document.querySelector(".dbPathInput input").value = filepath;
+    }
 
 
     return (
@@ -46,7 +56,10 @@ const CreatePage = ({ setDb, setLogin }) => {
 
             <div className="createForm-wrapper">
                 <div className="createForm">
-                    <FirstpassLogo className="firstpassLogo" />
+                    <div className="createPageTitle">
+                        <FirstpassLogo className="firstpassLogo" />
+                        <p>Create a new Database</p>
+                    </div>
 
                     <div className="createFormInputs">
                         <div className="databaseInput">
@@ -56,14 +69,16 @@ const CreatePage = ({ setDb, setLogin }) => {
                                 className="dbPathInput"
                                 iconLeft={<InsertDriveFileRounded />}
                             />
-                            <Button>{<MoreHorizRounded />}</Button>
+                            <Button onClick={selectFilePath} >{<MoreHorizRounded />}</Button>
                         </div>
                         <FormInput
+                            className="masterpasswordA"
                             placeholder="Enter Masterpassword"
                             type="password"
                             iconLeft={<KeyRounded />}
                         />
                         <FormInput
+                            className="masterpasswordB"
                             placeholder="Enter Masterpassword again"
                             type="password"
                             iconLeft={<KeyRounded />}

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import "./LoginPage.less"
 
 import FirstpassLogo from "../../../assets/svg/logo_full.svg"
@@ -13,21 +13,21 @@ import DropdownMenu from "../../components/DropdownMenu/DropdownMenu"
 import TitleBar from "../../components/TitleBar/TitleBar"
 
 
-const recentDBs = [
+const recentDBs_ = [
     {
         name: "Firstpass Default Database",
         date: "2021-10-10",
-        filename: "C:\\Users\\test\\Documents\\test.fp",
+        filepath: "C:\\Users\\Avaze\\Documents\\test.fpdb",
     },
     {
         name: "Online Banking",
         date: "2021-10-10",
-        filename: "C:\\Users\\test\\Documents\\ein\\wirklich\\sehr\\langer\\pfad\\test2.fp",
+        filepath: "C:\\Users\\test\\Documents\\ein\\wirklich\\sehr\\langer\\pfad\\test2.fp",
     },
     {
         name: "Arbeit",
         date: "2021-10-10",
-        filename: "C:\\Users\\test\\Documents\\test3.fp",
+        filepath: "C:\\Users\\test\\Documents\\test3.fp",
     },
 ]
 
@@ -35,31 +35,50 @@ const RecentDB = ({ data }) => {
     return (
         <div className="recentDB">
             <div className="name">{data.name}</div>
-            <div className="filename">{data.filename}</div>
+            <div className="filename">{data.filepath}</div>
         </div>
     );
 }
 
 
 const LoginPage = ({ setDb, setLogin }) => {
+
+    const [database, setDatabase] = React.useState();
+    const [recentDBs, setRecentDBs] = React.useState([]);
+
+    useEffect(() => {
+        // TODO: Load recent DBs from backend
+        // backend.call({
+        //     type: "LIST_DBS",
+        // }).then((dbs) => {
+        //     console.log(dbs);
+        //     setRecentDBs(dbs);
+        // });
+        setRecentDBs(recentDBs_);
+    }, []);
     
 
     async function login() {
         const masterpassword = document.querySelector(".formInput input").value;
+        const filepath = recentDBs[database].filepath;
     
         try {
-            const db = await backend.call({
+            const { data: db } = await backend.call({
                 type: "OPEN_DB",
-                masterpassword,
-                filename: "C:\\Users\\test\\Documents\\test.fp",
+                data: {
+                    masterpassword,
+                    filepath,
+                }
             });
-            setDB(db);
+            console.log(db);
+            setDb(db);
     
         } catch (e) {
+            // TODO Error Handling
             console.log(e);
-            setDb({
-                categories: ["test", "1234", "wow"],
-            });
+            // setDb({
+            //     categories: ["test", "1234", "wow"],
+            // });
         }
     
     }
@@ -73,6 +92,7 @@ const LoginPage = ({ setDb, setLogin }) => {
             );
         },
         onClick: () => {
+            // TODO create a new entry in recent dbs from filepath
             console.log("File:", backend.selectDBFile());
         },
     }
@@ -89,6 +109,8 @@ const LoginPage = ({ setDb, setLogin }) => {
                         <div className="databaseInput">
                         <DropdownMenu
                             options={recentDBs}
+                            value={database}
+                            onChange={setDatabase}
                             placeholder={
                                 <span style={{ paddingLeft: "10px" }}>
                                     Select a database...

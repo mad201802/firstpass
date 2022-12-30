@@ -49,22 +49,34 @@ const onError = (callback) => errorHandler = callback;
  * @returns {Promise<IPCErrorResponse|Object>} The response from the backend
  */
 const call = async (data) => {
-    const res = await ipcRenderer.invoke("call", data);
+    const res = JSON.parse(await ipcRenderer.invoke("call", data));
     if (res.error) throw res.error;
     return res;
 }
 
 /**
- * Show a dialog to open a db file
- * @returns {Promise<string[]|string>} The selected files
+ * Show a dialog to open/save a db file
+ * @returns {Promise<string[]|string|undefined>} The selected files
  */
-function selectDBFile() {
-    return ipcRenderer.invoke("showOpenDialog",{
-        properties: ["openFile"],
-        filters: [
-            { name: "Firstpass Databse", extensions: ["fpdb"] },
-        ],
-    });
+function selectDBFile(type = "open") {
+    switch(type) {
+        case "open":
+            return ipcRenderer.invoke("showOpenDialog", {
+                title: "Select a Firstpass Database",
+                properties: ["openFile"],
+                filters: [
+                    { name: "Firstpass Database", extensions: ["fpdb"] },
+                ],
+            });
+
+        case "save":
+            return ipcRenderer.invoke("showSaveDialog", {
+                title: "Select Database Location",
+                filters: [
+                    { name: "Firstpass Database", extensions: ["fpdb"] },
+                ],
+            });
+    }
 }
 
 /**

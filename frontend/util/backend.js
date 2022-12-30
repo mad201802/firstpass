@@ -11,7 +11,7 @@ let onError = () => {};
 
 
 function connect() {
-    ipc = new IPC("jaerva", ["-jar", "../backend/target/backend-1.0.jar"]);
+    ipc = new IPC("java", ["-jar", "../backend/target/backend-1.0-SNAPSHOT.jar"]);
 
     ipc._onExit = () => {
         onError({ code: 10, message: "The process exited unexpectedly", id: "ERR_EXIT" });
@@ -26,13 +26,16 @@ function connect() {
             call(data).then(res => {
                 resolve(res);
             }).catch(e => {
-                resolve({ error: e, a:1 });
+                resolve({ error: e });
             });
         });
     });
 
     ipcMain.handle("showOpenDialog", (e, opts) => {
         return dialog.showOpenDialogSync(opts);
+    })
+    ipcMain.handle("showSaveDialog", (e, opts) => {
+        return dialog.showSaveDialogSync(opts);
     })
 
 }

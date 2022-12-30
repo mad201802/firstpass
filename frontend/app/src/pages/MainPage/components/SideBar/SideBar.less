@@ -1,5 +1,158 @@
-#sidebar {
+.sidebar {
     width: clamp(200px, 30%, 500px);
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 
     background: var(--bg-light);
+
+    & .sidebarHeader {
+        height: 60px;
+        border-bottom: 2px solid var(--bg);
+
+        display: flex;
+        align-items: center;
+        padding: 0 15px;
+        user-select: none;
+
+        z-index: 10;
+        box-shadow: 0 0 10px 5px var(--bg-light);
+
+        & #headerLogo {
+            height: 35%;
+        }
+
+        & svg {
+            fill: var(--primary);
+        }
+
+        & p {
+            color: var(--primary);
+            font-size: 1rem;
+            padding-left: 10px;
+            margin-right: auto;
+        }
+    }
+
+    & .categories {
+        padding: 10px 0;
+
+        direction: rtl;
+        & > * {
+            direction: ltr;
+        }
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: var(--bg-lighter);
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-light);
+        }
+
+
+        & .category {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+
+            padding: 10px 15px;
+            border-left: 0px solid var(--primary);
+
+            cursor: pointer;
+            user-select: none;
+
+            transition: background-color 0.1s ease-in-out;
+
+            
+
+            &::before {
+                content: "";
+                height: 100%;
+                width: 0px;
+                background-color: var(--primary);
+                transition: width 0.1s ease-in-out;
+                left: 0px;
+                position: absolute;
+            }
+            
+            
+            &.active {
+                background-color: var(--bg);
+                
+                &::before {
+                    width: 5px;
+                }
+            }
+
+            
+            &:hover {
+                background-color: var(--bg-lighter);
+                
+                & p {
+                    color: var(--primary);
+                }
+            }
+
+            &:active {
+                background-color: var(--bg-light);
+            }
+
+            & svg {
+                fill: var(--primary);
+                width: 20px;
+            }
+        }
+    }
+
+    & .currentDBInfo {
+        z-index: 10;
+        box-shadow: 0 0 15px 10px var(--bg-light);
+
+        margin-top: auto;
+        min-height: 50px;
+        padding-left: 15px;
+        background-color: var(--primary);
+        
+        & p {
+            color: var(--bg);
+            font-weight: 600;
+            margin-left: 10px;
+            flex: 1;
+        }
+        & svg {
+            fill: var(--bg);
+        }
+
+        & .logoutButton {
+            height: calc(100% - 16px);
+            aspect-ratio: 1;
+            margin: 8px;
+            border-radius: 5px;
+
+            display: grid;
+            place-items: center;
+            transition: filter 0.2s ease-in-out;
+            background-color: var(--primary);
+
+            &:hover {
+                filter: brightness(0.8);
+            }
+        }
+
+        display: flex;
+        align-items: center;
+    }
 }

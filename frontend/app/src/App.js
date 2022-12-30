@@ -11,7 +11,7 @@ window.backend = backend;
 
 
 const App = () => {
-    const [db, setDb] = useState(null);
+    const [db, setDb] = useState();
     const [login, setLogin] = useState(true);
 
     useEffect(() => {
@@ -23,7 +23,7 @@ const App = () => {
         }
     }, [])
     
-    if (db) return <MainPage db={db} />;
+    if (db) return <MainPage db={db} setDb={setDb} />;
     return login ? <LoginPage setDb={setDb} setLogin={setLogin} /> : <CreatePage setDb={setDb} setLogin={setLogin} />;
 };
 
