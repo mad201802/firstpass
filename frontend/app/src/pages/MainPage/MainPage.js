@@ -1,31 +1,28 @@
-import React from "react"
-import "./MainPage.less"
+import React, { useState, useContext } from "react";
+import "./MainPage.less";
 
-import SideBar from "./components/SideBar/SideBar"
-import TitleBar from "../../components/TitleBar/TitleBar"
-import PasswordListView from "./components/PasswordListView/PasswordListView"
+import SideBar from "./components/SideBar/SideBar";
+import { TitleBar } from "components";
+import PasswordListView from "./components/PasswordListView/PasswordListView";
 
-const MainPage = ({ db, setDb }) => {
+import AppContext from "contexts/App.context";
 
-  const [currentCategory, setCurrentCategory] = React.useState(0);
+const MainPage = () => {
+    const [currentCategory, setCurrentCategory] = useState(0);
 
-  return (
-    <div className="mainPage">
-      <SideBar
-        db={db} setDb={setDb}
-        currentCategory={currentCategory}
-        setCurrentCategory={setCurrentCategory}
-      />
+    return (
+        <div className="mainPage">
+            <SideBar
+                currentCategory={currentCategory}
+                setCurrentCategory={setCurrentCategory}
+            />
 
-      <div className="mainPageContent">
-        <TitleBar />
-        <PasswordListView db={db} currentCategory={currentCategory} />
-      </div>
+            <div className="mainPageContent">
+                <TitleBar />
+                <PasswordListView currentCategory={currentCategory} />
+            </div>
+        </div>
+    );
+};
 
-
-
-    </div>
-  )
-}
-
-export default MainPage
+export default MainPage;

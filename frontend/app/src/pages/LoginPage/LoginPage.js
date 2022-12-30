@@ -1,16 +1,14 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useContext, useState } from "react"
 import "./LoginPage.less"
 
-import FirstpassLogo from "../../../assets/svg/logo_full.svg"
-import WavesSvg from "../../../assets/svg/waves.svg"
-import FormInput from "../../components/FormInput/FormInput"
+import FirstpassLogo from "assets/svg/logo_full.svg"
+import WavesSvg from "assets/svg/waves.svg"
 
-import { KeyRounded, DnsRounded, AddRounded} from "@mui/icons-material"
-import Button from "../../components/Button/Button"
+import { Button, DropdownMenu, TitleBar, FormInput } from "components";
+import AppContext from "contexts/App.context"
+import backend from "backend"
 
-import backend from "../../backend"
-import DropdownMenu from "../../components/DropdownMenu/DropdownMenu"
-import TitleBar from "../../components/TitleBar/TitleBar"
+import { KeyRounded, DnsRounded, AddRounded } from "@mui/icons-material";
 
 
 const recentDBs_ = [
@@ -41,10 +39,12 @@ const RecentDB = ({ data }) => {
 }
 
 
-const LoginPage = ({ setDb, setLogin }) => {
+const LoginPage = () => {
 
-    const [database, setDatabase] = React.useState();
-    const [recentDBs, setRecentDBs] = React.useState([]);
+    const { setDb, setLogin } = useContext(AppContext);
+
+    const [database, setDatabase] = useState();
+    const [recentDBs, setRecentDBs] = useState([]);
 
     useEffect(() => {
         // TODO: Load recent DBs from backend

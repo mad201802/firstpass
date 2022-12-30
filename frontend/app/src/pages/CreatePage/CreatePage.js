@@ -1,23 +1,29 @@
-import React from "react"
+import React, { useContext } from "react"
 import "./CreatePage.less"
 
-import FirstpassLogo from "../../../assets/svg/logo_full.svg"
-import WavesSvg from "../../../assets/svg/waves.svg"
-import FormInput from "../../components/FormInput/FormInput"
+import FirstpassLogo from "assets/svg/logo_full.svg"
+import WavesSvg from "assets/svg/waves.svg"
 
-import { KeyRounded, MoreHorizRounded, InsertDriveFileRounded,ArrowBackIosRounded } from "@mui/icons-material"
-import Button from "../../components/Button/Button"
+import { FormInput, TitleBar, Button } from "components"
+
+import AppContext from "contexts/App.context"
+
+import {
+    KeyRounded,
+    MoreHorizRounded,
+    InsertDriveFileRounded,
+    ArrowBackIosRounded
+} from "@mui/icons-material";
+
+import backend from "backend"
 
 
-import backend from "../../backend"
-import TitleBar from "../../components/TitleBar/TitleBar"
-
-
-
-const CreatePage = ({ setDb, setLogin }) => {
+const CreatePage = () => {
     
+    const { setDb, setLogin } = useContext(AppContext);
 
     async function create() {
+        // TODO refactor this so input states are stored with useState in this component
         const masterpassword = document.querySelector(".masterpasswordA input").value.trim();
         const masterpassword2 = document.querySelector(".masterpasswordB input").value.trim();
         const filepath = document.querySelector(".dbPathInput input").value.trim();

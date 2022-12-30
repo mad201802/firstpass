@@ -1,37 +1,51 @@
-import React from 'react'
-import "./SideBar.less"
+import React, { useContext } from "react";
+import "./SideBar.less";
 
-import FirstpassLogo from "../../../../../assets/svg/logo_small.svg"
-import { DnsRounded, LogoutRounded, SearchRounded, ShoppingBagRounded } from '@mui/icons-material'
+import FirstpassLogo from "assets/svg/logo_small.svg";
+import AppContext from "contexts/App.context";
 
-const SideBar = ({ db, setDb, currentCategory, setCurrentCategory }) => {
-  return (
-    <div className="sidebar">
+import {
+    DnsRounded,
+    LogoutRounded,
+    SearchRounded,
+    ShoppingBagRounded
+} from "@mui/icons-material";
 
-        <div className="sidebarHeader">
-          <FirstpassLogo id="headerLogo" />
-          <p>Firstpass</p>
-          <SearchRounded style={{ transform: "scaleX(-1)" }} />
-        </div>
+const SideBar = ({ currentCategory, setCurrentCategory }) => {
+    const { db, setDb } = useContext(AppContext);
 
-        <div className="categories">
-          {db.categories?.map((category, i) => (
-            <div key={i} className={`category ${currentCategory === i ? "active" : ""}`} onClick={() => setCurrentCategory(i)}>
-              <ShoppingBagRounded />
-              <p>{category.category}</p>
+    return (
+        <div className="sidebar">
+            <div className="sidebarHeader">
+                <FirstpassLogo id="headerLogo" />
+                <p>Firstpass</p>
+                <SearchRounded style={{ transform: "scaleX(-1)" }} />
             </div>
-          ))}
-        </div>
 
-        <div className="currentDBInfo">
-          <DnsRounded />
-          <p>DB Name</p>
-          <div className="logoutButton" onClick={() => setDb()}>
-            <LogoutRounded />
-          </div>
-        </div>
-    </div>
-  )
-}
+            <div className="categories">
+                {db.categories?.map((category, i) => (
+                    <div
+                        key={i}
+                        className={`category ${
+                            currentCategory === i ? "active" : ""
+                        }`}
+                        onClick={() => setCurrentCategory(i)}
+                    >
+                        <ShoppingBagRounded />
+                        <p>{category.category}</p>
+                    </div>
+                ))}
+            </div>
 
-export default SideBar
+            <div className="currentDBInfo">
+                <DnsRounded />
+                <p>DB Name</p>
+                <div className="logoutButton" onClick={() => setDb()}>
+                    <LogoutRounded />
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default SideBar;
