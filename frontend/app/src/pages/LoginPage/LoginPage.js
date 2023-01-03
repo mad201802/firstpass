@@ -4,7 +4,7 @@ import "./LoginPage.less"
 import FirstpassLogo from "assets/svg/logo_full.svg"
 import WavesSvg from "assets/svg/waves.svg"
 
-import { Button, DropdownMenu, TitleBar, FormInput } from "components";
+import { Button, DropdownMenu, TitleBar, FormInput, ErrorMessage } from "components";
 import AppContext from "contexts/App.context"
 import backend from "backend"
 
@@ -46,6 +46,9 @@ const LoginPage = () => {
     const [database, setDatabase] = useState();
     const [recentDBs, setRecentDBs] = useState([]);
 
+    const [masterpassword, setMasterpassword] = useState("");
+    const [error, setError] = useState(null);
+
     useEffect(() => {
         // TODO: Load recent DBs from backend
         // backend.call({
@@ -59,7 +62,6 @@ const LoginPage = () => {
     
 
     async function login() {
-        const masterpassword = document.querySelector(".formInput input").value;
         const filepath = recentDBs[database].filepath;
     
         try {
@@ -76,12 +78,26 @@ const LoginPage = () => {
         } catch (e) {
             // TODO Error Handling
             console.log(e);
+            setError(e);
             // setDb({
             //     categories: ["test", "1234", "wow"],
             // });
         }
     
     }
+
+    useEffect(() => {
+        const handler = e => {
+            if (e.key === "Enter") {
+                login();
+            }
+        }
+        document.addEventListener("keydown", handler);
+
+        return () => {
+            document.removeEventListener("keydown", handler);
+        }
+    })
 
     const openFileOption = {
         component: () => {
@@ -106,11 +122,15 @@ const LoginPage = () => {
                     <FirstpassLogo className="firstpassLogo" />
 
                     <div className="loginFormInputs">
+                        {error && <ErrorMessage error={error} />}
                         <div className="databaseInput">
                         <DropdownMenu
                             options={recentDBs}
                             value={database}
-                            onChange={setDatabase}
+                            onChange={db => {
+                                setDatabase(db);
+                                document.querySelector(".masterpasswordInput input").focus();
+                            }}
                             placeholder={
                                 <span style={{ paddingLeft: "10px" }}>
                                     Select a database...
@@ -126,13 +146,19 @@ const LoginPage = () => {
                             placeholder="Enter Masterpassword"
                             type="password"
                             iconLeft={<KeyRounded />}
+                            autoFocus={true}
+                            className="masterpasswordInput"
+                            value={masterpassword}
+                            onInput={e => {
+                                setMasterpassword(e.target.value.trim());
+                            }}
                         />
                     </div>
 
-                    <Button onClick={login}>Login</Button>
+                    <Button id="loginButton" onClick={login}>Login</Button>
                 </div>
             </div>
-            <WavesSvg />
+            <WavesSvg className="wavesSvg" />
         </div>
     );
 };

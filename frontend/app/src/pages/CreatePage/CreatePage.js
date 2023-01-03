@@ -74,6 +74,7 @@ const CreatePage = () => {
                                 type="text"
                                 className="dbPathInput"
                                 iconLeft={<InsertDriveFileRounded />}
+                                autoFocus={true}
                             />
                             <Button onClick={selectFilePath} >{<MoreHorizRounded />}</Button>
                         </div>
@@ -96,7 +97,7 @@ const CreatePage = () => {
                     </div>
                 </div>
             </div>
-            <WavesSvg />
+            <WavesSvg className="wavesSvg" />
         </div>
     );
 };

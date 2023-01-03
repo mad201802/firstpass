@@ -7,18 +7,24 @@ const FormInput = ({
     iconLeft,
     iconRight,
     placeholder,
-    type,
+    type = "text",
     value,
-    spellCheck,
-    readOnly,
+    spellCheck = false,
+    readOnly = false,
     onInput,
-    className
+    autoFocus = false,
+    className,
+    error = false
 }) => {
+    let classes = "formInput";
+    if (error) classes += " error";
+    if (className) classes += ` ${className}`;
+
     return (
-        <div className={className ? `formInput ${className}` : "formInput"}>
+        <div className={classes}>
             {iconLeft}
             <input
-                {...{ placeholder, type, value, spellCheck, readOnly, onInput }}
+                {...{ placeholder, type, value, spellCheck, readOnly, onInput, autoFocus }}
             />
             {iconRight}
         </div>
