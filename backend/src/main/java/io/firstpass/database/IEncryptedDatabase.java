@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface IEncryptedDatabase {
     // Entries
-    int addEntry(String name, CipherData username, CipherData password, int category_id);
+    int addEntry(String name, CipherData username, CipherData password, int categoryID, String url, String notes);
     EncryptedEntryModel getEntry(int id);
     EncryptedEntryModel getEntry(String name);
     EncryptedEntryModel[] getEntries();
