@@ -15,6 +15,7 @@ import io.firstpass.encryption.hashing.SHA256;
 import io.firstpass.encryption.symmetric.models.CipherData;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -100,7 +101,7 @@ public class SQLiteDriver implements IEncryptedDatabase {
      * @return The ID of the entry.
      */
     @Override
-    public int addEntry(String name, CipherData username, CipherData password, int categoryID) {
+    public int addEntry(String name, CipherData username, CipherData password, int categoryID, String url, String notes) {
         try {
             CategoryModel category = categoryDAO.queryForId(categoryID);
 
@@ -123,6 +124,10 @@ public class SQLiteDriver implements IEncryptedDatabase {
             encryptedEntryModel.setUsername(usernameModel);
             encryptedEntryModel.setPassword(passwordModel);
             encryptedEntryModel.setCategory(category);
+            encryptedEntryModel.setUrl(url);
+            encryptedEntryModel.setNotes(notes);
+            encryptedEntryModel.setCreatedAt(new Date());
+
             if (entryDAO.create(encryptedEntryModel) == 1) {
                 return encryptedEntryModel.getId();
             }
