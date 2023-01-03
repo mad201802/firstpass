@@ -1,9 +1,10 @@
 import React from "react"
 import "./Button.less"
 
-const Button = ({ children, ...props }) => {
+const Button = ({ children, className, ...props }) => {
+    const classes = `button ${className || ""}`;
     return (
-        <button className="button" {...props}>{children}</button>
+        <button className={classes} {...props}>{children}</button>
     );
 };
 
