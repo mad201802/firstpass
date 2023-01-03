@@ -1,18 +1,37 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./PasswordListView.less";
 import AppContext from "contexts/App.context";
 import { FormInput } from "components";
 
+import { SearchRounded } from "@mui/icons-material";
+
 const PasswordListView = ({ currentCategory }) => {
     const { db } = useContext(AppContext);
     const category = db.categories[currentCategory];
-    const entries = db.entries.filter((entry) => entry.category === category.id)
+
+
+    const [entries, setEntries] = useState(null);
+    const [searchTerm, setSearchTerm] = useState("");
+
+    useEffect(() => {
+        setEntries(db.entries.filter(
+            (entry) => entry.category === category.id
+        ));
+    }, [db.entries, category.id]);
 
     return (
         <div className="passwordListView">
             <div className="toolbar">
-                <p>{category.category}: {entries.length} Entries</p>
-                <FormInput placeholder="Search" />
+                <span>
+                    {category.category} - {entries?.length || "0"} Entries
+                </span>
+                <FormInput
+                    className="searchInput"
+                    placeholder="Search"
+                    iconLeft={<SearchRounded />}
+                    value={searchTerm}
+                    onInput={(e) => setSearchTerm(e.target.value)}
+                />
             </div>
         </div>
     );
