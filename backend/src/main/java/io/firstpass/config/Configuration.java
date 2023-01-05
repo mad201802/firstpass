@@ -28,15 +28,18 @@ public class Configuration<T> {
 
     public void saveConfig(){
         try {
-            FileWriter fileWriter = new FileWriter(filepath);
+            FileWriter fileWriter = new FileWriter(filepath + "/" + this.config.getClass().getSimpleName() + ".json");
             gson.toJson(config, fileWriter);
             fileWriter.close();
+            System.out.println("Saved config.");
         } catch (Exception e) {
+            System.err.println("Something went wrong while saving the config!");
             System.err.println(e);
         }
 
     }
 
+    // TODO: Doesn't work because "config" is a LinkedTreeMap and not T
     public T getConfig() {
         return config;
     }
@@ -44,11 +47,13 @@ public class Configuration<T> {
     public void initConfig() {
         if(configExists()) {
             try {
-                FileReader fileReader = new FileReader(filepath);
+                FileReader fileReader = new FileReader(filepath + "/" + this.config.getClass().getSimpleName() + ".json");
                 Type type = new TypeToken<T>(){}.getType();
                 config = gson.fromJson(fileReader, type);
                 fileReader.close();
+                System.out.println("Initialized config.");
             } catch (Exception e) {
+                System.err.println("Something went wrong while initializing the config!");
                 System.err.println(e);
             }
 
@@ -84,7 +89,7 @@ public class Configuration<T> {
         }
 
         // Check if the config file exists.
-        Path path = Paths.get(filepath);
+        Path path = Paths.get(filepath + "/" + this.config.getClass().getSimpleName() + ".json");
         return Files.exists(path);
     }
 
