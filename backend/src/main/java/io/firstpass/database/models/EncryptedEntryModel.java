@@ -4,6 +4,8 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import io.firstpass.utils.decorators.Generated;
 
+import java.util.Date;
+
 /**
  * This class represents an entry that is encrypted.
  */
@@ -30,7 +32,7 @@ public class EncryptedEntryModel {
     private CategoryModel category;
 
     @DatabaseField()
-    private String createdAt;
+    private Date createdAt;
 
     @DatabaseField()
     private String expiresAt;
@@ -75,5 +77,37 @@ public class EncryptedEntryModel {
 
     public void setCategory(CategoryModel category) {
         this.category = category;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getExpiresAt() {
+        return expiresAt;
+    }
+
+    public void setExpiresAt(String expiresAt) {
+        this.expiresAt = expiresAt;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
