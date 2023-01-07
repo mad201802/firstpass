@@ -62,8 +62,7 @@ public class Configuration<T> {
         if(configExists()) {
             try {
                 FileReader fileReader = new FileReader(filepath + "/" + filename + ".json");
-                Type type = new TypeToken<T>(){}.getType();
-                System.out.println("Type: " + type);
+                Type type = TypeToken.getParameterized(config.getClass()).getType();
                 config = gson.fromJson(fileReader, type);
                 fileReader.close();
                 System.out.println("Initialized config.");
