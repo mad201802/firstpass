@@ -32,9 +32,10 @@ public class TestConfiguration {
         configuration2.initConfig();
         System.out.println("Currently initialized config 2: " +  configuration2.getConfig());
 
+        Assertions.assertEquals(configuration.getConfig().loadedDBs.size(), configuration2.getConfig().loadedDBs.size());
+        Assertions.assertEquals(configuration.getConfig().loadedDBs.get(0).name, configuration2.getConfig().loadedDBs.get(0).name);
+        Assertions.assertEquals(configuration.getConfig().loadedDBs.get(0).filepath, configuration2.getConfig().loadedDBs.get(0).filepath);
 
-        Assertions.assertEquals(configuration.getConfig().hashCode(), configuration2.getConfig().hashCode());
         configuration.deleteConfigFile();
-
     }
 }
