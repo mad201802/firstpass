@@ -7,12 +7,14 @@ import io.firstpass.encryption.symmetric.SymmetricEncryptionFactory;
 import io.firstpass.logic.StrengthAnalyzer;
 import io.firstpass.manager.PasswordManager;
 import io.firstpass.manager.models.EntryModel;
+import io.firstpass.utils.decorators.Generated;
 
 import java.io.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+@Generated
 public class CLI {
 
     public static final String MASTER_PASSWORD = "password";
@@ -100,7 +102,7 @@ public class CLI {
         String name = getUserInput("Name: ");
         String username = getUserInput("Username/E-Mail: ");
         String password = getUserInput("Password: ");
-        if (passwordManager.addEntry(name, username, password, 0) != -1) {
+        if (passwordManager.addEntry(name, username, password, 0, null, null) != -1) {
             line("Password added successfully.");
         } else {
             line("Failed to add password.");

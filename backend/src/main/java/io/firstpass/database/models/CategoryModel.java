@@ -2,10 +2,12 @@ package io.firstpass.database.models;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import io.firstpass.utils.decorators.Generated;
 
 /**
  * This class is used to represent a category in the io.firstpass.database.
  */
+@Generated
 @DatabaseTable(tableName = "categories")
 public class CategoryModel {
     @DatabaseField(id = true)

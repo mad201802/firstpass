@@ -1,3 +1,5 @@
+@import url("./theme.less");
+
 @font-face {
     font-family: "Montserrat";
     src: url("../fonts/Montserrat.ttf") format("truetype");
@@ -11,15 +13,8 @@
 
 
 :root {
-    --bg: hsl(240, 14%, 10%);
-    --bg-light: hsl(240, 14%, 12%);
-    --acc: #365dc9;
-    --acc-: 54, 93, 201;
-    --acc-light: #4a7df0;
-    --acc-dark: #21356d;
-    --text: #eee;
-    --text-dark: #ccc;
-
+    // adds all themes color to root element
+    .theme;
 }
 
 // Default styling
@@ -33,7 +28,13 @@
     outline: none;
 
     box-sizing: border-box;
-    font-family: "Montserrat", sans-serif;
+    font-family: "Work Sans", sans-serif;
+
+    color: var(--text);
+}
+
+code {
+    font-family: "Courier New", Courier, monospace;
 }
 
 
@@ -41,6 +42,7 @@
 body {
     width: 100vw;
     height: 100vh;
+    font-size: 14px;
 }
 
 #root {
@@ -48,12 +50,8 @@ body {
     width: 100%;
     height: 100%;
 
-    border-radius: 15px;
     overflow: hidden;
-}
 
-#app-content-wrapper {
-    width: 100%;
-    height: 100%;
     display: flex;
+    flex-direction: column;
 }

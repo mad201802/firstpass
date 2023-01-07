@@ -1,62 +1,46 @@
-#drag-area {
-    -webkit-app-region: drag;
-
-    flex-grow: 1;
-
+.titleBar{
+    height: 35px;
+    background-color: var(--bg);
+    color: var(--text);
     display: flex;
-    align-items: center;
-    padding: 20px;
+    justify-content: right;
 
-    font-weight: 600;
-    color: var(--acc);
-}
+    .dragqueen{
+        -webkit-app-region: drag;
+        flex-grow: 1;
+    }
 
-.title-bar {
-    width: 100%;
-    height: 60px;
-
-    display: flex;
-    align-items: stretch;
-    justify-content: flex-end;
-
-    #window-btns {
+    #windowControls{
         display: flex;
         align-items: stretch;
-
-        opacity: 0.2;
-        transition: opacity 200ms ease;
-
-        padding: 10px;
-
-        &:hover {
-            opacity: 1;
+    
+        #minimize{
+            width: 19px;
+        }
+        #maximize{
+            width: 16px;
         }
 
-        & #window-close-btn {
-            --highlight-clr: 255, 95, 86;
+        #close{
+            width: 20px;
         }
 
-        & > button {
-
-            --highlight-clr: var(--acc-);
-
-            width: 40px;
-
-            display: grid;
-            place-items: center;
-
-            background: none;
-            transition: background-color 100ms ease;
-
-            & > svg {
-                fill: var(--text);
-                width: 20px;
+        #minimizebox,#maximizebox{
+           &:hover{
+                background-color: var(--bg-lighter);
             }
-            
-            &:hover > svg {
-                fill: rgb(var(--highlight-clr));
-                filter: drop-shadow(0 0 6px rgba(var(--highlight-clr), 0.5)) drop-shadow(0 0 2px rgba(var(--highlight-clr), 0.5));
+        }
+
+        #closebox{
+            &:hover{
+                background-color: var(--error);
             }
+        }
+
+        & > div{
+          width: 40px;
+          display: grid;
+          place-items: center;
         }
     }
 }
