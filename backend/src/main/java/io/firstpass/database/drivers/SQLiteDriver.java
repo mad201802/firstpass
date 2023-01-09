@@ -23,6 +23,7 @@ import java.util.List;
  */
 public class SQLiteDriver implements IEncryptedDatabase {
     private static final String DATABASE_VERSION = "0.1.0";
+    private ConnectionSource connectionSource;
     Dao<CategoryModel, Integer> categoryDAO;
     Dao<EncryptedEntryModel, Integer> entryDAO;
     Dao<EncryptedModel, Integer> encryptedDAO;
@@ -35,7 +36,7 @@ public class SQLiteDriver implements IEncryptedDatabase {
      */
     public  SQLiteDriver(String filepath, String masterpassword) throws SQLException {
         Logger.setGlobalLogLevel(Level.WARNING);
-        ConnectionSource connectionSource = new JdbcConnectionSource("jdbc:sqlite:" + filepath);
+        this.connectionSource = new JdbcConnectionSource("jdbc:sqlite:" + filepath);
 
         encryptedDAO = DaoManager.createDao(connectionSource, EncryptedModel.class);
         TableUtils.createTableIfNotExists(connectionSource, EncryptedModel.class);
@@ -319,6 +320,16 @@ public class SQLiteDriver implements IEncryptedDatabase {
             return metaDAO.queryForEq("key", "encryption_algorithm").get(0).getValue();
         } catch (SQLException e) {
             return null;
+        }
+    }
+
+    @Override
+    public boolean close() {
+        try {
+            this.connectionSource.close();
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 
