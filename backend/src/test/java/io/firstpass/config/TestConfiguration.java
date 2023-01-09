@@ -19,9 +19,7 @@ public class TestConfiguration {
 
 
         DefaultConfig defaultConfig = new DefaultConfig();
-        LoadedDB db = new LoadedDB();
-        db.name = "test_db";
-        db.filepath = "test_filepath";
+        LoadedDB db = new LoadedDB("test_db", "test_filepath");
         defaultConfig.loadedDBs = new ArrayList<LoadedDB>();
         defaultConfig.loadedDBs.add(db);
         Configuration<DefaultConfig> configuration = new Configuration<DefaultConfig>(defaultConfig, currentDirectory + "/fs_test", "testconfig", false);
