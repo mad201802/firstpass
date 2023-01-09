@@ -12,19 +12,20 @@ import java.nio.file.Paths;
 
 public class Configuration<T> {
     private T config;
-    private final String filepath, filename;
+    private final String path, filename, filepath;
     private final Gson gson;
     private boolean createFolderStructure;
 
     private File configFile;
 
-    public Configuration(T defaultConfiguration, String filepath, String filename, Boolean createFolderStructure) {
+    public Configuration(T defaultConfiguration, String path, String filename, Boolean createFolderStructure) {
         this.config = defaultConfiguration;
-        this.filepath = filepath;
+        this.path = path;
         this.filename = filename;
         this.createFolderStructure = createFolderStructure;
         this.gson = new Gson();
-        this.configFile = new File(filepath + "/" + this.filename + ".json");
+        this.filepath = path + "\\" + this.filename + ".json";
+        this.configFile = new File(this.filepath);
     }
 
     /**
@@ -33,7 +34,7 @@ public class Configuration<T> {
      */
     public void saveConfig(){
         try {
-            FileWriter fileWriter = new FileWriter(filepath + "/" + filename + ".json");
+            FileWriter fileWriter = new FileWriter(this.filepath);
             gson.toJson(config, fileWriter);
             fileWriter.close();
             System.out.println("Saved config.");
@@ -61,7 +62,7 @@ public class Configuration<T> {
     public void initConfig() {
         if(configExists()) {
             try {
-                FileReader fileReader = new FileReader(filepath + "/" + filename + ".json");
+                FileReader fileReader = new FileReader(this.filepath);
                 Type type = TypeToken.getParameterized(config.getClass()).getType();
                 config = gson.fromJson(fileReader, type);
                 fileReader.close();
@@ -84,13 +85,13 @@ public class Configuration<T> {
      * True, if directory and file exist, false if not.
      */
     public boolean configExists() {
-        File configFolder = new File(filepath);
+        File configFolder = new File(path);
         // Check if the directory already exists.
         if(!configFolder.isDirectory()) {
             System.out.println("Config directory doesn't exist!");
             if(createFolderStructure) {
                 // Try to create the config directory and/or parent directories.
-                boolean createdDir = new File(filepath).mkdirs();
+                boolean createdDir = new File(path).mkdirs();
                 if (!createdDir) {
                     System.err.println("Couldn't create config directory and/or parent directories!");
                 } else {
@@ -98,7 +99,7 @@ public class Configuration<T> {
                 }
             } else {
                 // Try to only create the config directory itself.
-                boolean createdDir = new File(filepath).mkdir();
+                boolean createdDir = new File(path).mkdir();
                 if (!createdDir) {
                     System.err.println("Couldn't create config directory!");
                 } else {
@@ -110,7 +111,7 @@ public class Configuration<T> {
         }
 
         // Check if the config file exists.
-        Path path = Paths.get(filepath + "/" + filename + ".json");
+        Path path = Paths.get(this.filepath);
         return Files.exists(path);
     }
 

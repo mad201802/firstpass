@@ -29,6 +29,7 @@ public class MessageParser implements IMessageParser {
             Object data = this.gson.fromJson(request.data.toString(), classMessageObject.requestClass);
             return gson.toJson(new BaseIPCResponse(classMessageObject.onMessage.call(data)));
         } catch (NullPointerException ex) {
+            System.out.println(ex.getMessage());
             return this.constructErrorMessage(500, "Json has wrong data");
         } catch (IllegalStateException ex) {
             return this.constructErrorMessage(500, "Invalid JSON");
