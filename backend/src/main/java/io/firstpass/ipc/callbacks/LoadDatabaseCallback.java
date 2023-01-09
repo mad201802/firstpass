@@ -22,6 +22,10 @@ import java.util.Collections;
 public class LoadDatabaseCallback {
 
     public static OpenDatabaseResponse call(LoadDatabaseRequest request) throws IPCException {
+        if (FirstPass.passwordManager != null) {
+            throw new IPCException(69, "Database already open");
+        }
+
         File file = new File(request.filepath);
         boolean exists = file.exists();
 

@@ -25,6 +25,9 @@ import java.util.stream.Collectors;
 public class CreateDatabaseCallback {
 
     public static OpenDatabaseResponse call(CreateDatabaseRequest request) throws IPCException {
+        if (FirstPass.passwordManager != null) {
+            throw new IPCException(69, "Database already open");
+        }
         OpenDatabaseResponse response = new OpenDatabaseResponse();
         IEncryptedDatabase database;
         ISymmetricEncryptionAlgorithm algo;
