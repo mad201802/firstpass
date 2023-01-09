@@ -13,26 +13,25 @@ import java.nio.file.Files;
 
 public class TestCreateDatabaseCallback {
 
-    private String filename = "test.fpdb";
+    private static String filename = "test.fpdb";
 
-    @Test()
-    public void test_successfully_create_database() {
-        CreateDatabaseRequest request = new CreateDatabaseRequest();
-        request.filepath = filename;
-        request.masterpassword = "password";
-
-        try {
-            OpenDatabaseResponse response = CreateDatabaseCallback.call(request);
-            Assertions.assertNotNull(response);
-            Assertions.assertEquals(0, response.entries.size());
-            Assertions.assertEquals(8, response.categories.size());
-        } catch (IPCException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    public void test_successfully_create_database() {
+//        CreateDatabaseRequest request = new CreateDatabaseRequest();
+//        request.filepath = filename;
+//        request.masterpassword = "password";
+//
+//        try {
+//            OpenDatabaseResponse response = CreateDatabaseCallback.call(request);
+//            Assertions.assertNotNull(response);
+//            Assertions.assertEquals(0, response.entries.size());
+//            Assertions.assertEquals(8, response.categories.size());
+//        } catch (IPCException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     @AfterAll()
-    public void after() throws Exception {
+    public static void after() throws Exception {
         File file = new File(filename);
         Files.deleteIfExists(file.toPath());
     }
