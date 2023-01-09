@@ -1,0 +1,131 @@
+package io.firstpass.config;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+public class Configuration<T> {
+    private T config;
+    private final String path, filename, filepath;
+    private final Gson gson;
+    private boolean createFolderStructure;
+
+    private File configFile;
+
+    public Configuration(T defaultConfiguration, String path, String filename, Boolean createFolderStructure) {
+        this.config = defaultConfiguration;
+        this.path = path;
+        this.filename = filename;
+        this.createFolderStructure = createFolderStructure;
+        this.gson = new Gson();
+        this.filepath = path + "\\" + this.filename + ".json";
+        this.configFile = new File(this.filepath);
+    }
+
+    /**
+     * Saves the current configuration under the specified filepath.
+     * The file name is the name of the class that's being saved.
+     */
+    public void saveConfig(){
+        try {
+            FileWriter fileWriter = new FileWriter(this.filepath);
+            gson.toJson(config, fileWriter);
+            fileWriter.close();
+            System.out.println("Saved config.");
+        } catch (Exception e) {
+            System.err.println("Something went wrong while saving the config!");
+            System.err.println(e);
+        }
+
+    }
+
+    // TODO: Doesn't work because "config" is a LinkedTreeMap and not T
+
+    /**
+     * Returns the currently initialized configuration.
+     * @return
+     * The currently initialized configuration.
+     */
+    public T getConfig() {
+        return config;
+    }
+
+    /**
+     * If configuration file exists, initialize (read) it, else save it to the file system.
+     */
+    public void initConfig() {
+        if(configExists()) {
+            try {
+                FileReader fileReader = new FileReader(this.filepath);
+                Type type = TypeToken.getParameterized(config.getClass()).getType();
+                config = gson.fromJson(fileReader, type);
+                fileReader.close();
+                System.out.println("Initialized config.");
+            } catch (Exception e) {
+                System.err.println("Something went wrong while initializing the config!");
+                System.err.println(e);
+            }
+
+        } else {
+            System.out.println("Config didn't exist. Saved current config.");
+            saveConfig();
+        }
+    }
+
+    /**
+     * Checks if the configuration directory and file exist.
+     * If the directory does not exist, create it based on the setting "createFolderStructure".
+     * @return
+     * True, if directory and file exist, false if not.
+     */
+    public boolean configExists() {
+        File configFolder = new File(path);
+        // Check if the directory already exists.
+        if(!configFolder.isDirectory()) {
+            System.out.println("Config directory doesn't exist!");
+            if(createFolderStructure) {
+                // Try to create the config directory and/or parent directories.
+                boolean createdDir = new File(path).mkdirs();
+                if (!createdDir) {
+                    System.err.println("Couldn't create config directory and/or parent directories!");
+                } else {
+                    System.out.println("Created config directory and/or parent directories.");
+                }
+            } else {
+                // Try to only create the config directory itself.
+                boolean createdDir = new File(path).mkdir();
+                if (!createdDir) {
+                    System.err.println("Couldn't create config directory!");
+                } else {
+                    System.out.println("Created config directory.");
+                }
+            }
+        } else {
+            System.out.println("Config directory already exists.");
+        }
+
+        // Check if the config file exists.
+        Path path = Paths.get(this.filepath);
+        return Files.exists(path);
+    }
+
+    /**
+     * Deletes the configuration file.
+     */
+    public void deleteConfigFile() {
+        File fileToDelete = configFile;
+        if(fileToDelete.delete()) {
+            System.out.println("Deleted file " + fileToDelete.getName());
+        } else {
+            System.err.println("Failed to delete the file " + fileToDelete.getName());
+            System.err.println("Folder: " + fileToDelete.getAbsolutePath());
+        }
+    }
+
+}
