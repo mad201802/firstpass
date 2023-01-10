@@ -1,11 +1,11 @@
 package io.firstpass;
 
+import io.firstpass.config.Configuration;
+import io.firstpass.config.schemas.DefaultConfig;
 import io.firstpass.database.IEncryptedDatabase;
 import io.firstpass.database.drivers.SQLiteDriver;
 import io.firstpass.encryption.hashing.SHA256;
-import io.firstpass.ipc.callbacks.CreateDatabaseCallback;
-import io.firstpass.ipc.callbacks.CreateEntryCallback;
-import io.firstpass.ipc.callbacks.LoadDatabaseCallback;
+import io.firstpass.ipc.callbacks.*;
 import io.firstpass.ipc.communication.request.CreateDatabaseRequest;
 import io.firstpass.ipc.communication.request.CreateEntryRequest;
 import io.firstpass.ipc.communication.request.EmtpyRequest;
@@ -27,7 +27,7 @@ public class FirstPass {
 
     public static void main(String[] args) {
         System.out.println(System.getenv("APPDATA") + "\\firstpass");
-        configuration = new Configuration<DefaultConfig>( new DefaultConfig(), System.getenv("APPDATA") + "\\firstpass", "firstpass_conf", false);
+        configuration = new Configuration<>( new DefaultConfig(), System.getenv("APPDATA") + "\\firstpass", "firstpass_conf", false);
         configuration.initConfig();
 
         IPCHandler ipcHandler = new IPCHandler(System.in, System.out);

@@ -29,6 +29,7 @@ public class CreateDatabaseCallback {
         if (FirstPass.passwordManager != null) {
             throw new IPCException(69, "Database already open");
         }
+
         OpenDatabaseResponse response = new OpenDatabaseResponse();
         IEncryptedDatabase database;
         ISymmetricEncryptionAlgorithm algo;
