@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class SQLiteDriver implements IEncryptedDatabase {
     private static final String DATABASE_VERSION = "0.1.0";
-    Dao<CategoryModel, Integer> categoryDAO;
+    public Dao<CategoryModel, Integer> categoryDAO;
     Dao<EncryptedEntryModel, Integer> entryDAO;
     Dao<EncryptedModel, Integer> encryptedDAO;
     Dao<MetaModel, Integer> metaDAO;

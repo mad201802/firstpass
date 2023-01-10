@@ -38,4 +38,8 @@ public class CategoryModel {
     }
 
     public CategoryModel() {}
+
+    public String getName() {
+        return category;
+    }
 }
