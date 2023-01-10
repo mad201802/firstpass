@@ -50,4 +50,19 @@ public class TestSqlDriver {
     }
 
 
+    @Test
+    public void test_getAllCategories() {
+        int size = db.getAllCategories().size();
+        assert size == 8;
+    }
+
+    @Test
+    public void test_getAllEntries() {
+        int size = db.getAllEntries().size();
+        assert size == 0;
+    }
+
+
+
+
 }
