@@ -15,7 +15,7 @@ const recentDBs_ = [
     {
         name: "Firstpass Default Database",
         date: "2021-10-10",
-        filepath: "C:\\Users\\Avaze\\Documents\\test.fpdb",
+        filepath: "C:\\Users\\mauri\\OneDrive\\Dokumente\\test.fpdb",
     },
     {
         name: "Online Banking",

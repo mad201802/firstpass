@@ -11,7 +11,16 @@ import backend from "backend";
 import AppContext from "contexts/App.context";
 
 const App = () => {
-    const [db, setDb] = useState();
+    // TODO: remove
+    const [db, setDb] = useState({
+        entries: [],
+        categories: [
+            {
+                name: "test",
+                id: 123
+            }
+        ],
+    });
     const [login, setLogin] = useState(true);
 
     useEffect(() => {
