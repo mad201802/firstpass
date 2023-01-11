@@ -39,6 +39,7 @@ public class Utils {
             FirstPass.passwordManager.closeDatabase();
 
         FirstPass.passwordManager = null;
+
         try {
             Files.deleteIfExists(new File(DATABASE_NAME).toPath());
         } catch (IOException e) {

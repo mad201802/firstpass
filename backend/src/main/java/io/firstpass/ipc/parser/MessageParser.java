@@ -1,7 +1,6 @@
 package io.firstpass.ipc.parser;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import io.firstpass.ipc.exceptions.IPCException;
 import io.firstpass.ipc.interfaces.IOnMessageRecieve;
 import io.firstpass.ipc.communication.ClassMessageObject;
@@ -29,8 +28,7 @@ public class MessageParser implements IMessageParser {
             Object data = this.gson.fromJson(request.data.toString(), classMessageObject.requestClass);
             return gson.toJson(new BaseIPCResponse(classMessageObject.onMessage.call(data)));
         } catch (NullPointerException ex) {
-            System.out.println(ex.getMessage());
-            return this.constructErrorMessage(500, "Json has wrong data");
+            return this.constructErrorMessage(500, ex.getMessage());
         } catch (IllegalStateException ex) {
             return this.constructErrorMessage(500, "Invalid JSON");
         } catch (IPCException ex) {
