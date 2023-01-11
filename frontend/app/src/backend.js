@@ -49,7 +49,12 @@ const onError = (callback) => errorHandler = callback;
  * @returns {Promise<IPCErrorResponse|Object>} The response from the backend
  */
 const call = async (data) => {
-    const res = JSON.parse(await ipcRenderer.invoke("call", data));
+    let res;
+    try {
+        res = JSON.parse(await ipcRenderer.invoke("call", data));
+    } catch (e) {
+        throw { error: "Backend returned invalid message", code: 500 }
+    }
     if (res.error) throw res.error;
     return res;
 }

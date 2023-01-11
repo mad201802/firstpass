@@ -64,8 +64,8 @@ const LoginPage = () => {
         backend.call({
             type: "LIST_RECENT_DBS",
             data: {},
-        }).then((dbs) => {
-            setRecentDBs(dbs.data.recentDBS);
+        }).then(({ data }) => {
+            setRecentDBs(data.recentDBs);
         });
         // setRecentDBs(recentDBs_);
     }, []);
@@ -82,16 +82,10 @@ const LoginPage = () => {
                     filepath,
                 }
             });
-            console.log(db);
             setDb(db);
     
         } catch (e) {
-            // TODO Error Handling
-            console.log(e);
             setError(e);
-            // setDb({
-            //     categories: ["test", "1234", "wow"],
-            // });
         }
     
     }

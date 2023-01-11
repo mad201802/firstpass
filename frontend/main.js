@@ -34,7 +34,6 @@ app.on("ready", () => {
             console.log("sending error", e);
             mainWindow.webContents.send("backend-error", e);
         });
-        console.log("connecting");
         backend.connect();
     });
 

@@ -1,10 +1,10 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import "./CreatePage.less"
 
 import FirstpassLogo from "assets/svg/logo_full.svg"
 import WavesSvg from "assets/svg/waves.svg"
 
-import { FormInput, TitleBar, Button } from "components"
+import { FormInput, TitleBar, Button, ErrorMessage } from "components"
 
 import AppContext from "contexts/App.context"
 
@@ -21,6 +21,7 @@ import backend from "backend"
 const CreatePage = () => {
     
     const { setDb, setLogin } = useContext(AppContext);
+    const [error, setError] = useState(null);
 
     async function create() {
         // TODO refactor this so input states are stored with useState in this component
@@ -45,6 +46,8 @@ const CreatePage = () => {
             setDb(db);
     
         } catch (e) {
+            console.log(e);
+            setError(e);
             // TODO: Show error message
         }
     
@@ -67,7 +70,9 @@ const CreatePage = () => {
                         <p>Create a new Database</p>
                     </div>
 
+
                     <div className="createFormInputs">
+                        {error && <ErrorMessage error={error} />}
                         <div className="databaseInput">
                             <FormInput
                                 placeholder="Enter Database Path"

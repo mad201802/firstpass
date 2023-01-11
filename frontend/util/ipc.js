@@ -46,7 +46,6 @@ class IPC {
      * @returns {Promise} A promise that resolves when the process is spawned
      */
     connect() {
-        console.log("Spawning process: " + this.$cmd + " " + this.$args.join(" "));
         this.process = spawn(this.$cmd, this.$args);
 
         this._registerEvents();
@@ -116,7 +115,6 @@ class IPC {
         this.process.stderr.on("data", (data) => this._onError(data.toString()));
         this.process.on("exit", (code) => {
             this.exitCode = code;
-            console.log("Process exited with code " + code);
             this._onExit(code);
         });
     }

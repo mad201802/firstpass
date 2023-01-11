@@ -11,6 +11,7 @@ import {
     SettingsRounded,
     ShoppingBagRounded
 } from "@mui/icons-material";
+import backend from "backend";
 
 const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, settingsVisible }) => {
     const { db, setDb } = useContext(AppContext);
@@ -48,7 +49,13 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
             <div className="currentDBInfo">
                 <DnsRounded />
                 <p>DB Name</p>
-                <div className="logoutButton" onClick={() => setDb()}>
+                <div className="logoutButton" onClick={() => {
+                    setDb();
+                    backend.call({
+                        type: "CLOSE_DB",
+                        data: {}
+                    });
+                }}>
                     <LogoutRounded />
                 </div>
             </div>
