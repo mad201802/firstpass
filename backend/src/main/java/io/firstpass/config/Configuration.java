@@ -109,12 +109,10 @@ public class Configuration<T> {
     /**
      * Deletes the configuration file.
      */
-    public void deleteConfigFile() throws IPCException {
+    public void deleteConfigFile() {
         File fileToDelete = configFile;
         if(fileToDelete.delete()) {
             //TODO: Logger
-        } else {
-            throw new IPCException(500, "Failed to delete configuration file: " + this.filepath);
         }
     }
 
