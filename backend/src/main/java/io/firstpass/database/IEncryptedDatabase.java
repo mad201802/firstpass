@@ -31,4 +31,6 @@ public interface IEncryptedDatabase {
     MetaModel getMeta(String name);
     boolean updateMeta(int id, String key, String value);
     String getEncryptionAlgorithm();
+
+    boolean close();
 }

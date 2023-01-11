@@ -12,19 +12,18 @@ import java.nio.file.Paths;
 
 public class Configuration<T> {
     private T config;
-    private final String path, filename, filepath;
+    private final String path;
+    private final String filepath;
     private final Gson gson;
-    private boolean createFolderStructure;
-
-    private File configFile;
+    private final boolean createFolderStructure;
+    private final File configFile;
 
     public Configuration(T defaultConfiguration, String path, String filename, Boolean createFolderStructure) {
         this.config = defaultConfiguration;
         this.path = path;
-        this.filename = filename;
         this.createFolderStructure = createFolderStructure;
         this.gson = new Gson();
-        this.filepath = path + "\\" + this.filename + ".json";
+        this.filepath = path + "\\" + filename + ".json";
         this.configFile = new File(this.filepath);
     }
 
@@ -53,7 +52,7 @@ public class Configuration<T> {
      * The currently initialized configuration.
      */
     public T getConfig() {
-        return config;
+        return this.config;
     }
 
     /**

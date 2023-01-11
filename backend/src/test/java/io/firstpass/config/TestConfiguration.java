@@ -13,26 +13,25 @@ public class TestConfiguration {
     @Test
     public void test_loadedDBs() {
         String currentDirectory;
-        File file = new File("");
-        currentDirectory = file.getAbsolutePath();
+        currentDirectory = new File("").getAbsolutePath();
         System.out.println("Current working directory : "+currentDirectory);
 
 
         DefaultConfig defaultConfig = new DefaultConfig();
         LoadedDB db = new LoadedDB("test_db", "test_filepath");
-        defaultConfig.loadedDBs = new ArrayList<LoadedDB>();
-        defaultConfig.loadedDBs.add(db);
-        Configuration<DefaultConfig> configuration = new Configuration<DefaultConfig>(defaultConfig, currentDirectory + "/fs_test", "testconfig", false);
+        defaultConfig.recentDBs = new ArrayList<LoadedDB>();
+        defaultConfig.recentDBs.add(db);
+        Configuration<DefaultConfig> configuration = new Configuration<DefaultConfig>(defaultConfig, currentDirectory, "testconfig", false);
         configuration.initConfig();
         System.out.println("Currently initialized config 1: " +  configuration.getConfig());
 
-        Configuration<DefaultConfig> configuration2 = new Configuration<DefaultConfig>(defaultConfig, currentDirectory + "/fs_test", "testconfig", false);
+        Configuration<DefaultConfig> configuration2 = new Configuration<DefaultConfig>(defaultConfig, currentDirectory, "testconfig", false);
         configuration2.initConfig();
         System.out.println("Currently initialized config 2: " +  configuration2.getConfig());
 
-        Assertions.assertEquals(configuration.getConfig().loadedDBs.size(), configuration2.getConfig().loadedDBs.size());
-        Assertions.assertEquals(configuration.getConfig().loadedDBs.get(0).name, configuration2.getConfig().loadedDBs.get(0).name);
-        Assertions.assertEquals(configuration.getConfig().loadedDBs.get(0).filepath, configuration2.getConfig().loadedDBs.get(0).filepath);
+        Assertions.assertEquals(configuration.getConfig().recentDBs.size(), configuration2.getConfig().recentDBs.size());
+        Assertions.assertEquals(configuration.getConfig().recentDBs.get(0).name, configuration2.getConfig().recentDBs.get(0).name);
+        Assertions.assertEquals(configuration.getConfig().recentDBs.get(0).filepath, configuration2.getConfig().recentDBs.get(0).filepath);
 
         configuration.deleteConfigFile();
     }

@@ -9,23 +9,22 @@ import io.firstpass.encryption.exceptions.UnknownAlgorithmException;
 import io.firstpass.encryption.symmetric.ISymmetricEncryptionAlgorithm;
 import io.firstpass.encryption.symmetric.SymmetricEncryptionFactory;
 import io.firstpass.ipc.communication.request.CreateDatabaseRequest;
-import io.firstpass.ipc.communication.response.DatabaseOpenResponse;
 import io.firstpass.ipc.communication.response.OpenDatabaseResponse;
 import io.firstpass.ipc.exceptions.IPCException;
-import io.firstpass.ipc.interfaces.IOnMessageRecieve;
 import io.firstpass.manager.PasswordManager;
 import io.firstpass.manager.models.EntryModel;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class CreateDatabaseCallback {
 
     public static OpenDatabaseResponse call(CreateDatabaseRequest request) throws IPCException {
+        if (FirstPass.passwordManager != null) {
+            throw new IPCException(69, "Database already open");
+        }
+
         OpenDatabaseResponse response = new OpenDatabaseResponse();
         IEncryptedDatabase database;
         ISymmetricEncryptionAlgorithm algo;
@@ -51,8 +50,12 @@ public class CreateDatabaseCallback {
         String[] filename_array = request.filepath.split("/");
         String filename = filename_array[filename_array.length-1];
 
-        if (!FirstPass.configuration.getConfig().loadedDBs.stream().anyMatch(loaded_db -> loaded_db.filepath.equals(request.filepath))) {
-            FirstPass.configuration.getConfig().loadedDBs.add(new LoadedDB(filename, request.filepath));
+        if(FirstPass.configuration == null) {
+            throw new IPCException(500, "Configuration is not read");
+        }
+
+        if (FirstPass.configuration.getConfig().recentDBs.stream().noneMatch(loaded_db -> loaded_db.filepath.equals(request.filepath))) {
+            FirstPass.configuration.getConfig().recentDBs.add(new LoadedDB(filename, request.filepath));
             FirstPass.configuration.saveConfig();
         }
 
