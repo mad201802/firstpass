@@ -13,9 +13,19 @@ import { KeyRounded, DnsRounded, AddRounded } from "@mui/icons-material";
 
 const recentDBs_ = [
     {
-        name: "Firstpass Default Database",
+        name: "Tom's DB",
         date: "2021-10-10",
         filepath: "C:\\Users\\tomfl\\Documents\\test.fpdb",
+    },
+    {
+        name: "Avaze' DB",
+        date: "2021-10-10",
+        filepath: "C:\\Users\\Avaze\\Documents\\test.fpdb",
+    },
+    {
+        name: "Maurice' DB",
+        date: "2021-10-10",
+        filepath: "C:\\Users\\mauri\\OneDrive\\Dokumente\\test.fpdb",
     },
     {
         name: "Online Banking",
@@ -115,7 +125,7 @@ const LoginPage = () => {
 
     return (
         <div className="loginPage">
-           <TitleBar/>
+           <TitleBar />
 
             <div className="loginForm-wrapper">
                 <div className="loginForm">
