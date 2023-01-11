@@ -10,7 +10,7 @@ public class ListRecentDBsCallback {
         if(FirstPass.configuration == null)
             throw new IPCException(400, "Configuration not initialized");
         ListRecentDBsResponse response = new ListRecentDBsResponse();
-        response.loadedDBS = FirstPass.configuration.getConfig().recentDBs;
+        response.recentDBs = FirstPass.configuration.getConfig().recentDBs;
         return response;
     }
 }
