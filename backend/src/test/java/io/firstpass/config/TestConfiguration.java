@@ -2,6 +2,7 @@ package io.firstpass.config;
 
 import io.firstpass.config.schemas.DefaultConfig;
 import io.firstpass.config.schemas.LoadedDB;
+import io.firstpass.ipc.exceptions.IPCException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 public class TestConfiguration {
 
     @Test
-    public void test_loadedDBs() {
+    public void test_loadedDBs() throws IPCException {
         String currentDirectory;
         currentDirectory = new File("").getAbsolutePath();
         System.out.println("Current working directory : "+currentDirectory);

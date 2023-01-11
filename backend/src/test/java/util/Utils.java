@@ -7,6 +7,7 @@ import io.firstpass.database.IEncryptedDatabase;
 import io.firstpass.database.drivers.SQLiteDriver;
 import io.firstpass.encryption.symmetric.ISymmetricEncryptionAlgorithm;
 import io.firstpass.encryption.symmetric.SymmetricEncryptionFactory;
+import io.firstpass.ipc.exceptions.IPCException;
 import io.firstpass.manager.PasswordManager;
 
 import java.io.File;
@@ -34,7 +35,7 @@ public class Utils {
         System.out.println("Initialized configuration instance.");
     }
 
-    public static void teardown() {
+    public static void teardown() throws IPCException {
         if(FirstPass.passwordManager != null)
             FirstPass.passwordManager.closeDatabase();
 
