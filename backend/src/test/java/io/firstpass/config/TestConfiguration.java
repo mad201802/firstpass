@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class TestConfiguration {
 
     @Test
-    public void test_loadedDBs() throws IPCException {
+    public void test_loadedDBs() {
         String currentDirectory;
         currentDirectory = new File("").getAbsolutePath();
         System.out.println("Current working directory : "+currentDirectory);

@@ -35,7 +35,7 @@ public class Utils {
         System.out.println("Initialized configuration instance.");
     }
 
-    public static void teardown() throws IPCException {
+    public static void teardown() {
         if(FirstPass.passwordManager != null)
             FirstPass.passwordManager.closeDatabase();
 
