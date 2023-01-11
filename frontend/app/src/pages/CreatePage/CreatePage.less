@@ -7,6 +7,13 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
+
+    & .wavesSvg :last-child {
+        fill: var(--primary) !important;
+    }
+    & .wavesSvg :first-child {
+        fill: var(--bg-lighter) !important;
+    }
 }
 
 .createForm-wrapper {
@@ -21,7 +28,7 @@
 
 .createForm {
 
-    width: min(90%, 400px);
+    width: min(90%, 500px);
 
     display: flex;
     flex-direction: column;
@@ -29,6 +36,17 @@
     justify-content: center;
     gap: 50px;
 
+    .createPageTitle {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+
+        & p {
+            font-size: 1.2rem;
+        }
+    }
   
 & > .buttons {
     display: flex;
@@ -62,6 +80,7 @@
         & > .databaseInput {
             display: flex;
             flex-direction: row;
+            align-items: stretch;
             gap: 10px;
             width: 100%;
 

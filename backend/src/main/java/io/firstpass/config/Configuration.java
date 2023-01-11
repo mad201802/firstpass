@@ -1,10 +1,9 @@
 package io.firstpass.config;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import io.firstpass.ipc.exceptions.IPCException;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,15 +30,13 @@ public class Configuration<T> {
      * Saves the current configuration under the specified filepath.
      * The file name is the name of the class that's being saved.
      */
-    public void saveConfig(){
+    public void saveConfig() {
         try {
             FileWriter fileWriter = new FileWriter(this.filepath);
             gson.toJson(config, fileWriter);
             fileWriter.close();
-            System.out.println("Saved config.");
-        } catch (Exception e) {
-            System.err.println("Something went wrong while saving the config!");
-            System.err.println(e);
+        } catch (IOException e) {
+            //TODO: Logger
         }
 
     }
@@ -58,21 +55,17 @@ public class Configuration<T> {
     /**
      * If configuration file exists, initialize (read) it, else save it to the file system.
      */
-    public void initConfig() {
+    public void initConfig(){
         if(configExists()) {
             try {
                 FileReader fileReader = new FileReader(this.filepath);
                 Type type = TypeToken.getParameterized(config.getClass()).getType();
                 config = gson.fromJson(fileReader, type);
                 fileReader.close();
-                System.out.println("Initialized config.");
-            } catch (Exception e) {
-                System.err.println("Something went wrong while initializing the config!");
-                System.err.println(e);
+            } catch (IOException ex) {
+                config = null;
             }
-
         } else {
-            System.out.println("Config didn't exist. Saved current config.");
             saveConfig();
         }
     }
@@ -87,26 +80,25 @@ public class Configuration<T> {
         File configFolder = new File(path);
         // Check if the directory already exists.
         if(!configFolder.isDirectory()) {
-            System.out.println("Config directory doesn't exist!");
             if(createFolderStructure) {
                 // Try to create the config directory and/or parent directories.
                 boolean createdDir = new File(path).mkdirs();
                 if (!createdDir) {
-                    System.err.println("Couldn't create config directory and/or parent directories!");
+                    //TODO: Log error
                 } else {
-                    System.out.println("Created config directory and/or parent directories.");
+                    //TODO: Log success
                 }
             } else {
                 // Try to only create the config directory itself.
                 boolean createdDir = new File(path).mkdir();
                 if (!createdDir) {
-                    System.err.println("Couldn't create config directory!");
+                    //TODO: Log error
                 } else {
-                    System.out.println("Created config directory.");
+                    //TODO: Logger
                 }
             }
         } else {
-            System.out.println("Config directory already exists.");
+            //TODO: Logger
         }
 
         // Check if the config file exists.
@@ -120,10 +112,7 @@ public class Configuration<T> {
     public void deleteConfigFile() {
         File fileToDelete = configFile;
         if(fileToDelete.delete()) {
-            System.out.println("Deleted file " + fileToDelete.getName());
-        } else {
-            System.err.println("Failed to delete the file " + fileToDelete.getName());
-            System.err.println("Folder: " + fileToDelete.getAbsolutePath());
+            //TODO: Logger
         }
     }
 

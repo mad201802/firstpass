@@ -7,6 +7,7 @@ import io.firstpass.database.IEncryptedDatabase;
 import io.firstpass.database.drivers.SQLiteDriver;
 import io.firstpass.encryption.symmetric.ISymmetricEncryptionAlgorithm;
 import io.firstpass.encryption.symmetric.SymmetricEncryptionFactory;
+import io.firstpass.ipc.exceptions.IPCException;
 import io.firstpass.manager.PasswordManager;
 
 import java.io.File;

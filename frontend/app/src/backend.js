@@ -49,9 +49,39 @@ const onError = (callback) => errorHandler = callback;
  * @returns {Promise<IPCErrorResponse|Object>} The response from the backend
  */
 const call = async (data) => {
-    const res = await ipcRenderer.invoke("call", data);
+    let res;
+    try {
+        res = JSON.parse(await ipcRenderer.invoke("call", data));
+    } catch (e) {
+        throw { error: "Backend returned invalid message", code: 500 }
+    }
     if (res.error) throw res.error;
     return res;
+}
+
+/**
+ * Show a dialog to open/save a db file
+ * @returns {Promise<string[]|string|undefined>} The selected files
+ */
+function selectDBFile(type = "open") {
+    switch(type) {
+        case "open":
+            return ipcRenderer.invoke("showOpenDialog", {
+                title: "Select a Firstpass Database",
+                properties: ["openFile"],
+                filters: [
+                    { name: "Firstpass Database", extensions: ["fpdb"] },
+                ],
+            });
+
+        case "save":
+            return ipcRenderer.invoke("showSaveDialog", {
+                title: "Select Database Location",
+                filters: [
+                    { name: "Firstpass Database", extensions: ["fpdb"] },
+                ],
+            });
+    }
 }
 
 /**
@@ -62,5 +92,6 @@ export default {
     maximize,
     close,
     onError,
-    call
+    call,
+    selectDBFile,
 };

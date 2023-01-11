@@ -2,6 +2,7 @@ package io.firstpass.config;
 
 import io.firstpass.config.schemas.DefaultConfig;
 import io.firstpass.config.schemas.LoadedDB;
+import io.firstpass.ipc.exceptions.IPCException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

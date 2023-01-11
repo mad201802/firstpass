@@ -1,26 +1,30 @@
 import React from "react";
 import "./FormInput.less";
 
-const Comp = ({ test }) => {
-    return <FormInput />;
-}
+// TODO: Add error property to jighlight input red, onChange callback, no internal state
 
 const FormInput = ({
     iconLeft,
     iconRight,
     placeholder,
-    type,
+    type = "text",
     value,
-    spellCheck,
-    readOnly,
+    spellCheck = false,
+    readOnly = false,
     onInput,
-    className
+    autoFocus = false,
+    className,
+    error = false
 }) => {
+    let classes = "formInput";
+    if (error) classes += " error";
+    if (className) classes += ` ${className}`;
+
     return (
-        <div className={className ? `formInput ${className}` : "formInput"} >
+        <div className={classes}>
             {iconLeft}
             <input
-                {...{ placeholder, type, value, spellCheck, readOnly, onInput }}
+                {...{ placeholder, type, value, spellCheck, readOnly, onInput, autoFocus }}
             />
             {iconRight}
         </div>

@@ -21,9 +21,13 @@ public class FirstPass {
     public static Configuration<DefaultConfig> configuration;
 
     public static void main(String[] args) {
-        System.out.println(System.getenv("APPDATA") + "\\firstpass");
         configuration = new Configuration<>( new DefaultConfig(), System.getenv("APPDATA") + "\\firstpass", "firstpass_conf", false);
-        configuration.initConfig();
+
+        try {
+            configuration.initConfig();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         IPCHandler ipcHandler = new IPCHandler(System.in, System.out);
 
@@ -45,4 +49,3 @@ public class FirstPass {
     }
 
 }
-

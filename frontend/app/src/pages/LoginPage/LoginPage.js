@@ -1,33 +1,41 @@
-import React from "react"
+import React, { useEffect, useContext, useState } from "react"
 import "./LoginPage.less"
 
-import FirstpassLogo from "../../../assets/svg/logo_full.svg"
-import WavesSvg from "../../../assets/svg/waves.svg"
-import FormInput from "../../components/FormInput/FormInput"
+import FirstpassLogo from "assets/svg/logo_full.svg"
+import WavesSvg from "assets/svg/waves.svg"
 
-import { KeyRounded, DnsRounded, AddRounded} from "@mui/icons-material"
-import Button from "../../components/Button/Button"
+import { Button, DropdownMenu, TitleBar, FormInput, ErrorMessage } from "components";
+import AppContext from "contexts/App.context"
+import backend from "backend"
 
-import backend from "../../backend"
-import DropdownMenu from "../../components/DropdownMenu/DropdownMenu"
-import TitleBar from "../../components/TitleBar/TitleBar"
+import { KeyRounded, DnsRounded, AddRounded } from "@mui/icons-material";
 
 
-const recentDBs = [
+const recentDBs_ = [
     {
-        name: "Firstpass Default Database",
+        name: "Tom's DB",
         date: "2021-10-10",
-        filename: "C:\\Users\\test\\Documents\\test.fp",
+        filepath: "C:\\Users\\tomfl\\Documents\\test.fpdb",
+    },
+    {
+        name: "Avaze' DB",
+        date: "2021-10-10",
+        filepath: "C:\\Users\\Avaze\\Documents\\test.fpdb",
+    },
+    {
+        name: "Maurice' DB",
+        date: "2021-10-10",
+        filepath: "C:\\Users\\mauri\\OneDrive\\Dokumente\\test.fpdb",
     },
     {
         name: "Online Banking",
         date: "2021-10-10",
-        filename: "C:\\Users\\test\\Documents\\ein\\wirklich\\sehr\\langer\\pfad\\test2.fp",
+        filepath: "C:\\Users\\test\\Documents\\ein\\wirklich\\sehr\\langer\\pfad\\test2.fp",
     },
     {
         name: "Arbeit",
         date: "2021-10-10",
-        filename: "C:\\Users\\test\\Documents\\test3.fp",
+        filepath: "C:\\Users\\test\\Documents\\test3.fp",
     },
 ]
 
@@ -35,48 +43,98 @@ const RecentDB = ({ data }) => {
     return (
         <div className="recentDB">
             <div className="name">{data.name}</div>
-            <div className="filename">{data.filename}</div>
+            <div className="filename">{data.filepath}</div>
         </div>
     );
 }
 
 
-const LoginPage = ({ setDb, setLogin }) => {
+const LoginPage = () => {
+
+    const { setDb, setLogin } = useContext(AppContext);
+
+    const [database, setDatabase] = useState();
+    const [recentDBs, setRecentDBs] = useState([]);
+
+    const [masterpassword, setMasterpassword] = useState("");
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        // TODO: Load recent DBs from backend
+        backend.call({
+            type: "LIST_RECENT_DBS",
+            data: {},
+        }).then(({ data }) => {
+            setRecentDBs(data.recentDBs);
+        });
+        // setRecentDBs(recentDBs_);
+    }, []);
     
 
     async function login() {
-        const masterpassword = document.querySelector(".formInput input").value;
+        const filepath = recentDBs[database].filepath;
     
         try {
-            const db = await backend.call({
+            const { data: db } = await backend.call({
                 type: "OPEN_DB",
-                masterpassword,
-                filename: "C:\\Users\\test\\Documents\\test.fp",
+                data: {
+                    masterpassword,
+                    filepath,
+                }
             });
-            setDB(db);
+            setDb(db);
     
         } catch (e) {
-            console.log(e);
-            setDb({
-                categories: ["test", "1234", "wow"],
-            });
+            setError(e);
         }
     
     }
 
+    useEffect(() => {
+        const handler = e => {
+            if (e.key === "Enter") {
+                login();
+            }
+        }
+        document.addEventListener("keydown", handler);
+
+        return () => {
+            document.removeEventListener("keydown", handler);
+        }
+    })
+
+    const openFileOption = {
+        component: () => {
+            return (
+                <div className="openFileItem recentDB">
+                    Open File...
+                </div>
+            );
+        },
+        onClick: () => {
+            // TODO create a new entry in recent dbs from filepath
+            console.log("File:", backend.selectDBFile());
+        },
+    }
 
     return (
         <div className="loginPage">
-           <TitleBar/>
+           <TitleBar />
 
             <div className="loginForm-wrapper">
                 <div className="loginForm">
                     <FirstpassLogo className="firstpassLogo" />
 
                     <div className="loginFormInputs">
+                        {error && <ErrorMessage error={error} />}
                         <div className="databaseInput">
                         <DropdownMenu
                             options={recentDBs}
+                            value={database}
+                            onChange={db => {
+                                setDatabase(db);
+                                document.querySelector(".masterpasswordInput input").focus();
+                            }}
                             placeholder={
                                 <span style={{ paddingLeft: "10px" }}>
                                     Select a database...
@@ -84,6 +142,7 @@ const LoginPage = ({ setDb, setLogin }) => {
                             }
                             icon={<DnsRounded />}
                             component={RecentDB}
+                            customItems={[openFileOption]}
                         />
                          <Button onClick={() => setLogin(false)}>{<AddRounded />}</Button>
                          </div>
@@ -91,13 +150,19 @@ const LoginPage = ({ setDb, setLogin }) => {
                             placeholder="Enter Masterpassword"
                             type="password"
                             iconLeft={<KeyRounded />}
+                            autoFocus={true}
+                            className="masterpasswordInput"
+                            value={masterpassword}
+                            onInput={e => {
+                                setMasterpassword(e.target.value.trim());
+                            }}
                         />
                     </div>
 
-                    <Button onClick={login}>Login</Button>
+                    <Button id="loginButton" onClick={login}>Login</Button>
                 </div>
             </div>
-            <WavesSvg />
+            <WavesSvg className="wavesSvg" />
         </div>
     );
 };

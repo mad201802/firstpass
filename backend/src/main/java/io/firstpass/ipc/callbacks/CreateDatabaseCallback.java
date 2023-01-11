@@ -14,6 +14,8 @@ import io.firstpass.ipc.exceptions.IPCException;
 import io.firstpass.manager.PasswordManager;
 import io.firstpass.manager.models.EntryModel;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +25,10 @@ public class CreateDatabaseCallback {
     public static OpenDatabaseResponse call(CreateDatabaseRequest request) throws IPCException {
         if (FirstPass.passwordManager != null) {
             throw new IPCException(69, "Database already open");
+        }
+
+        if(Files.exists(new File(request.filepath).toPath())) {
+            throw new IPCException(69, "Database already exists");
         }
 
         OpenDatabaseResponse response = new OpenDatabaseResponse();
