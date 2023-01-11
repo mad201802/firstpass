@@ -31,7 +31,7 @@ public class TestCreateDatabaseCallback {
     }
 
     @AfterEach()
-    void afterEach() {
+    void afterEach() throws IPCException {
         Utils.teardown();
     }
 
