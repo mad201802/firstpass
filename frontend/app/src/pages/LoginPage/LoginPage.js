@@ -61,13 +61,13 @@ const LoginPage = () => {
 
     useEffect(() => {
         // TODO: Load recent DBs from backend
-        // backend.call({
-        //     type: "LIST_DBS",
-        // }).then((dbs) => {
-        //     console.log(dbs);
-        //     setRecentDBs(dbs);
-        // });
-        setRecentDBs(recentDBs_);
+        backend.call({
+            type: "LIST_RECENT_DBS",
+            data: {},
+        }).then((dbs) => {
+            setRecentDBs(dbs.data.recentDBS);
+        });
+        // setRecentDBs(recentDBs_);
     }, []);
     
 
