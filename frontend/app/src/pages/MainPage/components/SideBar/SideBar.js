@@ -8,10 +8,11 @@ import {
     DnsRounded,
     LogoutRounded,
     SearchRounded,
+    SettingsRounded,
     ShoppingBagRounded
 } from "@mui/icons-material";
 
-const SideBar = ({ currentCategory, setCurrentCategory }) => {
+const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, settingsVisible }) => {
     const { db, setDb } = useContext(AppContext);
 
     return (
@@ -29,7 +30,10 @@ const SideBar = ({ currentCategory, setCurrentCategory }) => {
                         className={`category ${
                             currentCategory === i ? "active" : ""
                         }`}
-                        onClick={() => setCurrentCategory(i)}
+                        onClick={() => {
+                            setCurrentCategory(i);
+                            setSettingsVisible(false);
+                        }}
                     >
                         <ShoppingBagRounded />
                         <p>{category.category}</p>
@@ -37,6 +41,10 @@ const SideBar = ({ currentCategory, setCurrentCategory }) => {
                 ))}
             </div>
 
+            <div className="settings" data-active={settingsVisible} onClick={() => setSettingsVisible(true)}>
+                <SettingsRounded />
+                <p>Settings</p>
+            </div>
             <div className="currentDBInfo">
                 <DnsRounded />
                 <p>DB Name</p>

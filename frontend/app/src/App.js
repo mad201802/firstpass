@@ -12,15 +12,7 @@ import AppContext from "contexts/App.context";
 
 const App = () => {
     // TODO: remove
-    const [db, setDb] = useState({
-        entries: [],
-        categories: [
-            {
-                name: "test",
-                id: 123
-            }
-        ],
-    });
+    const [db, setDb] = useState();
     const [login, setLogin] = useState(true);
 
     useEffect(() => {

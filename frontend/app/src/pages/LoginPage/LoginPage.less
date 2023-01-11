@@ -53,18 +53,24 @@
             gap: 10px;
             width: 100%;
 
-        & > .button {
-            background-color: var(--bg-light);
-            border: 1px solid var(--divider);
-            transition: border-color 200ms ease;
-            display: grid;
-            place-items: center;
-            &:hover{
-            
-                border-color:var(--primary) ;
+            & .dropdown {
+                flex-grow: 1;
+                max-width: calc(100% - 60px - 10px)
+            }
+
+            & > .button {
+                width: 60px;
+                background-color: var(--bg-light);
+                border: 1px solid var(--divider);
+                transition: border-color 200ms ease;
+                display: grid;
+                place-items: center;
+                padding: 0;
+                &:hover {
+                    border-color:var(--primary) ;
+                }
             }
         }
-    }
     }
 
     & > .button {

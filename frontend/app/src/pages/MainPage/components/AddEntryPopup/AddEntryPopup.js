@@ -1,35 +1,56 @@
-import React from "react";
+import React, {useState} from "react";
 import "./AddEntryPopup.less";
-import { CloseRounded,LinkRounded, PersonRounded,KeyRounded } from "@mui/icons-material";
+import {
+    CloseRounded,
+    LinkRounded,
+    PersonRounded,
+    KeyRounded
+} from "@mui/icons-material";
 
-import { Button,FormInput } from "components";
-
+import { Button, FormInput, Popup } from "components";
 
 const AddEntryPopup = ({ setAddEntryPopupVisible }) => {
-  return (
-    <div className="entryPopupRapper">
-      <div className="entryPopup">
-        <div id="closeButton" onClick={() => setAddEntryPopupVisible(false)}>
-          {" "}
-          <CloseRounded id="close" />{" "}
-        </div>
-        <div className="entryPopupContent">
-          <h1>Add Entry</h1>
-          <FormInput
-            placeholder="URL"
-            autoFocus={true}
-            iconLeft={<LinkRounded />}
-          />
-          <FormInput placeholder="Username" iconLeft={<PersonRounded />} />
-          <FormInput placeholder="Password" iconLeft={<KeyRounded />} />
-          <div className="buttonBox">
-            <Button className="cancelButton" onClick={()=> setAddEntryPopupVisible(false)}>Cancel</Button>
-            <Button className="addEntryButton">Add</Button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+
+    const [username, setUsername] = useState("");
+    const [url, setUrl] = useState("");
+    const [password, setPassword] = useState("");
+
+    function addEntry() {
+        setAddEntryPopupVisible(false);
+        // TODO: Add entry to database
+        console.log(`Adding entry with url: ${url}, username: ${username}, password: ${password}`);
+    }
+
+    return (
+        <Popup
+            onClose={() => setAddEntryPopupVisible(false)}
+            onSubmit={addEntry}
+            title="Add Entry"
+            submitText="Add"
+        >
+            <div class="addEntryInputs">
+                <FormInput
+                    placeholder="URL"
+                    autoFocus={true}
+                    iconLeft={<LinkRounded />}
+                    value={url}
+                    onInput={e => setUrl(e.target.value)}
+                />
+                <FormInput
+                    placeholder="Username"
+                    iconLeft={<PersonRounded />}
+                    value={username}
+                    onInput={e => setUsername(e.target.value)}
+                />
+                <FormInput
+                    placeholder="Password"
+                    iconLeft={<KeyRounded />}
+                    value={password}
+                    onInput={e => setPassword(e.target.value)}
+                />
+            </div>
+        </Popup>
+    );
 };
 
 export default AddEntryPopup;
