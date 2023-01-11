@@ -54,8 +54,8 @@ public class CreateDatabaseCallback {
             throw new IPCException(500, "Configuration is not read");
         }
 
-        if (FirstPass.configuration.getConfig().loadedDBs.stream().noneMatch(loaded_db -> loaded_db.filepath.equals(request.filepath))) {
-            FirstPass.configuration.getConfig().loadedDBs.add(new LoadedDB(filename, request.filepath));
+        if (FirstPass.configuration.getConfig().recentDBs.stream().noneMatch(loaded_db -> loaded_db.filepath.equals(request.filepath))) {
+            FirstPass.configuration.getConfig().recentDBs.add(new LoadedDB(filename, request.filepath));
             FirstPass.configuration.saveConfig();
         }
 

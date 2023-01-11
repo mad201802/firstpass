@@ -2,7 +2,6 @@ package io.firstpass.config;
 
 import io.firstpass.config.schemas.DefaultConfig;
 import io.firstpass.config.schemas.LoadedDB;
-import io.firstpass.ipc.exceptions.IPCException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -20,8 +19,8 @@ public class TestConfiguration {
 
         DefaultConfig defaultConfig = new DefaultConfig();
         LoadedDB db = new LoadedDB("test_db", "test_filepath");
-        defaultConfig.loadedDBs = new ArrayList<LoadedDB>();
-        defaultConfig.loadedDBs.add(db);
+        defaultConfig.recentDBs = new ArrayList<LoadedDB>();
+        defaultConfig.recentDBs.add(db);
         Configuration<DefaultConfig> configuration = new Configuration<DefaultConfig>(defaultConfig, currentDirectory, "testconfig", false);
         configuration.initConfig();
         System.out.println("Currently initialized config 1: " +  configuration.getConfig());
@@ -30,9 +29,9 @@ public class TestConfiguration {
         configuration2.initConfig();
         System.out.println("Currently initialized config 2: " +  configuration2.getConfig());
 
-        Assertions.assertEquals(configuration.getConfig().loadedDBs.size(), configuration2.getConfig().loadedDBs.size());
-        Assertions.assertEquals(configuration.getConfig().loadedDBs.get(0).name, configuration2.getConfig().loadedDBs.get(0).name);
-        Assertions.assertEquals(configuration.getConfig().loadedDBs.get(0).filepath, configuration2.getConfig().loadedDBs.get(0).filepath);
+        Assertions.assertEquals(configuration.getConfig().recentDBs.size(), configuration2.getConfig().recentDBs.size());
+        Assertions.assertEquals(configuration.getConfig().recentDBs.get(0).name, configuration2.getConfig().recentDBs.get(0).name);
+        Assertions.assertEquals(configuration.getConfig().recentDBs.get(0).filepath, configuration2.getConfig().recentDBs.get(0).filepath);
 
         configuration.deleteConfigFile();
     }

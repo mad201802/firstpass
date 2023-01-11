@@ -2,9 +2,6 @@ package io.firstpass;
 
 import io.firstpass.config.Configuration;
 import io.firstpass.config.schemas.DefaultConfig;
-import io.firstpass.database.IEncryptedDatabase;
-import io.firstpass.database.drivers.SQLiteDriver;
-import io.firstpass.encryption.hashing.SHA256;
 import io.firstpass.ipc.callbacks.*;
 import io.firstpass.ipc.communication.request.CreateDatabaseRequest;
 import io.firstpass.ipc.communication.request.CreateEntryRequest;
@@ -12,14 +9,12 @@ import io.firstpass.ipc.communication.request.EmtpyRequest;
 import io.firstpass.ipc.communication.request.EmptyRequest;
 import io.firstpass.ipc.communication.request.LoadDatabaseRequest;
 import io.firstpass.ipc.communication.response.CreateEntryResponse;
-import io.firstpass.ipc.communication.response.GetLoadedDBsResponse;
+import io.firstpass.ipc.communication.response.ListRecentDBsResponse;
 import io.firstpass.ipc.communication.response.OpenDatabaseResponse;
 import io.firstpass.ipc.communication.response.SimpleStatusResponse;
 import io.firstpass.ipc.handler.IPCHandler;
 import io.firstpass.ipc.parser.MessageParser;
 import io.firstpass.manager.PasswordManager;
-
-import java.sql.SQLException;
 
 public class FirstPass {
     public static PasswordManager passwordManager;
@@ -38,7 +33,7 @@ public class FirstPass {
         messageParser.addMessageListener("CLOSE_DB", EmptyRequest.class, SimpleStatusResponse.class, CloseDatabaseCallback::call);
 
 
-        messageParser.addMessageListener("LIST_DBS", EmtpyRequest.class, GetLoadedDBsResponse.class, GetLoadedDBsCallback::call);
+        messageParser.addMessageListener("LIST_RECENT_DBS", EmtpyRequest.class, ListRecentDBsResponse.class, ListRecentDBsCallback::call);
 
         messageParser.addMessageListener("CREATE_ENTRY", CreateEntryRequest.class, CreateEntryResponse.class, CreateEntryCallback::call);
 
