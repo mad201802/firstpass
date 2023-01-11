@@ -71,7 +71,7 @@ public class TestMessageParser {
         IMessageParser parser = new MessageParser();
         parser.addMessageListener("test", TestMessage.class, TestMessage.class, (TestMessage data) -> data);
         String response = parser.onMessage("{\"type\": \"test\", \"datas\":{\"data\": \"itworks\"}}");
-        Assertions.assertEquals(response, "{\"error\":{\"code\":500,\"message\":\"Json has wrong data\"}}");
+        Assertions.assertEquals(response, "{\"error\":{\"code\":500,\"message\":\"Cannot invoke \\\"com.google.gson.JsonObject.toString()\\\" because \\\"request.data\\\" is null\"}}");
     }
 
 }

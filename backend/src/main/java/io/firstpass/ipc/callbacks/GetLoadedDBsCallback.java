@@ -10,7 +10,7 @@ public class GetLoadedDBsCallback {
         if(FirstPass.passwordManager == null)
             throw new IPCException(400, "Database not loaded");
         GetLoadedDBsResponse response = new GetLoadedDBsResponse();
-        response.loadedDBS = FirstPass.configuration.getConfig().loadedDBs;
+        response.loadedDBS = FirstPass.configuration.getConfig().recentDBs;
         return response;
     }
 }

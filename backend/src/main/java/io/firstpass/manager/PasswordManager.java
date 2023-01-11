@@ -51,6 +51,10 @@ public class PasswordManager {
        return entryModels;
    }
 
+   public boolean closeDatabase() {
+       return database.close();
+   }
+
    public List<CategoryModel> getAllCategories() {
        return database.getAllCategories();
    }

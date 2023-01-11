@@ -3,37 +3,36 @@ package io.firstpass.ipc.callbacks;
 import io.firstpass.ipc.communication.request.CreateDatabaseRequest;
 import io.firstpass.ipc.communication.response.OpenDatabaseResponse;
 import io.firstpass.ipc.exceptions.IPCException;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-import java.io.File;
-import java.nio.file.Files;
+import org.junit.jupiter.api.*;
+import util.Utils;
 
 public class TestCreateDatabaseCallback {
 
-    private static String filename = "test.fpdb";
+    @Test()
+    public void test_successfully_create_database() throws IPCException {
+        Utils.initConfigurationInstance();
+        CreateDatabaseRequest request = new CreateDatabaseRequest();
+        request.filepath = Utils.DATABASE_NAME;
+        request.masterpassword = Utils.MASTER_PASSWORD;
 
-//    public void test_successfully_create_database() {
-//        CreateDatabaseRequest request = new CreateDatabaseRequest();
-//        request.filepath = filename;
-//        request.masterpassword = "password";
-//
-//        try {
-//            OpenDatabaseResponse response = CreateDatabaseCallback.call(request);
-//            Assertions.assertNotNull(response);
-//            Assertions.assertEquals(0, response.entries.size());
-//            Assertions.assertEquals(8, response.categories.size());
-//        } catch (IPCException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+        OpenDatabaseResponse response = CreateDatabaseCallback.call(request);
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(0, response.entries.size());
+        Assertions.assertEquals(8, response.categories.size());
+    }
 
-    @AfterAll()
-    public static void after() throws Exception {
-        File file = new File(filename);
-        Files.deleteIfExists(file.toPath());
+    @Test()
+    public void test_error_create_database() {
+        CreateDatabaseRequest request = new CreateDatabaseRequest();
+        request.filepath = Utils.DATABASE_NAME;
+        request.masterpassword = Utils.MASTER_PASSWORD;
+
+        Assertions.assertThrows(IPCException.class, () -> CreateDatabaseCallback.call(request));
+    }
+
+    @AfterEach()
+    void afterEach() {
+        Utils.teardown();
     }
 
 }
