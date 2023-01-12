@@ -4,11 +4,15 @@ const { ipcMain } = require("electron/main");
 const path = require("path");
 const backend = require("./util/backend");
 
-const { app, BrowserWindow } = electron;
+const { app, BrowserWindow, Menu } = electron;
 
 let mainWindow;
 
 app.on("ready", () => {
+
+    // Disable Shortcuts (prevent reloading)
+    if (app.isPackaged)
+        Menu.setApplicationMenu(null);
 
     mainWindow = new BrowserWindow({
         webPreferences: {

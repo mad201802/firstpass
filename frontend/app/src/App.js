@@ -29,7 +29,7 @@ const App = () => {
         if (db) {
             setDb(JSON.parse(db));
         }
-    })
+    }, []);
 
     useEffect(() => {
         // save db to localstorage
