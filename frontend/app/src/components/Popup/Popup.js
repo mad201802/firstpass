@@ -22,7 +22,7 @@ const Popup = ({
         return () => {
             window.removeEventListener("keydown", cb);
         };
-    });
+    },[]);
 
     return (
         <div className="popupRapper">

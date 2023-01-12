@@ -8,6 +8,7 @@ import {
 } from "@mui/icons-material";
 
 import { Button, FormInput, Popup } from "components";
+import PasswordStrength from "components/PasswordStrength/PasswordStrength";
 
 const AddEntryPopup = ({ setAddEntryPopupVisible }) => {
 
@@ -47,7 +48,9 @@ const AddEntryPopup = ({ setAddEntryPopupVisible }) => {
                     iconLeft={<KeyRounded />}
                     value={password}
                     onInput={e => setPassword(e.target.value)}
+                    type="password"
                 />
+                <PasswordStrength></PasswordStrength>
             </div>
         </Popup>
     );
