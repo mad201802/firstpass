@@ -12,6 +12,7 @@
 @echo.
 cd backend
 call mvn package
+if %errorlevel% neq 0 goto :error
 cd ..
 
 @echo.
@@ -19,15 +20,24 @@ cd ..
 @echo.
 cd frontend
 call yarn install
+if %errorlevel% neq 0 goto :error
 call yarn build
+if %errorlevel% neq 0 goto :error
 
 @echo.
 @echo Building installer...
 @echo.
-call yarn dist
+call yarn dist %*
+if %errorlevel% neq 0 goto :error
 cd ..
 
 @echo.
 @echo.
 @echo Build finished successfully!
 
+goto :eof
+
+:error
+@echo.
+@echo.
+@echo Build failed!

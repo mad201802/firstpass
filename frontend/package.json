@@ -9,7 +9,7 @@
     "start": "electron ./main.js",
     "build": "webpack --config webpack.config.js",
     "dev": "concurrently \"webpack --config webpack.config.js --watch\" \"electronmon ./main.js\"",
-    "dist": "electron-builder"
+    "dist": "electron-builder build"
   },
   "electronmon": {
     "patterns": [
@@ -31,6 +31,16 @@
         "nsis"
       ],
       "requestedExecutionLevel": "asInvoker"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ]
     },
     "nsis": {
       "uninstallDisplayName": "Firstpass",
