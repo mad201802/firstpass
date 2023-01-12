@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "main": "main.js",
   "license": "MIT",
+  "author": "Firstpass",
+  "description": "The best password manager in the world",
   "scripts": {
     "start": "electron ./main.js",
     "build": "webpack --config webpack.config.js",
-    "dev": "concurrently \"webpack --config webpack.config.js --watch\" \"electronmon ./main.js\""
+    "dev": "concurrently \"webpack --config webpack.config.js --watch\" \"electronmon ./main.js\"",
+    "dist": "electron-builder"
   },
   "electronmon": {
     "patterns": [
@@ -17,6 +20,9 @@
   },
   "build": {
     "appId": "firstpass",
+    "productName": "Firstpass",
+    "asar": true,
+    "icon": "firstpass.ico",
     "win": {
       "target": [
         "nsis"
@@ -26,10 +32,20 @@
     "nsis": {
       "uninstallDisplayName": "Firstpass",
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "firstpass.ico"
     },
+    "files": [
+      "main.js",
+      "util/**/*",
+      "package.json",
+      "app/build/**/*"
+    ],
     "extraFiles": [
-      ""
+      {
+        "from": "../backend/target/backend-1.0-SNAPSHOT.jar",
+        "to": "backend.jar"
+      }
     ]
   },
   "devDependencies": {
@@ -53,10 +69,10 @@
     "react-dom": "^18.2.0",
     "style-loader": "^3.3.1",
     "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0"
+    "webpack-cli": "^4.10.0",
+    "electron": "^21.1.1",
+    "electron-builder": "^23.6.0"
   },
   "dependencies": {
-    "@electron/remote": "^2.0.8",
-    "electron": "^21.1.1"
   }
 }
