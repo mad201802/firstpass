@@ -11,7 +11,6 @@ import backend from "backend";
 import AppContext from "contexts/App.context";
 
 const App = () => {
-    // TODO: remove
     const [db, setDb] = useState();
     const [login, setLogin] = useState(true);
 
@@ -23,6 +22,23 @@ const App = () => {
             backend.onError(null);
         };
     }, []);
+
+    useEffect(() => {
+        // load db from localstorage
+        const db = localStorage.getItem("db");
+        if (db) {
+            setDb(JSON.parse(db));
+        }
+    })
+
+    useEffect(() => {
+        // save db to localstorage
+        if (db) {
+            localStorage.setItem("db", JSON.stringify(db));
+        } else {
+            localStorage.removeItem("db");
+        }
+    }, [db]);
 
     return (
         <AppContext.Provider

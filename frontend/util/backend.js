@@ -20,7 +20,9 @@ function connect() {
     ipc.connect().catch(e => {
         onError(e);
     });
+}
 
+function registerHandlers() {
     ipcMain.handle("call", (event, data) => {
         return new Promise((resolve, reject) => {
             call(data).then(res => {
@@ -37,7 +39,11 @@ function connect() {
     ipcMain.handle("showSaveDialog", (e, opts) => {
         return dialog.showSaveDialogSync(opts);
     })
+}
 
+function restart() {
+    disconnect();
+    connect();
 }
 
 function disconnect() {
@@ -54,7 +60,9 @@ async function call(data) {
 
 module.exports = {
     connect,
-    call,
+    registerHandlers,
+    restart,
     disconnect,
+    call,
     onError: (callback) => onError = callback,
 }

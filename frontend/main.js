@@ -35,6 +35,7 @@ app.on("ready", () => {
             mainWindow.webContents.send("backend-error", e);
         });
         backend.connect();
+        backend.registerHandlers();
     });
 
     ipcMain.on("minimize", () => {
