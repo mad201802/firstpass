@@ -1,4 +1,4 @@
-const electron = require("electron");
+// const electron = require("electron");
 const { ipcRenderer } = electron;
 
 
@@ -53,6 +53,7 @@ const call = async (data) => {
     try {
         res = JSON.parse(await ipcRenderer.invoke("call", data));
     } catch (e) {
+        console.log(e)
         throw { error: "Backend returned invalid message", code: 500 }
     }
     if (res.error) throw res.error;
