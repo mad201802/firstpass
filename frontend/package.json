@@ -23,6 +23,9 @@
     "productName": "Firstpass",
     "asar": true,
     "icon": "firstpass.ico",
+    "directories": {
+      "output": "../dist"
+    },
     "win": {
       "target": [
         "nsis"

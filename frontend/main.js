@@ -12,6 +12,7 @@ app.on("ready", () => {
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
+            devTools: !app.isPackaged
         },
 
         frame: false,
