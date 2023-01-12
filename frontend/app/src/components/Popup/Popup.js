@@ -16,13 +16,15 @@ const Popup = ({
     useEffect(() => {
         const cb = (e) => {
             if (e.key === "Escape") onClose();
+            if (e.key === "Enter") onSubmit();
+            //TODO: Do not submit when empty!
         };
 
         window.addEventListener("keydown", cb);
         return () => {
             window.removeEventListener("keydown", cb);
         };
-    });
+    },[]);
 
     return (
         <div className="popupRapper">
