@@ -5,6 +5,12 @@
   "license": "MIT",
   "author": "Firstpass",
   "description": "The best password manager in the world",
+
+  "repository": {
+    "type": "git",
+    "url": "https://https://github.com/mad201802/firstpass.git"
+  },
+
   "scripts": {
     "start": "electron ./main.js",
     "build": "webpack --config webpack.config.js",
