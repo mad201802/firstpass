@@ -31,6 +31,7 @@
       "output": "../dist"
     },
     "win": {
+      "icon": "firstpass.ico",
       "target": [
         "nsis",
         "zip"
@@ -38,6 +39,7 @@
       "requestedExecutionLevel": "asInvoker"
     },
     "mac": {
+      "icon": "firstpass.icns",
       "target": [
         "dmg"
       ]
