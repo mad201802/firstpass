@@ -27,7 +27,7 @@ if %errorlevel% neq 0 goto :error
 @echo.
 @echo Building installer...
 @echo.
-call yarn dist %*
+call yarn dist:win %*
 if %errorlevel% neq 0 goto :error
 cd ..
 

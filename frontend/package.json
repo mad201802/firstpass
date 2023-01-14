@@ -9,7 +9,11 @@
     "start": "electron ./main.js",
     "build": "webpack --config webpack.config.js",
     "dev": "concurrently \"webpack --config webpack.config.js --watch\" \"electronmon ./main.js\"",
-    "dist": "electron-builder build"
+    "dist": "electron-builder build",
+    "dist:win": "yarn dist --win nsis --win zip",
+    "dist:mac": "yarn dist --mac dmg --mac tar.gz",
+    "dist:linux": "yarn dist --linux AppImage --linux tar.gz",
+    "dist:win-lin": "yarn dist --linux AppImage --linux tar.gz --win nsis --win zip"
   },
   "electronmon": {
     "patterns": [
@@ -28,7 +32,8 @@
     },
     "win": {
       "target": [
-        "nsis"
+        "nsis",
+        "zip"
       ],
       "requestedExecutionLevel": "asInvoker"
     },
@@ -38,8 +43,10 @@
       ]
     },
     "linux": {
+      "icon": "firstpass.png",
       "target": [
-        "AppImage"
+        "AppImage",
+        "tar.gz"
       ]
     },
     "nsis": {
