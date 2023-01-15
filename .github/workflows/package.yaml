@@ -52,10 +52,6 @@ jobs:
           name: backend-jar
           path: backend/target/
 
-      - run: ls -la
-
-      - run: ls -la backend/target
-
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
         with:
