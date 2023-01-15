@@ -24,6 +24,12 @@ jobs:
         cache: maven
     - name: Package project
       run: mvn package
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: backend-jar
+        path: backend/target/*.jar
+
   build-frontend:
     runs-on: ${{ matrix.os }}
 
@@ -39,6 +45,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 18
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: backend-jar
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
