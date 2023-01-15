@@ -69,5 +69,10 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: release
-          path: ["dist/*.zip", "dist/*.exe", "dist/*.dmg"]
+          path: |
+            dist/*.zip
+            dist/*.exe
+            dist/*.dmg
+            dist/*.tar.gz
+            dist/*.AppImage
   
