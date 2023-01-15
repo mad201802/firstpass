@@ -21,7 +21,7 @@ public class FirstPass {
     public static Configuration<DefaultConfig> configuration;
 
     public static void main(String[] args) {
-        configuration = new Configuration<>( new DefaultConfig(), System.getenv("APPDATA") + "\\firstpass", "firstpass_conf", false);
+        configuration = new Configuration<>( new DefaultConfig(), "firstpass_conf", false);
 
         try {
             configuration.initConfig();
