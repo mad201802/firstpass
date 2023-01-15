@@ -1,4 +1,4 @@
-name: Build and Test Maven Backend
+name: Package Frontend and backend
 
 on:
   push:
@@ -31,6 +31,7 @@ jobs:
         path: backend/target/*.jar
 
   build-frontend:
+    needs: package-backend
     runs-on: ${{ matrix.os }}
 
     strategy:
