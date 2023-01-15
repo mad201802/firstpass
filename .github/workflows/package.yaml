@@ -2,7 +2,8 @@ name: Package Frontend and backend
 
 on:
   push:
-    branches: [ "feature/packaging" ]
+    branches:
+      - main
 
 env:
   BACKEND_PATH: "backend"
