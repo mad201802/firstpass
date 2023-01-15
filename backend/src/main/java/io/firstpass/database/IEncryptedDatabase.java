@@ -19,6 +19,7 @@ public interface IEncryptedDatabase {
     boolean deleteEntry(int id);
 
     // Categories
+    int addCategory(String name);
     CategoryModel getCategory(int id);
     CategoryModel getCategory(String name);
     List<CategoryModel> getAllCategories();

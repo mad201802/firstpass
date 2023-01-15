@@ -10,7 +10,7 @@ import io.firstpass.utils.decorators.Generated;
 @Generated
 @DatabaseTable(tableName = "categories")
 public class CategoryModel {
-    @DatabaseField(id = true)
+    @DatabaseField(generatedId = true, canBeNull = false)
     public Integer id;
 
     @DatabaseField()
@@ -32,10 +32,13 @@ public class CategoryModel {
         this.category = category;
     }
 
-    public CategoryModel(Integer id, String category) {
-        this.id = id;
+    public CategoryModel(String category) {
         this.category = category;
     }
 
+    public CategoryModel(int id, String category) {
+        this.id = id;
+        this.category = category;
+    }
     public CategoryModel() {}
 }
