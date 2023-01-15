@@ -50,8 +50,11 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: backend-jar
+          path: backend/target/
 
       - run: ls -la
+
+      - run: ls -la backend/target
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
