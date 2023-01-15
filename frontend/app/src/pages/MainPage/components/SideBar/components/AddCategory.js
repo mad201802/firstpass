@@ -3,20 +3,23 @@ import "./AddCategory.less";
 
 import { ListAltRounded } from "@mui/icons-material";
 
-const AddCategory = ({ onAdd }) => {
+const AddCategory = ({ onAdd, onCancel }) => {
 
     const [newCategory, setNewCategory] = React.useState("");
 
+    function add() {
+        if(newCategory.length >= 3) onAdd(newCategory);
+    }
+
     useEffect(() => {
         const clickListener = (e) => {
-            if (!e.target.closest(".addCategory")) {
-                setAddCategoryVisible(false);
+            if (!e.target.closest(".addCategory") && !e.target.closest(".toolbarButton.add")) {
+                onCancel();
             }
         };
         const keyListener = (e) => {
-            if (e.key === "Escape") {
-                setAddCategoryVisible(false);
-            }
+            if (e.key === "Escape") onCancel();
+            else if (e.key === "Enter") add();
         };
 
         document.addEventListener("click", clickListener);
@@ -29,18 +32,18 @@ const AddCategory = ({ onAdd }) => {
     }, []);
     
     return (
-        <div class="addCategory">
+        <div className="addCategory">
             <ListAltRounded />
             <input
                 type="text"
                 placeholder="Category Name"
-                spellcheck="false"
+                spellCheck="false"
                 autoComplete="false"
                 onInput={(e) => setNewCategory(e.target.value)}
                 value={newCategory}
                 autoFocus
             />
-            <button onClick={() => onAdd(newCategory)}>Add</button>
+            <button onClick={add}>Add</button>
         </div>
     );
 };

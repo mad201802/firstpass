@@ -44,22 +44,54 @@
 
             -webkit-app-region: drag;
         }
+    }
 
-        .addCategoryButton {
+    & .toolbar {
+
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        height: 40px;
+        flex-shrink: 0;
+        padding: 0 10px;
+
+        & span {
+            margin-right: auto;
+            user-select: none;
+            opacity: 0.5;
+        }
+
+        & .toolbarButton {
             display: grid;
             place-items: center;
-            width: 30px;
-            height: 30px;
+            width: 26px;
+            height: 26px;
             border-radius: var(--radius);
 
             &:hover {
                 background-color: var(--bg-lighter);
             }
+
+            & svg {
+                width: 18px;
+                fill: var(--text-dark);
+            }
+
+            &.add:hover svg {
+                fill: var(--primary-light);
+            }
+
+            &.delete:hover svg {
+                fill: var(--error-light);
+            }
+            &.edit:hover svg {
+                fill: var(--primary-light);
+            }
         }
     }
 
     & .categories {
-        padding: 10px 0;
+        padding-bottom: 10px;
 
         direction: rtl;
         & > * {
@@ -81,45 +113,6 @@
 
         &::-webkit-scrollbar-thumb:hover {
             background: var(--primary-light);
-        }
-
-
-        & .addCategory {
-            height: 50px;
-            display: flex;
-            align-items: center;
-            padding: 0 15px;
-
-            & svg {
-                fill: var(--primary);
-                width: 20px;
-            }
-
-            & input {
-                height: 50%;
-                background-color: transparent;
-                border: none;
-                outline: none;
-                padding-left: 10px;
-                overflow: hidden;
-            }
-
-            & button {
-                height: 50%;
-                background-color: var(--primary);
-                border-radius: var(--radius);
-                padding: 0 10px;
-                outline: none;
-                cursor: pointer;
-                transition: background-color 100ms ease;
-                color: var(--text-inv);
-                font-weight: 600;
-                font-size: 12px;
-
-                &:hover {
-                    background-color: var(--primary-light);
-                }
-            }
         }
 
         & .category {

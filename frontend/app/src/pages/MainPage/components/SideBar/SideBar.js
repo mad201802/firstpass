@@ -10,7 +10,9 @@ import {
     SearchRounded,
     SettingsRounded,
     ListAltRounded,
-    AddBoxRounded
+    AddBoxRounded,
+    DeleteRounded,
+    EditRounded
 } from "@mui/icons-material";
 import backend from "backend";
 import { useEffect } from "react";
@@ -32,8 +34,12 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
         setAddCategoryVisible(false);
         setDb({
             ...db,
-            categories: [...db.categories, category]
+            categories: [...db.categories, { category: name, id: category.id }]
         });
+    }
+
+    async function deleteCategory() {
+
     }
 
     return (
@@ -41,37 +47,41 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
             <div className="sidebarHeader">
                 <FirstpassLogo id="headerLogo" />
                 <p>Firstpass</p>
-                <div class="addCategoryButton" onClick={() => setAddCategoryVisible(true)}>
+            </div>
+
+            <div class="toolbar">
+                <span>Categories</span>
+                <div className="toolbarButton edit" onClick={"/* TODO */"}>
+                    <EditRounded />
+                </div>
+                <div className="toolbarButton delete" onClick={"/* TODO */"}>
+                    <DeleteRounded />
+                </div>
+                <div className="toolbarButton add" onClick={() => setAddCategoryVisible(true)}>
                     <AddBoxRounded />
                 </div>
             </div>
 
             <div className="categories">
-
-                {addCategoryVisible && <AddCategory onAdd={addCategory} />}
+                {addCategoryVisible && (
+                    <AddCategory onAdd={addCategory} onCancel={() => setAddCategoryVisible(false)} />
+                )}
 
                 {db.categories?.map((category, i) => (
                     <div
                         key={i}
-                        className={`category ${
-                            currentCategory === i ? "active" : ""
-                        }`}
+                        className={`category ${currentCategory === i ? "active" : ""}`}
                         onClick={() => {
                             setCurrentCategory(i);
                             setSettingsVisible(false);
-                        }}
-                    >
+                        }}>
                         <ListAltRounded />
                         <p>{category.category}</p>
                     </div>
                 ))}
             </div>
 
-            <div
-                className="settings"
-                data-active={settingsVisible}
-                onClick={() => setSettingsVisible(true)}
-            >
+            <div className="settings" data-active={settingsVisible} onClick={() => setSettingsVisible(true)}>
                 <SettingsRounded />
                 <p>Settings</p>
             </div>
@@ -84,10 +94,9 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
                         setDb();
                         backend.call({
                             type: "CLOSE_DB",
-                            data: {}
+                            data: {},
                         });
-                    }}
-                >
+                    }}>
                     <LogoutRounded />
                 </div>
             </div>

@@ -1,5 +1,6 @@
 const electron = require("electron");
 const { ipcMain } = require("electron/main");
+const path = require("path");
 
 const backend = require("./util/backend");
 

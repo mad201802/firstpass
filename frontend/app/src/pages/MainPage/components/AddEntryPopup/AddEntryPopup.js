@@ -29,7 +29,7 @@ const AddEntryPopup = ({ setAddEntryPopupVisible }) => {
             title="Add Entry"
             submitText="Add"
         >
-            <div class="addEntryInputs">
+            <div className="addEntryInputs">
                 <FormInput
                     placeholder="URL"
                     autoFocus={true}
