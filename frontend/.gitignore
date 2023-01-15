@@ -1,5 +1,6 @@
-node_modules
-build
+node_modules/
+build/
+dist/
 
-yarn-error.log
 .yarn
+yarn-error.log

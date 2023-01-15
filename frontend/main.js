@@ -1,7 +1,6 @@
 const electron = require("electron");
 const { ipcMain } = require("electron/main");
 
-const path = require("path");
 const backend = require("./util/backend");
 
 const { app, BrowserWindow, Menu } = electron;
@@ -19,6 +18,7 @@ app.on("ready", () => {
             nodeIntegration: false,
             contextIsolation: true,
             preload: path.join(__dirname, "/preload.js"),
+            devTools: !app.isPackaged
         },
 
         frame: false,
@@ -28,13 +28,17 @@ app.on("ready", () => {
 
         width: 900,
         height: 600,
+        minHeight: 500,
+        minWidth: 700,
+
+        icon: "firstpass.ico"
     });
-    
+
     mainWindow.loadURL(`file://${__dirname}/app/build/index.html`).then(() => {
         mainWindow.show();
-        mainWindow.webContents.openDevTools({ mode: "detach" });
+        if (!app.isPackaged) mainWindow.webContents.openDevTools({ mode: "detach" });
 
-        backend.onError((e) => {
+        backend.onError(e => {
             console.log("sending error", e);
             mainWindow.webContents.send("backend-error", e);
         });
@@ -54,6 +58,6 @@ app.on("ready", () => {
     });
     ipcMain.on("close", () => {
         mainWindow.close();
+        app.quit();
     });
-
 });

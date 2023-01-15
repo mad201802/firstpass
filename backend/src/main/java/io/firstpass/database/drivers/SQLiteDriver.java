@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class SQLiteDriver implements IEncryptedDatabase {
     private static final String DATABASE_VERSION = "0.1.0";
-    private ConnectionSource connectionSource;
+    private final ConnectionSource connectionSource;
     Dao<CategoryModel, Integer> categoryDAO;
     Dao<EncryptedEntryModel, Integer> entryDAO;
     Dao<EncryptedModel, Integer> encryptedDAO;
@@ -105,15 +105,10 @@ public class SQLiteDriver implements IEncryptedDatabase {
     public int addEntry(String name, CipherData username, CipherData password, int categoryID, String url, String notes) {
         try {
             CategoryModel category = categoryDAO.queryForId(categoryID);
-
-
             //if category is null, set it to Uncategorized
             if(category == null) {
                 category = categoryDAO.queryForId(1);
             }
-
-
-
 
             EncryptedModel usernameModel = new EncryptedModel(username.text, username.iv);
             encryptedDAO.create(usernameModel);
@@ -152,6 +147,17 @@ public class SQLiteDriver implements IEncryptedDatabase {
             return entryDAO.deleteById(id) == 1;
         } catch (SQLException e) {
             return false;
+        }
+    }
+
+    @Override
+    public int addCategory(String name) {
+        try {
+            CategoryModel categoryModel = new CategoryModel(name);
+            categoryDAO.create(categoryModel);
+            return categoryModel.getId();
+        } catch (SQLException e) {
+            return -1;
         }
     }
 
@@ -332,6 +338,4 @@ public class SQLiteDriver implements IEncryptedDatabase {
             return false;
         }
     }
-
-
 }

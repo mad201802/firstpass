@@ -30,8 +30,7 @@ const Popup = ({
         <div className="popupRapper">
             <div className="popup">
                 <div id="closeButton" onClick={onClose}>
-                    {" "}
-                    <CloseRounded id="close" />{" "}
+                    <CloseRounded id="close" />
                 </div>
                 <h1>{title}</h1>
 
