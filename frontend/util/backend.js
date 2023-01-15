@@ -1,6 +1,6 @@
 const IPC = require("./ipc");
 
-const { ipcMain, dialog } = require("electron");
+const { ipcMain, dialog, app } = require("electron");
 
 const MAX_RESPONSE_TIME = 10000;
 
@@ -11,7 +11,8 @@ let onError = () => {};
 
 
 function connect() {
-    ipc = new IPC("java", ["-jar", "../backend/target/backend-1.0-SNAPSHOT.jar"]);
+    const jarLocation = app.isPackaged ? "./backend.jar" : "../backend/target/backend-1.0-SNAPSHOT.jar";
+    ipc = new IPC("java", ["-jar", jarLocation]);
 
     ipc._onExit = () => {
         onError({ code: 10, message: "The process exited unexpectedly", id: "ERR_EXIT" });

@@ -1,0 +1,11 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Firstpass Installer",
+            "type": "shell",
+            "command": "./build.bat",
+            "group": "build"
+        },
+    ]
+}
