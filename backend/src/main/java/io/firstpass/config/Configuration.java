@@ -1,9 +1,6 @@
 package io.firstpass.config;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import fr.hugo4715.oslib.AbstractOperatingSystem;
-import fr.hugo4715.oslib.OperatingSystem;
-import io.firstpass.ipc.exceptions.IPCException;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -14,7 +11,6 @@ import java.nio.file.Paths;
 public class Configuration<T> {
     private T config;
     private final String path;
-    private final AbstractOperatingSystem os = OperatingSystem.getOperatingSystem();
     private final String filepath;
     private final Gson gson;
     private final boolean createFolderStructure;
@@ -147,23 +143,25 @@ public class Configuration<T> {
      * The configuration path matching the detected OS.
      */
     private String autoPickPath() {
-        if(this.os.getType() == OperatingSystem.WINDOWS) {
+        String osName = System.getProperty("os.name");
+        if(osName.startsWith("Windows")) {
             return System.getenv("APPDATA") + "\\firstpass";
-        } else if(this.os.getType() == OperatingSystem.LINUX) {
+        } else if(osName.toLowerCase().contains("linux")) {
             return "~/.config/firstpass";
-        } else if(this.os.getType() == OperatingSystem.OSX) {
+        } else if(osName.toLowerCase().contains("mac os")) {
             return "~/.config/firstpass";
+        } else {
+            System.err.println("OS detection failed! Set path to NULL.");
+            return null;
         }
-        System.err.println("OS detection failed! Set path to NULL.");
-        return null;
+
     }
 
     /**
      * Deletes the configuration file.
      */
     public void deleteConfigFile() {
-        File fileToDelete = configFile;
-        if(fileToDelete.delete()) {
+        if(configFile.delete()) {
             //TODO: Logger
         }
     }
