@@ -1,4 +1,7 @@
-node_modules
-build
+node_modules/
+build/
+dist/
 
+.yarn
+yarn.lock
 yarn-error.log

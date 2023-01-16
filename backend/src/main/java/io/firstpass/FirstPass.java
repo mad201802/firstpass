@@ -31,11 +31,11 @@ public class FirstPass {
         messageParser.addMessageListener("CREATE_DB", CreateDatabaseRequest.class, OpenDatabaseResponse.class, CreateDatabaseCallback::call);
         messageParser.addMessageListener("OPEN_DB", LoadDatabaseRequest.class, OpenDatabaseResponse.class, LoadDatabaseCallback::call);
         messageParser.addMessageListener("CLOSE_DB", EmptyRequest.class, SimpleStatusResponse.class, CloseDatabaseCallback::call);
-
-
         messageParser.addMessageListener("LIST_RECENT_DBS", EmtpyRequest.class, ListRecentDBsResponse.class, ListRecentDBsCallback::call);
 
         messageParser.addMessageListener("CREATE_ENTRY", CreateEntryRequest.class, CreateEntryResponse.class, CreateEntryCallback::call);
+
+        messageParser.addMessageListener("CREATE_CATEGORY", CreateCategoryRequest.class, CreateCategoryResponse.class, CreateCategoryCallback::call);
 
         messageParser.addMessageListener("GET_ENTROPY", GetEntropyRequest.class, GetEntropyResponse.class, GetEntropyCallback::call);
 
