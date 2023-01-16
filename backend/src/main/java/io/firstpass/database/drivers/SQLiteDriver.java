@@ -136,6 +136,43 @@ public class SQLiteDriver implements IEncryptedDatabase {
         return -1;
     }
 
+    @Override
+    public int updateEntry(int entry_id, String name, CipherData username, CipherData password, int categoryID, String url, String notes) {
+        try {
+            EncryptedEntryModel entry = entryDAO.queryForId(entry_id);
+            if (entry == null) {
+                return -1;
+            }
+
+            CategoryModel category = categoryDAO.queryForId(categoryID);
+            //if category is null, set it to Uncategorized
+            if (category == null) {
+                return -1;
+            }
+
+            EncryptedModel usernameModel = new EncryptedModel(username.text, username.iv);
+            encryptedDAO.create(usernameModel);
+
+            EncryptedModel passwordModel = new EncryptedModel(password.text, password.iv);
+            encryptedDAO.create(passwordModel);
+
+            entry.setName(name);
+            entry.setUsername(usernameModel);
+            entry.setPassword(passwordModel);
+            entry.setCategory(category);
+            entry.setUrl(url);
+            entry.setNotes(notes);
+
+            if (entryDAO.update(entry) == 1) {
+                return entry.getId();
+            }
+        } catch (SQLException e) {
+            return -1;
+        }
+
+        return -1;
+    }
+
     /**
      * Deletes a entry from the io.firstpass.database.
      * @param id The ID of the entry.
@@ -160,6 +197,8 @@ public class SQLiteDriver implements IEncryptedDatabase {
             return -1;
         }
     }
+
+
 
     /**
      * Gets a entry from the io.firstpass.database.
@@ -216,10 +255,27 @@ public class SQLiteDriver implements IEncryptedDatabase {
         }
     }
 
+    @Override
+    public boolean deleteCategory(int id) {
+        try {
+            return categoryDAO.deleteById(id) == 1;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
     //get all entries
     public List<EncryptedEntryModel> getAllEntries() {
         try {
             return entryDAO.queryForAll();
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public List<EncryptedEntryModel> getAllEntriesByCategory(int category_id) {
+        try {
+            return entryDAO.queryForEq("category_id", category_id);
         } catch (SQLException e) {
             return null;
         }

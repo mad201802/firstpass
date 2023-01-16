@@ -7,6 +7,7 @@ import io.firstpass.database.IEncryptedDatabase;
 import io.firstpass.encryption.symmetric.ISymmetricEncryptionAlgorithm;
 import io.firstpass.manager.models.EntryModel;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,11 +49,38 @@ public class PasswordManager {
        return entryModels;
    }
 
-   public int addCategory(String name) {
+    public ArrayList<EntryModel> getAllEntries(int category_id) {
+        ArrayList<EntryModel> entryModels = new ArrayList<>();
+        for (EncryptedEntryModel encryptedEntryModel : database.getAllEntriesByCategory(category_id)) {
+            String decryptedUsername = encryptionAlgorithm.decryptText(encryptedEntryModel.getUsername().getCipherData(), masterpassword);
+            String decryptedPassword = encryptionAlgorithm.decryptText(encryptedEntryModel.getPassword().getCipherData(), masterpassword);
+            entryModels.add(new EntryModel(encryptedEntryModel.getId(), encryptedEntryModel.getName(), decryptedUsername, decryptedPassword));
+        }
+        return entryModels;
+    }
+
+    public int addCategory(String name) {
        return database.addCategory(name);
     }
+
     public List<CategoryModel> getAllCategories() {
         return database.getAllCategories();
+    }
+
+    public boolean deleteCategory(int id, boolean deleteEntries) {
+        ArrayList<EntryModel> entries = getAllEntries(id);
+        if (deleteEntries) {
+            for (EntryModel entry : entries) {
+                removeEntryByID(entry.getId());
+            }
+        } else {
+            // Set entry category_id to 0
+            for (EntryModel entry : entries) {
+                database.updateEntry(entry.getId(), entry.getName(), encryptionAlgorithm.encryptText(entry.getUsername(), masterpassword), encryptionAlgorithm.encryptText(entry.getPassword(), masterpassword), 0, "", "");
+            }
+        }
+
+        return database.deleteCategory(id);
     }
 
    public boolean closeDatabase() {
