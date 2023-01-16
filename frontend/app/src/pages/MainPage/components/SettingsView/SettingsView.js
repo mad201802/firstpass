@@ -1,7 +1,15 @@
 import React, { useEffect } from "react";
 import "./SettingsView.less";
+import { FormInput } from "components";
 
 const SettingsView = ({ setSettingsVisible }) => {
+
+    const [primaryColor, setPrimaryColor] = React.useState(localStorage.getItem("primaryColor") || "f5b302");
+
+    useEffect(() => {
+        localStorage.setItem("primaryColor", primaryColor);
+        document.body.style.setProperty("--primary", "#" + primaryColor);
+    }, [primaryColor]);
 
     useEffect(() => {
         const cb = (e) => {
@@ -21,9 +29,7 @@ const SettingsView = ({ setSettingsVisible }) => {
                 <h1>Settings</h1>
             </div>
             <div className="settingsViewContent">
-                <div className="themeOption">
-                    <h2>Theme</h2>
-                </div>
+                <FormInput label="Primary Color" value={primaryColor} onInput={e => setPrimaryColor(e.target.value)} />
             </div>
         </div>
     );

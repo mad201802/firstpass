@@ -29,7 +29,7 @@ const AddCategory = ({ onAdd, onCancel }) => {
             document.removeEventListener("click", clickListener);
             document.removeEventListener("keydown", keyListener);
         };
-    }, []);
+    }, [newCategory]);
     
     return (
         <div className="addCategory">

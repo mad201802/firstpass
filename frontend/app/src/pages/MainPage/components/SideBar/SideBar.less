@@ -51,13 +51,14 @@
         justify-content: flex-end;
         height: 40px;
         flex-shrink: 0;
-        padding: 0 10px;
+        padding: 0 5px 0 15px;
         border-bottom: 2px solid var(--bg);
 
         & span {
             margin-right: auto;
             user-select: none;
             opacity: 0.5;
+            font-size: 13px;
         }
 
         & .toolbarButton {
@@ -66,25 +67,28 @@
             width: 26px;
             height: 26px;
             border-radius: var(--radius);
+            opacity: 0.5;
+            transition: opacity 100ms ease;
 
             &:hover {
                 background-color: var(--bg-lighter);
+                opacity: 1;
             }
 
             & svg {
                 width: 18px;
-                fill: var(--text-dark);
+                fill: var(--text);
             }
 
             &.add:hover svg {
-                fill: var(--primary-light);
+                fill: var(--primary);
             }
 
             &.delete:hover svg {
-                fill: var(--error-light);
+                fill: var(--error);
             }
             &.edit:hover svg {
-                fill: var(--primary-light);
+                fill: var(--primary);
             }
         }
     }
@@ -99,7 +103,7 @@
         overflow-y: auto;
 
         &::-webkit-scrollbar {
-            width: 10px;
+            width: 5px;
         }
 
         &::-webkit-scrollbar-track {
@@ -207,13 +211,14 @@
         align-items: center;
 
         z-index: 10;
-        box-shadow: 0 0 15px 10px var(--bg-light);
+        border-top: 2px solid var(--bg);    
 
         margin-top: auto;
         min-height: 50px;
         padding-left: 15px;
         background-color: var(--bg-light);
         transition: background-color 100ms ease;
+        cursor: pointer;
 
         --clr: var(--text);
 

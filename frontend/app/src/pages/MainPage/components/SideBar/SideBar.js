@@ -42,6 +42,16 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
 
     }
 
+    useEffect(() => {
+        const cb = e => {
+            if (e.ctrlKey && e.shiftKey && e.key === "N") {
+                setAddCategoryVisible(true);
+            }
+        }
+        document.addEventListener("keydown", cb);
+        return () => document.removeEventListener("keydown", cb);
+    }, [])
+
     return (
         <div className="sidebar">
             <div className="sidebarHeader">
