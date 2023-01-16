@@ -13,9 +13,11 @@ import java.util.List;
 public interface IEncryptedDatabase {
     // Entries
     int addEntry(String name, CipherData username, CipherData password, int categoryID, String url, String notes);
+    int updateEntry(int entry_id, String name, CipherData username, CipherData password, int categoryID, String url, String notes);
     EncryptedEntryModel getEntry(int id);
     EncryptedEntryModel getEntry(String name);
     EncryptedEntryModel[] getEntries();
+    List<EncryptedEntryModel> getAllEntriesByCategory(int category_id);
     boolean deleteEntry(int id);
 
     // Categories
@@ -23,6 +25,7 @@ public interface IEncryptedDatabase {
     CategoryModel getCategory(int id);
     CategoryModel getCategory(String name);
     List<CategoryModel> getAllCategories();
+    boolean deleteCategory(int id);
 
 
     // Meta

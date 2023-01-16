@@ -70,6 +70,10 @@ public class EncryptedEntryModel {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
 
     public CategoryModel getCategory() {
         return category;
