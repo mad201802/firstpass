@@ -11,13 +11,12 @@ import java.util.Collections;
 
 public class CreateEntryCallback {
     public static CreateEntryResponse call(CreateEntryRequest request) throws IPCException {
-        System.out.println(request.category_id);
         if(FirstPass.passwordManager == null)
             throw new IPCException(400, "Database not loaded");
 
-        System.out.println(FirstPass.passwordManager.getAllCategories().stream().findAny().filter(category -> category.getId() == request.category_id).stream().toArray());
-        if(FirstPass.passwordManager.getAllCategories().stream().findAny().filter(category -> category.getId() == request.category_id).isEmpty())
-            throw new IPCException(400, "Category not found");
+        // Check if category exists
+        if(FirstPass.passwordManager.getAllCategories().stream().filter(category -> category.getId() == request.category_id).findAny().isEmpty())
+            throw new IPCException(400, "Category does not exist");
 
         int id = FirstPass.passwordManager.addEntry(request.name, request.username, request.password, request.category_id, request.url, request.notes);
 

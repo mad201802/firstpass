@@ -12,7 +12,7 @@ public class DeleteCategoryCallback {
         if (FirstPass.passwordManager == null)
             throw new IPCException(404, "No database is open");
 
-        if(FirstPass.passwordManager.getAllCategories().stream().findAny().filter(category -> category.getId() == request.id).isEmpty())
+        if(FirstPass.passwordManager.getAllCategories().stream().filter(category -> category.getId() == request.id).findAny().isEmpty())
             throw new IPCException(400, "Category does not exist");
 
         if(request.id == 1)
