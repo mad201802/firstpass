@@ -10,7 +10,7 @@ import AddEntryPopup from "./components/AddEntryPopup/AddEntryPopup";
 import SettingsView from "./components/SettingsView/SettingsView";
 
 const MainPage = () => {
-    const [currentCategory, setCurrentCategory] = useState(0);
+    const [currentCategory, setCurrentCategory] = useState(1);
     const [addEntryPopupVisible, setAddEntryPopupVisible] = useState(false);
 
     const [settingsVisible, setSettingsVisible] = useState(false);
@@ -35,7 +35,7 @@ const MainPage = () => {
             <SettingsView setSettingsVisible={setSettingsVisible} />
           )}
         </div>
-        {addEntryPopupVisible && <AddEntryPopup setAddEntryPopupVisible={setAddEntryPopupVisible} />}
+        {addEntryPopupVisible && <AddEntryPopup setAddEntryPopupVisible={setAddEntryPopupVisible} currentCategory={currentCategory} />}
       </div>
     );
 };

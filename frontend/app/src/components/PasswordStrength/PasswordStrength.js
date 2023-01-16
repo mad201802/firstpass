@@ -1,8 +1,21 @@
-import React from "react";
+import backend from "backend";
+import React, { useEffect, useState } from "react";
 import "./PasswordStrength.less";
 
-const PasswordStrength = () => {
-    const strength = 29;
+const PasswordStrength = ( {password}) => {
+    const [strength, setStrength] = useState(0);
+
+    useEffect(() => {
+        backend.call({
+            type: "GET_ENTROPY",
+            data: {
+                passwordToCompute: password
+            }
+        }).then(res => {
+            setStrength(res.data.entropy.toFixed(1));
+        })
+    }, [password]);
+
     let strength_name;
     if (strength < 15){
         strength_name = "very weak";

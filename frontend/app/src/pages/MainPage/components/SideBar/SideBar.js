@@ -77,12 +77,12 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
                     <AddCategory onAdd={addCategory} onCancel={() => setAddCategoryVisible(false)} />
                 )}
 
-                {db.categories?.map((category, i) => (
+                {db.categories?.map((category) => (
                     <div
-                        key={i}
-                        className={`category ${currentCategory === i ? "active" : ""}`}
+                        key={category.id}
+                        className={`category ${currentCategory === category.id ? "active" : ""}`}
                         onClick={() => {
-                            setCurrentCategory(i);
+                            setCurrentCategory(category.id);
                             setSettingsVisible(false);
                         }}>
                         <ListAltRounded />
