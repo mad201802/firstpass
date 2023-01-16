@@ -49,7 +49,7 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
                 <p>Firstpass</p>
             </div>
 
-            <div class="toolbar">
+            <div className="toolbar">
                 <span>Categories</span>
                 <div className="toolbarButton edit" onClick={"/* TODO */"}>
                     <EditRounded />
