@@ -3,15 +3,8 @@ package io.firstpass;
 import io.firstpass.config.Configuration;
 import io.firstpass.config.schemas.DefaultConfig;
 import io.firstpass.ipc.callbacks.*;
-import io.firstpass.ipc.communication.request.CreateDatabaseRequest;
-import io.firstpass.ipc.communication.request.CreateEntryRequest;
-import io.firstpass.ipc.communication.request.EmtpyRequest;
-import io.firstpass.ipc.communication.request.EmptyRequest;
-import io.firstpass.ipc.communication.request.LoadDatabaseRequest;
-import io.firstpass.ipc.communication.response.CreateEntryResponse;
-import io.firstpass.ipc.communication.response.ListRecentDBsResponse;
-import io.firstpass.ipc.communication.response.OpenDatabaseResponse;
-import io.firstpass.ipc.communication.response.SimpleStatusResponse;
+import io.firstpass.ipc.communication.request.*;
+import io.firstpass.ipc.communication.response.*;
 import io.firstpass.ipc.handler.IPCHandler;
 import io.firstpass.ipc.parser.MessageParser;
 import io.firstpass.manager.PasswordManager;
@@ -35,11 +28,11 @@ public class FirstPass {
         messageParser.addMessageListener("CREATE_DB", CreateDatabaseRequest.class, OpenDatabaseResponse.class, CreateDatabaseCallback::call);
         messageParser.addMessageListener("OPEN_DB", LoadDatabaseRequest.class, OpenDatabaseResponse.class, LoadDatabaseCallback::call);
         messageParser.addMessageListener("CLOSE_DB", EmptyRequest.class, SimpleStatusResponse.class, CloseDatabaseCallback::call);
-
-
         messageParser.addMessageListener("LIST_RECENT_DBS", EmtpyRequest.class, ListRecentDBsResponse.class, ListRecentDBsCallback::call);
 
         messageParser.addMessageListener("CREATE_ENTRY", CreateEntryRequest.class, CreateEntryResponse.class, CreateEntryCallback::call);
+
+        messageParser.addMessageListener("CREATE_CATEGORY", CreateCategoryRequest.class, CreateCategoryResponse.class, CreateCategoryCallback::call);
 
         while (true) {
             String message = ipcHandler.readLine();

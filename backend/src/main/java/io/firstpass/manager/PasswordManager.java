@@ -1,6 +1,5 @@
 package io.firstpass.manager;
 
-import io.firstpass.database.drivers.SQLiteDriver;
 import io.firstpass.database.models.CategoryModel;
 import io.firstpass.database.models.EncryptedEntryModel;
 import io.firstpass.encryption.symmetric.models.CipherData;
@@ -9,7 +8,6 @@ import io.firstpass.encryption.symmetric.ISymmetricEncryptionAlgorithm;
 import io.firstpass.manager.models.EntryModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class PasswordManager {
@@ -40,7 +38,6 @@ public class PasswordManager {
          String decryptedPassword = encryptionAlgorithm.decryptText(encryptedEntryModel.getPassword().getCipherData(), masterpassword);
        return new EntryModel(encryptedEntryModel.getId(), encryptedEntryModel.getName(), decryptedUsername, decryptedPassword);
    }
-
    public ArrayList<EntryModel> getAllEntries() {
        ArrayList<EntryModel> entryModels = new ArrayList<>();
        for (EncryptedEntryModel encryptedEntryModel : database.getEntries()) {
@@ -51,12 +48,15 @@ public class PasswordManager {
        return entryModels;
    }
 
+   public int addCategory(String name) {
+       return database.addCategory(name);
+    }
+    public List<CategoryModel> getAllCategories() {
+        return database.getAllCategories();
+    }
+
    public boolean closeDatabase() {
        return database.close();
-   }
-
-   public List<CategoryModel> getAllCategories() {
-       return database.getAllCategories();
    }
 }
 
