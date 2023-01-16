@@ -70,6 +70,11 @@ const PasswordListView = ({ currentCategory, setAddEntryPopupVisible }) => {
                 {entries?.map((entry) => (
                     <PasswordListItem key={entry.id} entry={entry} visible={matchesSearch(entry, searchTerm)} />
                 ))}
+                {entries?.length === 0 && (
+                    <div className="noEntries">
+                        <h2>No entries in this category</h2>
+                    </div>
+                )}
             </div>
         </div>
     );
