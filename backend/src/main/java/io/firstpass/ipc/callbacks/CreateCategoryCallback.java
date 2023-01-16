@@ -15,6 +15,11 @@ public class CreateCategoryCallback {
         if(FirstPass.passwordManager.getAllCategories().stream().findAny().filter(category -> Objects.equals(category.getCategory(), request.name)).isPresent())
             throw new IPCException(400, "Category already exists");
 
+        request.name = request.name.trim();
+
+        if(request.name.isEmpty())
+            throw new IPCException(400, "Category name cannot be empty");
+
         int id = FirstPass.passwordManager.addCategory(request.name);
         if (id == -1)
             throw new IPCException(500, "Failed to create category");
