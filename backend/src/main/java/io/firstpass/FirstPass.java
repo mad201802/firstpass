@@ -7,14 +7,17 @@ import io.firstpass.ipc.communication.request.*;
 import io.firstpass.ipc.communication.response.*;
 import io.firstpass.ipc.handler.IPCHandler;
 import io.firstpass.ipc.parser.MessageParser;
+import io.firstpass.logic.StrengthAnalyzer;
 import io.firstpass.manager.PasswordManager;
 
 public class FirstPass {
     public static PasswordManager passwordManager;
     public static Configuration<DefaultConfig> configuration;
+    public static StrengthAnalyzer strengthAnalyzer;
 
     public static void main(String[] args) {
-        configuration = new Configuration<>( new DefaultConfig(), System.getenv("APPDATA") + "\\firstpass", "firstpass_conf", false);
+        configuration = new Configuration<>( new DefaultConfig(), "firstpass_conf", false);
+        strengthAnalyzer = new StrengthAnalyzer();
 
         try {
             configuration.initConfig();
@@ -33,6 +36,8 @@ public class FirstPass {
         messageParser.addMessageListener("CREATE_ENTRY", CreateEntryRequest.class, CreateEntryResponse.class, CreateEntryCallback::call);
 
         messageParser.addMessageListener("CREATE_CATEGORY", CreateCategoryRequest.class, CreateCategoryResponse.class, CreateCategoryCallback::call);
+
+        messageParser.addMessageListener("GET_ENTROPY", GetEntropyRequest.class, GetEntropyResponse.class, GetEntropyCallback::call);
 
         while (true) {
             String message = ipcHandler.readLine();
