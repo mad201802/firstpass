@@ -61,10 +61,10 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
 
             <div className="toolbar">
                 <span>Categories</span>
-                <div className="toolbarButton edit" onClick={"/* TODO */"}>
+                <div className="toolbarButton edit" onClick={() => {}}>
                     <EditRounded />
                 </div>
-                <div className="toolbarButton delete" onClick={"/* TODO */"}>
+                <div className="toolbarButton delete" onClick={() => {}}>
                     <DeleteRounded />
                 </div>
                 <div className="toolbarButton add" onClick={() => setAddCategoryVisible(true)}>
@@ -77,9 +77,9 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
                     <AddCategory onAdd={addCategory} onCancel={() => setAddCategoryVisible(false)} />
                 )}
 
-                {db.categories?.map((category) => (
+                {db.categories?.map((category, i) => (
                     <div
-                        key={category.id}
+                        key={i}
                         className={`category ${currentCategory === category.id ? "active" : ""}`}
                         onClick={() => {
                             setCurrentCategory(category.id);

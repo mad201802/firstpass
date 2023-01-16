@@ -17,6 +17,7 @@
         padding: 0 15px;
         user-select: none;
 
+        z-index: 11;
 
         & #headerLogo {
             height: 35%;
@@ -53,6 +54,9 @@
         flex-shrink: 0;
         padding: 0 5px 0 15px;
         border-bottom: 2px solid var(--bg);
+
+        z-index: 10;
+        box-shadow: 0 0 10px 10px var(--bg-light);
 
         & span {
             margin-right: auto;
@@ -148,6 +152,7 @@
             
             &.active {
                 background-color: var(--bg);
+                z-index: 11;
                 
                 &::before {
                     width: 5px;
@@ -211,6 +216,7 @@
         align-items: center;
 
         z-index: 10;
+        box-shadow: 0 0 10px 10px var(--bg-light);
         border-top: 2px solid var(--bg);    
 
         margin-top: auto;

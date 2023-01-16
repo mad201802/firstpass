@@ -8,6 +8,7 @@ const FormInput = ({
     iconRight,
     placeholder,
     type = "text",
+    name,
     value,
     spellCheck = false,
     readOnly = false,
@@ -24,7 +25,7 @@ const FormInput = ({
         <div className={classes}>
             {iconLeft}
             <input
-                {...{ placeholder, type, value, spellCheck, readOnly, onInput, autoFocus }}
+                {...{ name, placeholder, type, value, spellCheck, readOnly, onInput, autoFocus }}
             />
             {iconRight}
         </div>

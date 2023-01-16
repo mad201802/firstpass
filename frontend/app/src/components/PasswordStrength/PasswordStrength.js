@@ -3,9 +3,10 @@ import React, { useEffect, useState } from "react";
 import "./PasswordStrength.less";
 
 const PasswordStrength = ( {password}) => {
-    const [strength, setStrength] = useState(0);
+    const [strength, setStrength] = useState(0.0);
 
     useEffect(() => {
+        if (password.length > 100) return;
         backend.call({
             type: "GET_ENTROPY",
             data: {

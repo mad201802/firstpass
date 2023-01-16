@@ -7,7 +7,7 @@ import PasswordListItem from "./PasswordListItem";
 
 import { AddRounded, ArrowUpwardRounded, SearchRounded } from "@mui/icons-material";
 
-import _entries from "./mock_entries.json";
+// import _entries from "./mock_entries.json";
 
 function matchesSearch(entry, searchTerm) {
     return (
@@ -20,18 +20,22 @@ function matchesSearch(entry, searchTerm) {
 
 const PasswordListView = ({ currentCategory, setAddEntryPopupVisible }) => {
     const { db } = useContext(AppContext);
-    db.entries = _entries;
+    // db.entries = _entries;
     const category = db.categories[currentCategory];
 
+    console.log("rendering password list view, category" + category.id)
+    const [entries, setEntries] = useState(
+        db.entries.filter((entry) => entry.category == category.id)
+    );
+    console.log(entries, db.entries, category.id);
 
-    const [entries, setEntries] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
 
-    useEffect(() => {
-        setEntries(db.entries.filter(
-            (entry) => entry.category === category.id
-        ));
-    }, [db.entries, category.id]);
+    // useEffect(() => {
+    //     setEntries(db.entries.filter(
+    //         (entry) => entry.category === category.id
+    //     ));
+    // }, [db.entries, category.id]);
 
     return (
         <div className="passwordListView">
@@ -67,8 +71,8 @@ const PasswordListView = ({ currentCategory, setAddEntryPopupVisible }) => {
                 </div>
             </div>
             <div className="passwordList">
-                {entries?.map((entry) => (
-                    <PasswordListItem key={entry.id} entry={entry} visible={matchesSearch(entry, searchTerm)} />
+                {entries?.map((entry, i) => (
+                    <PasswordListItem key={i} entry={entry} visible={matchesSearch(entry, searchTerm)} />
                 ))}
                 {entries?.length === 0 && (
                     <div className="noEntries">
