@@ -1,38 +1,40 @@
 package io.firstpass.driver;
 
 import io.firstpass.database.drivers.SQLiteDriver;
-import io.firstpass.database.models.CategoryModel;
 import io.firstpass.database.models.EncryptedEntryModel;
 import io.firstpass.encryption.symmetric.models.CipherData;
 import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.sql.SQLException;
-import java.util.List;
-import org.junit.*;
 
-
-import static org.junit.Assert.*;
 
 public class TestSqlDriver {
-    private SQLiteDriver db;
-    private final String testDbFile = "test.db";
-    private final String password = "testpassword";
-    @Before
-    public void setUp() throws Exception {
+    private static SQLiteDriver db;
+    private static final String testDbFile = "test.db";
+    private static final String password = "testpassword";
+    @BeforeAll
+    public static void setUp() {
+        System.out.println("Setting up test database");
+        File path = new File("./" + testDbFile);
+        boolean bDeleted = path.delete();
+        System.out.println("Could delete database: " + bDeleted);
         try{
             db = new SQLiteDriver(testDbFile,password);
+            System.out.println("Database created");
         } catch(SQLException e){
             e.printStackTrace();
         }
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown()  {
         File file = new File(testDbFile);
         if(file.exists()){
-            file.delete();
+            boolean bDeleted = file.delete();
+            System.out.println("Could delete database: " + bDeleted);
         }
     }
     @Test
@@ -46,20 +48,20 @@ public class TestSqlDriver {
 
         db.addEntry("Name", username, password, 0, "Category", "Notes");
         EncryptedEntryModel emc = db.getEntry("Name");
-        assertEquals("Name", emc.getName());
+        Assertions.assertEquals("Name", emc.getName());
     }
 
 
     @Test
     public void test_getAllCategories() {
         int size = db.getAllCategories().size();
-        assert size == 8;
+        Assertions.assertEquals(8, size); //currently 8 categories  in the database
     }
 
     @Test
     public void test_getAllEntries() {
         int size = db.getAllEntries().size();
-        assert size == 0;
+        Assertions.assertEquals(0, size); //currently 0 entries in the database
     }
 
 

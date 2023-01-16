@@ -56,9 +56,12 @@ public class SQLiteDriver implements IEncryptedDatabase {
 
     private void init_meta(String masterpassword) throws SQLException {
         if (metaDAO.queryForEq("key", "masterpassword").isEmpty()) {
-            metaDAO.create(new MetaModel("masterpassword", SHA256.hash(masterpassword)));
+            String hashedPassword = SHA256.hash(masterpassword);
+            metaDAO.create(new MetaModel("masterpassword", hashedPassword));
         } else {
-            if (!metaDAO.queryForEq("key", "masterpassword").get(0).getValue().equals(SHA256.hash(masterpassword))) {
+            String mp = metaDAO.queryForEq("key", "masterpassword").get(0).getValue();
+            String hashed = SHA256.hash(masterpassword);
+            if (!mp.equals(hashed)) {
                 throw new SQLException("Incorrect master password");
             }
         }
