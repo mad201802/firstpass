@@ -8,29 +8,33 @@ import io.firstpass.encryption.symmetric.models.CipherData;
 import java.util.List;
 
 /**
- * Interface for an encrypted io.firstpass.database.
+ * Interface for an encrypted io.firstpass.database
  */
 public interface IEncryptedDatabase {
+
     // Entries
-    int addEntry(String name, CipherData username, CipherData password, int categoryID, String url, String notes);
-    EncryptedEntryModel getEntry(int id);
-    EncryptedEntryModel getEntry(String name);
-    EncryptedEntryModel[] getEntries();
-    boolean deleteEntry(int id);
+    int createEntry(String name, CipherData username, CipherData password, int categoryID, String url, String notes);
+    EncryptedEntryModel getEntryById(int id);
+    List<EncryptedEntryModel> getAllEntries();
+    List<EncryptedEntryModel> getAllEntriesByCategory(int category_id);
+    int updateEntry(int entry_id, String name, CipherData username, CipherData password, int categoryID, String url, String notes);
+    boolean deleteEntryById(int id);
 
     // Categories
-    int addCategory(String name);
+    int createCategory(String name);
     CategoryModel getCategory(int id);
-    CategoryModel getCategory(String name);
+    int updateCategory(int id, String name);
     List<CategoryModel> getAllCategories();
+    boolean deleteCategory(int id);
 
 
     // Meta
-    int addMeta(String name, String value);
-    boolean deleteMeta(int id);
+    int createMeta(String name, String value);
     MetaModel getMeta(int id);
     MetaModel getMeta(String name);
     boolean updateMeta(int id, String key, String value);
+    boolean deleteMeta(int id);
+
     String getEncryptionAlgorithm();
 
     boolean close();

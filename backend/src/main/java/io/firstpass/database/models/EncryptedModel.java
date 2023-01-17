@@ -33,4 +33,7 @@ public class EncryptedModel {
         return data;
     }
 
+    public int getId() {
+        return id;
+    }
 }
