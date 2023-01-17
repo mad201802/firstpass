@@ -7,6 +7,12 @@ import java.util.Base64;
  */
 public class Utils {
 
+    public static boolean useLogging = true;
+
+    public static void log(String message) {
+        if(useLogging) System.out.println(message);
+    }
+
     /**
      * Converts a byte array to a Base64 encoded string
      * @param bytes The byte array to convert
