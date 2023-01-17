@@ -3,6 +3,7 @@ package io.firstpass.ipc.handler;
 import io.firstpass.ipc.handler.interfaces.IHandler;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class IPCHandler implements IHandler {
@@ -12,7 +13,7 @@ public class IPCHandler implements IHandler {
 
     public IPCHandler(InputStream inputStream, OutputStream outputStream) {
         this.inputStream = new Scanner(inputStream);
-        this.outputStream = new PrintStream(outputStream);
+        this.outputStream = new PrintStream(outputStream, true, StandardCharsets.UTF_8);
     }
 
     public String readLine() {
