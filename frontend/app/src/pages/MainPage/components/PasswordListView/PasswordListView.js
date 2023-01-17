@@ -6,8 +6,8 @@ import { Button, FormInput } from "components";
 import PasswordListItem from "./PasswordListItem";
 
 import { AddRounded, ArrowUpwardRounded, SearchRounded } from "@mui/icons-material";
+import useShortcut from "hooks/useShortcut";
 
-// import _entries from "./mock_entries.json";
 
 function matchesSearch(entry, searchTerm) {
     return (
@@ -20,17 +20,23 @@ function matchesSearch(entry, searchTerm) {
 }
 
 const PasswordListView = ({ currentCategory, setAddEntryPopupVisible }) => {
+
     const { db } = useContext(AppContext);
-    // db.entries = _entries;
+
     const category = db.categories.find((category) => category.id === currentCategory);
+    const entryCount = db.entries.filter((entry) => entry.category == category?.id).length;
 
-    const [entries, setEntries] = useState(null);
+    const [searchTerm, setSearchTerm] = useState("");
 
-    useEffect(() => {
-        setEntries(db.entries.filter((entry) => entry.category == category?.id));
-    }, [db, category]);
-
-    const [searchTerm, setSearchTerm] = useState(""); 
+    useShortcut("Ctrl-N", () => {
+        setAddEntryPopupVisible(true)
+    });
+    useShortcut("Ctrl-F", () => document.querySelector(".searchInput input").focus());
+    useShortcut("Escape", () => {
+        if(document.querySelector(".passwordListView .searchInput input")  === document.activeElement) {
+            setSearchTerm("");
+        }
+    });
 
     return (
         <div className="passwordListView">
@@ -41,7 +47,7 @@ const PasswordListView = ({ currentCategory, setAddEntryPopupVisible }) => {
                 </Button>
                 { category ? (
                     <span>
-                        {category.category} - {entries?.length || "0"} Entries
+                        {category.category} - {entryCount || "0"} Entries
                     </span>
                 ) : (
                     <span>No category selected</span>
@@ -70,10 +76,10 @@ const PasswordListView = ({ currentCategory, setAddEntryPopupVisible }) => {
                 </div>
             </div>
             <div className="passwordList">
-                {entries?.map((entry, i) => (
-                    <PasswordListItem key={i} entry={entry} visible={matchesSearch(entry, searchTerm)} />
+                {db.entries?.map((entry, i) => (
+                    <PasswordListItem key={i} entry={entry} visible={matchesSearch(entry, searchTerm) && entry.category == currentCategory} />
                 ))}
-                {entries?.length === 0 && (
+                {entryCount === 0 && (
                     <div className="noEntries">
                         <h2>{category ? "No entries in this category" : "No category selected"}</h2>
                     </div>

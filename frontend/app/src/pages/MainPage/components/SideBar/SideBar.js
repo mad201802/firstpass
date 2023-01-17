@@ -7,7 +7,6 @@ import AppContext from "contexts/App.context";
 import {
     DnsRounded,
     LogoutRounded,
-    SearchRounded,
     SettingsRounded,
     ListAltRounded,
     AddBoxRounded,
@@ -15,9 +14,9 @@ import {
     EditRounded
 } from "@mui/icons-material";
 import backend from "backend";
-import { useEffect } from "react";
 import AddCategory from "./components/AddCategory";
 import { Popup } from "components";
+import useShortcut from "hooks/useShortcut";
 
 const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, settingsVisible }) => {
     const { db, setDb } = useContext(AppContext);
@@ -38,6 +37,7 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
                 ...db,
                 categories: [...db.categories, { category: name, id: category.id }]
             });
+            setCurrentCategory(category.id);
 
         } catch (e) {
             console.error(e);
@@ -59,27 +59,32 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
                     id: currentCategory
                 }
             });
-            const categories = db.categories.filter((category) => category.id !== currentCategory);
+            const index = db.categories.findIndex(c => c.id === currentCategory);
+            const categories = db.categories.slice(0, index).concat(db.categories.slice(index + 1));
+            const entries = db.entries.map(e => {
+                if (e.category === currentCategory) {
+                    e.category = 1;
+                }
+                return e;
+            });
             setDb({
                 ...db,
-                categories
+                categories,
+                entries
             });
-            setCurrentCategory(null);
+
+            setCurrentCategory(categories[index-1].id);
 
         } catch (e) {
             console.error(e);
         }
     }
 
-    useEffect(() => {
-        const cb = e => {
-            if (e.ctrlKey && e.shiftKey && e.key === "N") {
-                setAddCategoryVisible(true);
-            }
-        }
-        document.addEventListener("keydown", cb);
-        return () => document.removeEventListener("keydown", cb);
-    }, [])
+    useShortcut(
+        "Ctrl-Shift-N",
+        () => setAddCategoryVisible(true)
+    );
+    useShortcut("Delete", () => deleteCategory());
 
     return (
         <div className="sidebar">
@@ -113,7 +118,40 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
                         onClick={() => {
                             setCurrentCategory(category.id);
                             setSettingsVisible(false);
-                        }}>
+                        }}
+                        onDragOver={e => {
+                            e.preventDefault();
+                            e.dataTransfer.dropEffect = "move";
+                        }}
+                        onDrop={async e => {
+                            e.preventDefault();
+                            const data = e.dataTransfer.getData("text");
+                            const entry = db.entries.find(e => e.id == data);
+                            if (entry && entry.category !== category.id) {
+                                try {
+                                    await backend.call({
+                                        type: "UPDATE_ENTRY",
+                                        data: {
+                                            ...entry,
+                                            category: category.id
+                                        }
+                                    });
+                                    console.log("dropped", entry, category);
+                                    setDb({
+                                        ...db,
+                                        entries: db.entries.map(e => {
+                                            if (e.id == entry.id) {
+                                                e.category = category.id;
+                                            }
+                                            return e;
+                                        })
+                                    });
+                                } catch (e) {
+                                    console.error(e);
+                                }
+                            }
+                        }}
+                    >
                         <ListAltRounded />
                         <p>{category.category}</p>
                     </div>

@@ -1,18 +1,14 @@
 import React, { useState, useContext, useRef } from "react";
 import "./AddEntryPopup.less";
-import { NameR, LinkRounded, PersonRounded, KeyRounded,FormatSizeRounded } from "@mui/icons-material";
+import { LinkRounded, PersonRounded, KeyRounded,FormatSizeRounded } from "@mui/icons-material";
 
-import { Button, FormInput, Popup } from "components";
+import { FormInput, Popup } from "components";
 import PasswordStrength from "components/PasswordStrength/PasswordStrength";
 
 import backend from "backend";
 import AppContext from "contexts/App.context";
 
 const AddEntryPopup = ({ setAddEntryPopupVisible, currentCategory}) => {
-    // const [username, setUsername] = useState("");
-    // const [url, setUrl] = useState("");
-    // const [password, setPassword] = useState("");
-    // const [name, setName] = useState("");
 
     const [state, setState] = useState({
         name: "",

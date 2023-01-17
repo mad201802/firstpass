@@ -16,6 +16,7 @@ import {
 } from "@mui/icons-material";
 
 import backend from "backend"
+import useShortcut from "hooks/useShortcut"
 
 
 const CreatePage = () => {
@@ -52,6 +53,8 @@ const CreatePage = () => {
         }
     
     }
+
+    useShortcut("Enter", create);
 
     async function selectFilePath() {
         const filepath = await backend.selectDBFile("save");

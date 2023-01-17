@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import "./SettingsView.less";
 import { FormInput } from "components";
+import useShortcut from "hooks/useShortcut";
 
 const SettingsView = ({ setSettingsVisible }) => {
 
@@ -11,17 +12,7 @@ const SettingsView = ({ setSettingsVisible }) => {
         document.body.style.setProperty("--primary", "#" + primaryColor);
     }, [primaryColor]);
 
-    useEffect(() => {
-        const cb = (e) => {
-            if (e.key === "Escape")
-                setSettingsVisible(false);
-        }
-        document.addEventListener("keydown", cb);
-
-        return () => {
-            document.removeEventListener("keydown", cb);
-        }
-    })
+    useShortcut("Escape", () => setSettingsVisible(false));
 
     return (
         <div className="settingsView">

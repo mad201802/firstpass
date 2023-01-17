@@ -8,11 +8,15 @@
     flex-direction: column;
     align-items: stretch;
 
-    & .wavesSvg :last-child {
-        fill: var(--primary) !important;
-    }
-    & .wavesSvg :first-child {
-        fill: var(--bg-lighter) !important;
+    & .wavesSvg {
+        position: absolute;
+        bottom: 0;
+        & :last-child {
+            fill: var(--primary) !important;
+        }
+        & :first-child {
+            fill: var(--bg-lighter) !important;
+        }
     }
 }
 
@@ -29,6 +33,7 @@
 .createForm {
 
     width: min(90%, 500px);
+    z-index: 5;
 
     display: flex;
     flex-direction: column;

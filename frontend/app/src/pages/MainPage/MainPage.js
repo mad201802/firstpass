@@ -1,11 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import "./MainPage.less";
 
 import SideBar from "./components/SideBar/SideBar";
 import { TitleBar } from "components";
 import PasswordListView from "./components/PasswordListView/PasswordListView";
 
-import AppContext from "contexts/App.context";
 import AddEntryPopup from "./components/AddEntryPopup/AddEntryPopup";
 import SettingsView from "./components/SettingsView/SettingsView";
 

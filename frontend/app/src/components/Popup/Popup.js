@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./Popup.less";
 
 import { CloseRounded } from "@mui/icons-material";
 import { Button } from "components";
+import useShortcut from "hooks/useShortcut";
 
 const Popup = ({
     onClose,
@@ -13,18 +14,8 @@ const Popup = ({
     title="Popup"
 }) => {
 
-    useEffect(() => {
-        const cb = (e) => {
-            if (e.key === "Escape") onClose();
-            if (e.key === "Enter") onSubmit();
-            //TODO: Do not submit when empty!
-        };
-
-        window.addEventListener("keydown", cb);
-        return () => {
-            window.removeEventListener("keydown", cb);
-        };
-    },[]);
+    useShortcut("Escape", () => onClose());
+    useShortcut("Enter", () => onSubmit());
 
     return (
         <div className="popupRapper">

@@ -60,6 +60,7 @@ module.exports = {
         alias: {
             components: path.resolve(__dirname, 'app/src/components'),
             contexts: path.resolve(__dirname, 'app/src/contexts'),
+            hooks: path.resolve(__dirname, 'app/src/hooks'),
             pages: path.resolve(__dirname, 'app/src/pages'),
             assets: path.resolve(__dirname, 'app/assets'),
             backend: path.resolve(__dirname, 'app/src/backend.js'),

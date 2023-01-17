@@ -9,35 +9,8 @@ import AppContext from "contexts/App.context"
 import backend from "backend"
 
 import { KeyRounded, DnsRounded, AddRounded } from "@mui/icons-material";
+import useShortcut from "hooks/useShortcut";
 
-
-const recentDBs_ = [
-    {
-        name: "Tom's DB",
-        date: "2021-10-10",
-        filepath: "C:\\Users\\tomfl\\Documents\\test.fpdb",
-    },
-    {
-        name: "Avaze' DB",
-        date: "2021-10-10",
-        filepath: "C:\\Users\\Avaze\\Documents\\test.fpdb",
-    },
-    {
-        name: "Maurice' DB",
-        date: "2021-10-10",
-        filepath: "C:\\Users\\mauri\\OneDrive\\Dokumente\\test.fpdb",
-    },
-    {
-        name: "Online Banking",
-        date: "2021-10-10",
-        filepath: "C:\\Users\\test\\Documents\\ein\\wirklich\\sehr\\langer\\pfad\\test2.fp",
-    },
-    {
-        name: "Arbeit",
-        date: "2021-10-10",
-        filepath: "C:\\Users\\test\\Documents\\test3.fp",
-    },
-]
 
 const RecentDB = ({ data }) => {
     return (
@@ -90,18 +63,7 @@ const LoginPage = () => {
     
     }
 
-    useEffect(() => {
-        const handler = e => {
-            if (e.key === "Enter") {
-                login();
-            }
-        }
-        document.addEventListener("keydown", handler);
-
-        return () => {
-            document.removeEventListener("keydown", handler);
-        }
-    })
+    useShortcut("Enter", login);
 
     const openFileOption = {
         component: () => {
