@@ -1,6 +1,7 @@
 package io.firstpass.config;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import io.firstpass.utils.Utils;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -151,7 +152,7 @@ public class Configuration<T> {
         } else if(osName.toLowerCase().contains("mac os")) {
             return "~/.config/firstpass";
         } else {
-            System.err.println("OS detection failed! Set path to NULL.");
+            Utils.log("OS detection failed! Set path to NULL.");
             return null;
         }
 
