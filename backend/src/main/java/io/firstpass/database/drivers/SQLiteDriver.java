@@ -22,7 +22,7 @@ import java.util.List;
  * This class is used to connect to a SQLite io.firstpass.database.
  */
 public class SQLiteDriver implements IEncryptedDatabase {
-    private static final String DATABASE_VERSION = "0.1.0";
+    private static final String DATABASE_VERSION = "0.2.0";
     private final ConnectionSource connectionSource;
     Dao<CategoryModel, Integer> categoryDAO;
     Dao<EncryptedEntryModel, Integer> entryDAO;
@@ -55,45 +55,6 @@ public class SQLiteDriver implements IEncryptedDatabase {
         init_categories();
     }
 
-    private void init_meta(String masterpassword) throws SQLException {
-        if (metaDAO.queryForEq("key", "masterpassword").isEmpty()) {
-            metaDAO.create(new MetaModel("masterpassword", SHA256.hash(masterpassword)));
-        } else {
-            if (!metaDAO.queryForEq("key", "masterpassword").get(0).getValue().equals(SHA256.hash(masterpassword))) {
-                throw new SQLException("Incorrect master password");
-            }
-        }
-
-        if (metaDAO.queryForEq("key", "version").isEmpty()) {
-            metaDAO.create(new MetaModel("version", DATABASE_VERSION));
-        } else {
-            if (!metaDAO.queryForEq("key", "version").get(0).getValue().equals(DATABASE_VERSION)) {
-                throw new SQLException("Incorrect database version");
-            }
-        }
-
-        if (metaDAO.queryForEq("key", "encryption_algorithm").isEmpty()) {
-            metaDAO.create(new MetaModel("encryption_algorithm", "aes256"));
-        }
-
-    }
-
-    private void init_categories() {
-        try {
-            categoryDAO.createIfNotExists(new CategoryModel(1, "Uncategorized"));
-            categoryDAO.createIfNotExists(new CategoryModel(2, "Social Media"));
-            categoryDAO.createIfNotExists(new CategoryModel(3, "Banking"));
-            categoryDAO.createIfNotExists(new CategoryModel(4, "Shopping"));
-            categoryDAO.createIfNotExists(new CategoryModel(5, "Gaming"));
-            categoryDAO.createIfNotExists(new CategoryModel(6, "Email"));
-            categoryDAO.createIfNotExists(new CategoryModel(7, "Streaming"));
-            categoryDAO.createIfNotExists(new CategoryModel(8, "Other"));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-
     /**
      * This method is used to add a new entry to the io.firstpass.database.
      * @param name The name of the entry.
@@ -102,7 +63,7 @@ public class SQLiteDriver implements IEncryptedDatabase {
      * @return The ID of the entry.
      */
     @Override
-    public int addEntry(String name, CipherData username, CipherData password, int categoryID, String url, String notes) {
+    public int createEntry(String name, CipherData username, CipherData password, int categoryID, String url, String notes) {
         try {
             CategoryModel category = categoryDAO.queryForId(categoryID);
             //if category is null, set it to Uncategorized
@@ -136,6 +97,35 @@ public class SQLiteDriver implements IEncryptedDatabase {
         return -1;
     }
 
+    /**
+     * Gets a entry from the io.firstpass.database.
+     * @param id The ID of the entry.
+     * @return The entry.
+     */
+    @Override
+    public EncryptedEntryModel getEntryById(int id) {
+        try {
+            return entryDAO.queryForId(id);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+    @Override
+    public List<EncryptedEntryModel> getAllEntries() {
+        try {
+            return entryDAO.queryForAll();
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+    @Override
+    public List<EncryptedEntryModel> getAllEntriesByCategory(int category_id) {
+        try {
+            return entryDAO.queryForEq("category_id", category_id);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
     @Override
     public int updateEntry(int entry_id, String name, CipherData username, CipherData password, int categoryID, String url, String notes) {
         try {
@@ -150,11 +140,9 @@ public class SQLiteDriver implements IEncryptedDatabase {
                 return -1;
             }
 
-            EncryptedModel usernameModel = new EncryptedModel(username.text, username.iv);
-            encryptedDAO.create(usernameModel);
+            EncryptedModel usernameModel = encryptedDAO.queryForEq("id", entry.getUsername().getId()).get(0);
 
-            EncryptedModel passwordModel = new EncryptedModel(password.text, password.iv);
-            encryptedDAO.create(passwordModel);
+            EncryptedModel passwordModel = encryptedDAO.queryForEq("id", entry.getPassword().getId()).get(0);
 
             entry.setName(name);
             entry.setUsername(usernameModel);
@@ -172,14 +160,13 @@ public class SQLiteDriver implements IEncryptedDatabase {
 
         return -1;
     }
-
     /**
      * Deletes a entry from the io.firstpass.database.
      * @param id The ID of the entry.
      * @return True if the entry was deleted, false otherwise.
      */
     @Override
-    public boolean deleteEntry(int id) {
+    public boolean deleteEntryById(int id) {
         try {
             return entryDAO.deleteById(id) == 1;
         } catch (SQLException e) {
@@ -187,8 +174,9 @@ public class SQLiteDriver implements IEncryptedDatabase {
         }
     }
 
+
     @Override
-    public int addCategory(String name) {
+    public int createCategory(String name) {
         try {
             CategoryModel categoryModel = new CategoryModel(name);
             categoryDAO.create(categoryModel);
@@ -197,38 +185,7 @@ public class SQLiteDriver implements IEncryptedDatabase {
             return -1;
         }
     }
-
-
-
-    /**
-     * Gets a entry from the io.firstpass.database.
-     * @param id The ID of the entry.
-     * @return The entry.
-     */
     @Override
-    public EncryptedEntryModel getEntry(int id) {
-        try {
-            return entryDAO.queryForId(id);
-        } catch (SQLException e) {
-            return null;
-        }
-    }
-
-    /**
-     * Gets a entrie based on the name.
-     * @param name The name of the entry.
-     * @return The entry.
-     */
-    @Override
-    public EncryptedEntryModel getEntry(String name) {
-        try {
-            return entryDAO.queryForEq("name", name).get(0);
-        } catch (SQLException e) {
-            return null;
-        }
-    }
-
-    //get category
     public CategoryModel getCategory(int id) {
         try {
             return categoryDAO.queryForId(id);
@@ -236,17 +193,7 @@ public class SQLiteDriver implements IEncryptedDatabase {
             return null;
         }
     }
-
-    //get category
-    public CategoryModel getCategory(String name) {
-        try {
-            return categoryDAO.queryForEq("name", name).get(0);
-        } catch (SQLException e) {
-            return null;
-        }
-    }
-
-    //get all categories
+    @Override
     public List<CategoryModel> getAllCategories() {
         try {
             return categoryDAO.queryForAll();
@@ -254,7 +201,10 @@ public class SQLiteDriver implements IEncryptedDatabase {
             return null;
         }
     }
-
+    @Override
+    public int updateCategory(int id, String name) {
+        return 0;
+    }
     @Override
     public boolean deleteCategory(int id) {
         try {
@@ -264,66 +214,9 @@ public class SQLiteDriver implements IEncryptedDatabase {
         }
     }
 
-    //get all entries
-    public List<EncryptedEntryModel> getAllEntries() {
-        try {
-            return entryDAO.queryForAll();
-        } catch (SQLException e) {
-            return null;
-        }
-    }
 
-    public List<EncryptedEntryModel> getAllEntriesByCategory(int category_id) {
-        try {
-            return entryDAO.queryForEq("category_id", category_id);
-        } catch (SQLException e) {
-            return null;
-        }
-    }
-
-    //get all entries in a category
-    public List<EncryptedEntryModel> getAllEntries(int categoryID) {
-        try {
-            return entryDAO.queryForEq("category_id", categoryID);
-        } catch (SQLException e) {
-            return null;
-        }
-    }
-
-    //count all entries in a category
-    public int countAllEntries(int categoryID) {
-        try {
-            return (int) entryDAO.countOf(entryDAO.queryBuilder().where().eq("category_id", categoryID).prepare());
-        } catch (SQLException e) {
-            return 0;
-        }
-    }
-
-    //count all entries
-    public int countAllEntries() {
-        try {
-            return (int) entryDAO.countOf();
-        } catch (SQLException e) {
-            return 0;
-        }
-    }
-
-
-    /**
-     * Gets all entries from the io.firstpass.database.
-     * @return All entries.
-     */
     @Override
-    public EncryptedEntryModel[] getEntries() {
-        try {
-            return entryDAO.queryForAll().toArray(new EncryptedEntryModel[0]);
-        } catch (SQLException e) {
-            return null;
-        }
-    }
-
-    //New functions for MetaModel
-    public int addMeta(String name, String value) {
+    public int createMeta(String name, String value) {
         try {
             MetaModel metaModel = new MetaModel(name, value);
             metaDAO.create(metaModel);
@@ -333,15 +226,7 @@ public class SQLiteDriver implements IEncryptedDatabase {
             return -1;
         }
     }
-
-    public boolean deleteMeta(int id) {
-        try {
-            return metaDAO.deleteById(id) == 1;
-        } catch (SQLException e) {
-            return false;
-        }
-    }
-
+    @Override
     public MetaModel getMeta(int id) {
         try {
             return metaDAO.queryForId(id);
@@ -349,7 +234,7 @@ public class SQLiteDriver implements IEncryptedDatabase {
             return null;
         }
     }
-
+    @Override
     public MetaModel getMeta(String name) {
         try {
             return metaDAO.queryForEq("name", name).get(0);
@@ -357,15 +242,7 @@ public class SQLiteDriver implements IEncryptedDatabase {
             return null;
         }
     }
-
-    public List<MetaModel> getAllMeta() {
-        try {
-            return metaDAO.queryForAll();
-        } catch (SQLException e) {
-            return null;
-        }
-    }
-
+    @Override
     public boolean updateMeta(int id, String key, String value) {
         try {
             MetaModel metaModel = metaDAO.queryForId(id);
@@ -376,12 +253,53 @@ public class SQLiteDriver implements IEncryptedDatabase {
             return false;
         }
     }
+    @Override
+    public boolean deleteMeta(int id) {
+        try {
+            return metaDAO.deleteById(id) == 1;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
 
     public String getEncryptionAlgorithm() {
         try {
             return metaDAO.queryForEq("key", "encryption_algorithm").get(0).getValue();
         } catch (SQLException e) {
             return null;
+        }
+    }
+
+
+    private void init_meta(String masterpassword) throws SQLException {
+        if (metaDAO.queryForEq("key", "masterpassword").isEmpty()) {
+            metaDAO.create(new MetaModel("masterpassword", SHA256.hash(masterpassword)));
+        } else {
+            if (!metaDAO.queryForEq("key", "masterpassword").get(0).getValue().equals(SHA256.hash(masterpassword))) {
+                throw new SQLException("Incorrect master password");
+            }
+        }
+
+        if (metaDAO.queryForEq("key", "version").isEmpty()) {
+            metaDAO.create(new MetaModel("version", DATABASE_VERSION));
+        } else {
+            if (!metaDAO.queryForEq("key", "version").get(0).getValue().equals(DATABASE_VERSION)) {
+                throw new SQLException("Incorrect database version");
+            }
+        }
+
+        if (metaDAO.queryForEq("key", "encryption_algorithm").isEmpty()) {
+            metaDAO.create(new MetaModel("encryption_algorithm", "aes256"));
+        }
+
+    }
+
+    private void init_categories() {
+        try {
+            categoryDAO.createIfNotExists(new CategoryModel(1, "Uncategorized"));
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
