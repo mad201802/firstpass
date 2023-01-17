@@ -12,6 +12,7 @@ import { AddRounded, ArrowUpwardRounded, SearchRounded } from "@mui/icons-materi
 function matchesSearch(entry, searchTerm) {
     return (
         searchTerm === "" ||
+        entry.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         entry.url?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         entry.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         entry.notes?.toLowerCase().includes(searchTerm.toLowerCase())
