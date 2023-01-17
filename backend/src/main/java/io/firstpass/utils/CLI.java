@@ -79,7 +79,7 @@ public class CLI {
     }
 
     public static void getAllPasswords() {
-        ArrayList<EntryModel> entries = passwordManager.getAllEntries();
+        ArrayList<EntryModel> entries = passwordManager.getAllEntriesByCategory();
         if (entries.size() == 0) {
             line("=====");
             line("No passwords found.");
@@ -102,7 +102,7 @@ public class CLI {
         String name = getUserInput("Name: ");
         String username = getUserInput("Username/E-Mail: ");
         String password = getUserInput("Password: ");
-        if (passwordManager.addEntry(name, username, password, 0, null, null) != -1) {
+        if (passwordManager.createEntry(name, username, password, 0, null, null) != -1) {
             line("Password added successfully.");
         } else {
             line("Failed to add password.");

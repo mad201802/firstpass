@@ -7,7 +7,6 @@ import io.firstpass.database.models.CategoryModel;
 import io.firstpass.encryption.exceptions.UnknownAlgorithmException;
 import io.firstpass.encryption.symmetric.ISymmetricEncryptionAlgorithm;
 import io.firstpass.encryption.symmetric.SymmetricEncryptionFactory;
-import io.firstpass.ipc.communication.request.CreateDatabaseRequest;
 import io.firstpass.ipc.communication.request.LoadDatabaseRequest;
 import io.firstpass.ipc.communication.response.OpenDatabaseResponse;
 import io.firstpass.ipc.exceptions.IPCException;
@@ -53,7 +52,7 @@ public class LoadDatabaseCallback {
         FirstPass.passwordManager = new PasswordManager(database, algo, request.masterpassword);
         ArrayList<CategoryModel> categories = (ArrayList<CategoryModel>) FirstPass.passwordManager.getAllCategories();
 
-        ArrayList<EntryModel> entries = FirstPass.passwordManager.getAllEntries();
+        ArrayList<EntryModel> entries = FirstPass.passwordManager.getAllEntriesByCategory();
 
         entries.forEach(entry -> entry.setPassword(String.join("", Collections.nCopies(entry.getPassword().length(), "*"))));
 

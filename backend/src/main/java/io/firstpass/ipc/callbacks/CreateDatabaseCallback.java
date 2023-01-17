@@ -49,7 +49,7 @@ public class CreateDatabaseCallback {
         FirstPass.passwordManager = new PasswordManager(database, algo, request.masterpassword);
         ArrayList<CategoryModel> categories = (ArrayList<CategoryModel>) FirstPass.passwordManager.getAllCategories();
 
-        ArrayList<EntryModel> entries = FirstPass.passwordManager.getAllEntries();
+        ArrayList<EntryModel> entries = FirstPass.passwordManager.getAllEntriesByCategory();
 
         entries.forEach(entry -> entry.setPassword(String.join("", Collections.nCopies(entry.getPassword().length(), "*"))));
 

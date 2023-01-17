@@ -12,9 +12,9 @@ import java.util.List;
 
 public class PasswordManager {
 
-    IEncryptedDatabase database;
-    ISymmetricEncryptionAlgorithm encryptionAlgorithm;
-    String masterpassword;
+    private final IEncryptedDatabase database;
+    private final ISymmetricEncryptionAlgorithm encryptionAlgorithm;
+    private final String masterpassword;
 
     public PasswordManager(IEncryptedDatabase database, ISymmetricEncryptionAlgorithm encryptionAlgorithm, String masterpassword) {
         this.database = database;
@@ -22,40 +22,63 @@ public class PasswordManager {
         this.masterpassword = masterpassword;
     }
 
-    public int addEntry(String name,String username, String password, int category_id, String url, String notes) {
+    public int createEntry(String name, String username, String password, int category_id, String url, String notes) {
         CipherData encryptedUsername = encryptionAlgorithm.encryptText(username, masterpassword);
         CipherData encryptedPassword = encryptionAlgorithm.encryptText(password, masterpassword);
-        return database.addEntry(name, encryptedUsername, encryptedPassword, category_id, url, notes);
+        return database.createEntry(name, encryptedUsername, encryptedPassword, category_id, url, notes);
     }
-
-   public void removeEntryByID(int id) {
-       database.deleteEntry(id);
-   }
-
-   public EntryModel getEntryByID(int id) {
-       EncryptedEntryModel encryptedEntryModel= database.getEntry(id);
+    public EntryModel getEntryById(int id) {
+       EncryptedEntryModel encryptedEntryModel= database.getEntryById(id);
          String decryptedUsername = encryptionAlgorithm.decryptText(encryptedEntryModel.getUsername().getCipherData(), masterpassword);
          String decryptedPassword = encryptionAlgorithm.decryptText(encryptedEntryModel.getPassword().getCipherData(), masterpassword);
-       return new EntryModel(encryptedEntryModel.getId(), encryptedEntryModel.getName(), decryptedUsername, decryptedPassword);
+       return new EntryModel(encryptedEntryModel.getId(), encryptedEntryModel.getName(), decryptedUsername, decryptedPassword, encryptedEntryModel.getCategory().getId(), encryptedEntryModel.getNotes(), encryptedEntryModel.getUrl());
    }
-   public ArrayList<EntryModel> getAllEntries() {
+    public ArrayList<EntryModel> getAllEntriesByCategory() {
        ArrayList<EntryModel> entryModels = new ArrayList<>();
-       for (EncryptedEntryModel encryptedEntryModel : database.getEntries()) {
+       for (EncryptedEntryModel encryptedEntryModel : database.getAllEntries()) {
            String decryptedUsername = encryptionAlgorithm.decryptText(encryptedEntryModel.getUsername().getCipherData(), masterpassword);
            String decryptedPassword = encryptionAlgorithm.decryptText(encryptedEntryModel.getPassword().getCipherData(), masterpassword);
-           entryModels.add(new EntryModel(encryptedEntryModel.getId(), encryptedEntryModel.getName(), decryptedUsername, decryptedPassword));
+           entryModels.add(new EntryModel(encryptedEntryModel.getId(), encryptedEntryModel.getName(), decryptedUsername, decryptedPassword, encryptedEntryModel.getCategory().getId(), encryptedEntryModel.getNotes(), encryptedEntryModel.getUrl()));
        }
        return entryModels;
    }
+    public ArrayList<EntryModel> getAllEntriesByCategory(int category_id) {
+        ArrayList<EntryModel> entryModels = new ArrayList<>();
+        for (EncryptedEntryModel encryptedEntryModel : database.getAllEntriesByCategory(category_id)) {
+            String decryptedUsername = encryptionAlgorithm.decryptText(encryptedEntryModel.getUsername().getCipherData(), masterpassword);
+            String decryptedPassword = encryptionAlgorithm.decryptText(encryptedEntryModel.getPassword().getCipherData(), masterpassword);
+            entryModels.add(new EntryModel(encryptedEntryModel.getId(), encryptedEntryModel.getName(), decryptedUsername, decryptedPassword, encryptedEntryModel.getCategory().getId(), encryptedEntryModel.getNotes(), encryptedEntryModel.getUrl()));
+        }
+        return entryModels;
+    }
+    public void deleteEntryById(int id) {
+        database.deleteEntryById(id);
+    }
 
-   public int addCategory(String name) {
-       return database.addCategory(name);
+
+    public int createCategory(String name) {
+        return database.createCategory(name);
     }
     public List<CategoryModel> getAllCategories() {
         return database.getAllCategories();
     }
+    public boolean deleteCategoryById(int id, boolean deleteEntries) {
+        ArrayList<EntryModel> entries = getAllEntriesByCategory(id);
+        if (deleteEntries) {
+            for (EntryModel entry : entries) {
+                deleteEntryById(entry.getId());
+            }
+        } else {
+            for (EntryModel entry : entries) {
+                database.updateEntry(entry.getId(), entry.getName(), encryptionAlgorithm.encryptText(entry.getUsername(), masterpassword), encryptionAlgorithm.encryptText(entry.getPassword(), masterpassword), 1, entry.getUrl(), entry.getNotes());
+            }
+        }
 
-   public boolean closeDatabase() {
+        return database.deleteCategory(id);
+    }
+
+
+    public boolean closeDatabase() {
        return database.close();
    }
 }

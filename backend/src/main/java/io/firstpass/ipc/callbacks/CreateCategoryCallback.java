@@ -20,7 +20,7 @@ public class CreateCategoryCallback {
         if(request.name.isEmpty())
             throw new IPCException(400, "Category name cannot be empty");
 
-        int id = FirstPass.passwordManager.addCategory(request.name);
+        int id = FirstPass.passwordManager.createCategory(request.name);
         if (id == -1)
             throw new IPCException(500, "Failed to create category");
 

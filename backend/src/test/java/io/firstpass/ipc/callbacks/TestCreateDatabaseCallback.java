@@ -18,7 +18,7 @@ public class TestCreateDatabaseCallback {
         OpenDatabaseResponse response = CreateDatabaseCallback.call(request);
         Assertions.assertNotNull(response);
         Assertions.assertEquals(0, response.entries.size());
-        Assertions.assertEquals(8, response.categories.size());
+        Assertions.assertEquals(1, response.categories.size());
     }
 
     @Test()
