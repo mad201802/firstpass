@@ -8,12 +8,18 @@ public class EntryModel {
     private String name;
     private String username;
     private String password;
+    private int category;
+    private String notes;
+    private String url;
 
-    public EntryModel(int id, String name, String username, String password) {
+    public EntryModel(int id, String name, String username, String password, int category, String notes, String url) {
         this.id = id;
         this.name = name;
         this.username = username;
         this.password = password;
+        this.category = category;
+        this.notes = notes;
+        this.url = url;
     }
 
     public int getId() {
@@ -32,6 +38,18 @@ public class EntryModel {
         return password;
     }
 
+    public int getCategory() {
+        return category;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -42,5 +60,17 @@ public class EntryModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

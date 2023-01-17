@@ -22,9 +22,12 @@ public class CreateEntryCallback {
 
         CreateEntryResponse response = new CreateEntryResponse();
         response.id = id;
+        response.url = request.url;
         response.name = request.name;
         response.username = request.username;
         response.password = String.join("", Collections.nCopies(request.password.length(), "*"));
+        response.category = request.category_id;
+        response.notes = request.notes;
 
         return response;
     }
