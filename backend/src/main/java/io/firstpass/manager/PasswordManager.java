@@ -37,14 +37,14 @@ public class PasswordManager {
        EncryptedEntryModel encryptedEntryModel= database.getEntry(id);
          String decryptedUsername = encryptionAlgorithm.decryptText(encryptedEntryModel.getUsername().getCipherData(), masterpassword);
          String decryptedPassword = encryptionAlgorithm.decryptText(encryptedEntryModel.getPassword().getCipherData(), masterpassword);
-       return new EntryModel(encryptedEntryModel.getId(), encryptedEntryModel.getName(), decryptedUsername, decryptedPassword);
+       return new EntryModel(encryptedEntryModel.getId(), encryptedEntryModel.getName(), decryptedUsername, decryptedPassword, encryptedEntryModel.getCategory().getId(), encryptedEntryModel.getNotes(), encryptedEntryModel.getUrl());
    }
    public ArrayList<EntryModel> getAllEntries() {
        ArrayList<EntryModel> entryModels = new ArrayList<>();
        for (EncryptedEntryModel encryptedEntryModel : database.getEntries()) {
            String decryptedUsername = encryptionAlgorithm.decryptText(encryptedEntryModel.getUsername().getCipherData(), masterpassword);
            String decryptedPassword = encryptionAlgorithm.decryptText(encryptedEntryModel.getPassword().getCipherData(), masterpassword);
-           entryModels.add(new EntryModel(encryptedEntryModel.getId(), encryptedEntryModel.getName(), decryptedUsername, decryptedPassword));
+           entryModels.add(new EntryModel(encryptedEntryModel.getId(), encryptedEntryModel.getName(), decryptedUsername, decryptedPassword, encryptedEntryModel.getCategory().getId(), encryptedEntryModel.getNotes(), encryptedEntryModel.getUrl()));
        }
        return entryModels;
    }
@@ -54,7 +54,7 @@ public class PasswordManager {
         for (EncryptedEntryModel encryptedEntryModel : database.getAllEntriesByCategory(category_id)) {
             String decryptedUsername = encryptionAlgorithm.decryptText(encryptedEntryModel.getUsername().getCipherData(), masterpassword);
             String decryptedPassword = encryptionAlgorithm.decryptText(encryptedEntryModel.getPassword().getCipherData(), masterpassword);
-            entryModels.add(new EntryModel(encryptedEntryModel.getId(), encryptedEntryModel.getName(), decryptedUsername, decryptedPassword));
+            entryModels.add(new EntryModel(encryptedEntryModel.getId(), encryptedEntryModel.getName(), decryptedUsername, decryptedPassword, encryptedEntryModel.getCategory().getId(), encryptedEntryModel.getNotes(), encryptedEntryModel.getUrl()));
         }
         return entryModels;
     }
