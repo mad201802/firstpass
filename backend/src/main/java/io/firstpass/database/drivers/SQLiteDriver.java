@@ -57,10 +57,6 @@ public class SQLiteDriver implements IEncryptedDatabase {
     public SQLiteDriver(String filepath) throws SQLException {
         Logger.setGlobalLogLevel(Level.WARNING);
 
-        if(!Files.exists(Path.of(filepath))) {
-            throw new SQLException("File does not exist");
-        }
-
         this.connectionSource = new JdbcConnectionSource("jdbc:sqlite:" + filepath);
 
         metaDAO = DaoManager.createDao(connectionSource, MetaModel.class);
