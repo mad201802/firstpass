@@ -19,7 +19,7 @@ function matchesSearch(entry, searchTerm) {
     )
 }
 
-const PasswordListView = ({ currentCategory, setAddEntryPopupVisible }) => {
+const PasswordListView = ({ currentCategory, setAddEntryPopupVisible, setCurrentEntry }) => {
 
     const { db } = useContext(AppContext);
 
@@ -45,7 +45,7 @@ const PasswordListView = ({ currentCategory, setAddEntryPopupVisible }) => {
                     <AddRounded />
                     New
                 </Button>
-                { category ? (
+                {category ? (
                     <span>
                         {category.category} - {entryCount || "0"} Entries
                     </span>
@@ -57,7 +57,7 @@ const PasswordListView = ({ currentCategory, setAddEntryPopupVisible }) => {
                     placeholder="Search"
                     iconLeft={<SearchRounded />}
                     value={searchTerm}
-                    onInput={(e) => setSearchTerm(e.target.value)}
+                    onInput={e => setSearchTerm(e.target.value)}
                 />
             </div>
             <div className="sortingOptions">
@@ -76,8 +76,13 @@ const PasswordListView = ({ currentCategory, setAddEntryPopupVisible }) => {
                 </div>
             </div>
             <div className="passwordList">
-                {db.entries?.map((entry, i) => (
-                    <PasswordListItem key={i} entry={entry} visible={matchesSearch(entry, searchTerm) && entry.category == currentCategory} />
+                {db.entries?.map((entry) => (
+                    <PasswordListItem
+                        key={entry.id}
+                        entry={entry}
+                        visible={matchesSearch(entry, searchTerm) && entry.category == currentCategory}
+                        setCurrentEntry={setCurrentEntry}
+                    />
                 ))}
                 {entryCount === 0 && (
                     <div className="noEntries">

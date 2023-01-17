@@ -1,6 +1,6 @@
 import React from "react";
 
-const useShortcut = (shortcut, callback) => {
+const useShortcut = (shortcut, callback, active = true) => {
     
     const key = shortcut.split(/[\+-]/g).pop().toLowerCase();
     const shift = shortcut.toLowerCase().includes("shift");
@@ -14,9 +14,10 @@ const useShortcut = (shortcut, callback) => {
     }
 
     React.useEffect(() => {
+        if (!active) return;
         document.addEventListener("keydown", handler);
         return () => document.removeEventListener("keydown", handler);
-    }, [shortcut, callback]);
+    }, [shortcut, callback, active]);
 }
 
 export default useShortcut;

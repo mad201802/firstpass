@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "./SideBar.less";
 
 import FirstpassLogo from "assets/svg/logo_small.svg";
@@ -17,12 +17,14 @@ import backend from "backend";
 import AddCategory from "./components/AddCategory";
 import { Popup } from "components";
 import useShortcut from "hooks/useShortcut";
+import Category from "./components/Category";
 
 const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, settingsVisible }) => {
     const { db, setDb } = useContext(AppContext);
 
-    const [addCategoryVisible, setAddCategoryVisible] = React.useState(false);
-    const [deleteConfirmationVisible, setDeleteConfirmationVisible] = React.useState(false);
+    const [addCategoryVisible, setAddCategoryVisible] = useState(false);
+    const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
+    const [editCategoryVisible, setEditCategoryVisible] = useState(false);
 
     async function addCategory(name) {
         try {
@@ -45,6 +47,7 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
     }
 
     async function deleteCategory(confirmed=false) {
+        if (currentCategory === 1) return;
         if (!confirmed) {
             setDeleteConfirmationVisible(true);
             return;
@@ -79,12 +82,17 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
             console.error(e);
         }
     }
+    function editCategory() {
+        if (currentCategory === 1) return;
+        setEditCategoryVisible(true);
+    }
 
     useShortcut(
         "Ctrl-Shift-N",
         () => setAddCategoryVisible(true)
     );
     useShortcut("Delete", () => deleteCategory());
+    useShortcut("F2", editCategory);
 
     return (
         <div className="sidebar">
@@ -95,7 +103,7 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
 
             <div className="toolbar">
                 <span>Categories</span>
-                <div className="toolbarButton edit" onClick={() => {}}>
+                <div className="toolbarButton edit" onClick={editCategory}>
                     <EditRounded />
                 </div>
                 <div className="toolbarButton delete" onClick={() => deleteCategory()}>
@@ -111,49 +119,16 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
                     <AddCategory onAdd={addCategory} onCancel={() => setAddCategoryVisible(false)} />
                 )}
 
-                {db.categories?.map((category, i) => (
-                    <div
-                        key={i}
-                        className={`category ${currentCategory === category.id ? "active" : ""}`}
-                        onClick={() => {
-                            setCurrentCategory(category.id);
-                            setSettingsVisible(false);
-                        }}
-                        onDragOver={e => {
-                            e.preventDefault();
-                            e.dataTransfer.dropEffect = "move";
-                        }}
-                        onDrop={async e => {
-                            e.preventDefault();
-                            const data = e.dataTransfer.getData("text");
-                            const entry = db.entries.find(e => e.id == data);
-                            if (entry && entry.category !== category.id) {
-                                try {
-                                    await backend.call({
-                                        type: "UPDATE_ENTRY",
-                                        data: {
-                                            id: entry.id,
-                                            category: category.id
-                                        }
-                                    });
-                                    setDb({
-                                        ...db,
-                                        entries: db.entries.map(e => {
-                                            if (e.id == entry.id) {
-                                                e.category = category.id;
-                                            }
-                                            return e;
-                                        })
-                                    });
-                                } catch (e) {
-                                    console.error(e);
-                                }
-                            }
-                        }}
-                    >
-                        <ListAltRounded />
-                        <p>{category.category}</p>
-                    </div>
+                {db.categories?.map(category => (
+                    <Category
+                        key={category.id}
+                        {...category}
+                        currentCategory={currentCategory}
+                        setCurrentCategory={setCurrentCategory}
+                        setSettingsVisible={setSettingsVisible}
+                        editCategoryVisible={editCategoryVisible}
+                        setEditCategoryVisible={setEditCategoryVisible}
+                    />
                 ))}
             </div>
 
@@ -176,15 +151,16 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
                     <LogoutRounded />
                 </div>
             </div>
-            { deleteConfirmationVisible && <Popup
-                onClose={() => setDeleteConfirmationVisible(false)}
-                onSubmit={() => deleteCategory(true)}
-                title="Confirm Action"
-            >
-                {`Are you sure you want to delete category "${
-                    db.categories.find(c => c.id == currentCategory)?.category
-                }"? This action cannot be undone.`}
-            </Popup>}
+            {deleteConfirmationVisible && (
+                <Popup
+                    onClose={() => setDeleteConfirmationVisible(false)}
+                    onSubmit={() => deleteCategory(true)}
+                    title="Confirm Action">
+                    {`Are you sure you want to delete category "${
+                        db.categories.find(c => c.id == currentCategory)?.category
+                    }"? This action cannot be undone.`}
+                </Popup>
+            )}
         </div>
     );
 };

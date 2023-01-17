@@ -1,6 +1,6 @@
 import React from "react";
 
-const useEventListener = (eventName, handler, element = window) => {
+const useEventListener = (eventName, handler, element = window, deps) => {
     const savedHandler = React.useRef();
 
     React.useEffect(() => {
@@ -17,7 +17,7 @@ const useEventListener = (eventName, handler, element = window) => {
         return () => {
             element.removeEventListener(eventName, eventListener);
         };
-    }, [eventName, element]);
+    }, [eventName, element, ...deps]);
 }
 
 export default useEventListener;

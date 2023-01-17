@@ -1,0 +1,46 @@
+.entryView {
+
+    --pad-x: 40px;
+
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    flex-grow: 1;
+
+    &-header {
+        padding: 15px var(--pad-x) 0;
+
+        display: flex;
+        height: 15px + 30px;
+
+        .backButton {
+            height: 100%;
+            min-height: unset;
+            padding: 0 15px 0 5px;
+            background-color: var(--bg-light);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border-radius: var(--radius);
+            color: var(--text-dark);
+            user-select: none;
+
+            font-size: 12px;
+
+            &:hover {
+                background-color: var(--primary);
+                color: var(--text);
+                & > svg {
+                    fill: var(--text);
+                }
+            }
+            &:active {
+                background-color: var(--primary-dark);
+            }
+            & > svg {
+                width: 20px;
+                fill: var(--text-dark);
+            }
+        }
+    }
+}
