@@ -140,11 +140,9 @@ public class SQLiteDriver implements IEncryptedDatabase {
                 return -1;
             }
 
-            EncryptedModel usernameModel = new EncryptedModel(username.text, username.iv);
-            encryptedDAO.create(usernameModel);
+            EncryptedModel usernameModel = encryptedDAO.queryForEq("id", entry.getUsername().getId()).get(0);
 
-            EncryptedModel passwordModel = new EncryptedModel(password.text, password.iv);
-            encryptedDAO.create(passwordModel);
+            EncryptedModel passwordModel = encryptedDAO.queryForEq("id", entry.getPassword().getId()).get(0);
 
             entry.setName(name);
             entry.setUsername(usernameModel);
