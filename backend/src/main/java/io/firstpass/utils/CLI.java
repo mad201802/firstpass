@@ -114,7 +114,7 @@ public class CLI {
         String password = getUserInput("Password to test:");
         // line(strengthAnalyzer.checkStrength(password));
         line(strengthAnalyzer.computeEntropy(password));
-        line(strengthAnalyzer.entropyToStrength(strengthAnalyzer.computeEntropy(password)));
+        // line(strengthAnalyzer.entropyToStrength(strengthAnalyzer.computeEntropy(password)));
     }
 
     private static void login() {
