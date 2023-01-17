@@ -40,13 +40,11 @@ const AddEntryPopup = ({ setAddEntryPopupVisible, currentCategory}) => {
                 category_id: currentCategory
             }
         });
-        console.log("from backend:", entry);
         setDb(db => {
             const newDb = { ...db };
             newDb.entries.push(entry);
             return newDb;
         });
-        console.log(`Adding entry with url: ${stateRef.current.url}, username: ${stateRef.current.username}, password: ${stateRef.current.password} in category ${currentCategory}`);
     }
 
     return (

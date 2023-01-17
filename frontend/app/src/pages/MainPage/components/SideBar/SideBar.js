@@ -30,7 +30,6 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
                 name
             }
         });
-        console.log(category);
         setAddCategoryVisible(false);
         setDb({
             ...db,

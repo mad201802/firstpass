@@ -27,7 +27,6 @@ const PasswordListView = ({ currentCategory, setAddEntryPopupVisible }) => {
     const [entries, setEntries] = useState(null);
 
     useEffect(() => {
-        console.log("refilter")
         setEntries(db.entries.filter((entry) => entry.category == category.id));
     }, [db, category]);
 
