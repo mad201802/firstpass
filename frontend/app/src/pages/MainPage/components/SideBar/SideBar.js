@@ -132,11 +132,10 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
                                     await backend.call({
                                         type: "UPDATE_ENTRY",
                                         data: {
-                                            ...entry,
-                                            category: category.id
+                                            id: entry.id,
+                                            category_id: category.id
                                         }
                                     });
-                                    console.log("dropped", entry, category);
                                     setDb({
                                         ...db,
                                         entries: db.entries.map(e => {
