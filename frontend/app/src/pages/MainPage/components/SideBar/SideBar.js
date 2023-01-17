@@ -24,7 +24,7 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
     const [addCategoryVisible, setAddCategoryVisible] = React.useState(false);
 
     async function addCategory(name) {
-        const category = await backend.call({
+        const {data: category} = await backend.call({
             type: "CREATE_CATEGORY",
             data: {
                 name

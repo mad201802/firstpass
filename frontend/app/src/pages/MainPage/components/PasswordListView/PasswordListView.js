@@ -21,21 +21,17 @@ function matchesSearch(entry, searchTerm) {
 const PasswordListView = ({ currentCategory, setAddEntryPopupVisible }) => {
     const { db } = useContext(AppContext);
     // db.entries = _entries;
-    const category = db.categories[currentCategory];
+    const category = db.categories.find((category) => category.id === currentCategory);
 
     console.log("rendering password list view, category" + category.id)
-    const [entries, setEntries] = useState(
-        db.entries.filter((entry) => entry.category == category.id)
-    );
-    console.log(entries, db.entries, category.id);
+    const [entries, setEntries] = useState(null);
 
-    const [searchTerm, setSearchTerm] = useState("");
+    useEffect(() => {
+        console.log("refilter")
+        setEntries(db.entries.filter((entry) => entry.category == category.id));
+    }, [db, category]);
 
-    // useEffect(() => {
-    //     setEntries(db.entries.filter(
-    //         (entry) => entry.category === category.id
-    //     ));
-    // }, [db.entries, category.id]);
+    const [searchTerm, setSearchTerm] = useState(""); 
 
     return (
         <div className="passwordListView">
