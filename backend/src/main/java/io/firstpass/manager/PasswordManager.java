@@ -51,6 +51,24 @@ public class PasswordManager {
         }
         return entryModels;
     }
+
+    public EntryModel updateEntry(int id, String name, String username, String password, int category_id, String url, String notes) {
+        CipherData encryptedUsername , encryptedPassword;
+
+        if(username != null)
+            encryptedUsername = encryptionAlgorithm.encryptText(username, masterpassword);
+        else
+            encryptedUsername = null;
+
+        if(password != null)
+            encryptedPassword = encryptionAlgorithm.encryptText(password, masterpassword);
+        else
+            encryptedPassword = null;
+
+        database.updateEntry(id, name, encryptedUsername, encryptedPassword, category_id, url, notes);
+        return getEntryById(id);
+    }
+
     public void deleteEntryById(int id) {
         database.deleteEntryById(id);
     }

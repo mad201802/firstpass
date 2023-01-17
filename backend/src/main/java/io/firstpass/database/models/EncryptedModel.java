@@ -33,6 +33,11 @@ public class EncryptedModel {
         return data;
     }
 
+    public void setCipherData(CipherData data) {
+        cipher = data.text;
+        iv = data.iv;
+    }
+
     public int getId() {
         return id;
     }
