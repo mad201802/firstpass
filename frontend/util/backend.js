@@ -12,7 +12,7 @@ let onError = () => {};
 
 function connect() {
     const jarLocation = app.isPackaged ? "./backend.jar" : "../backend/target/backend-1.0-SNAPSHOT.jar";
-    ipc = new IPC("java", ["-jar", jarLocation]);
+    ipc = new IPC("java", ["-jar", jarLocation, "--no-logging"]);
 
     ipc._onExit = () => {
         onError({ code: 10, message: "The process exited unexpectedly", id: "ERR_EXIT" });
