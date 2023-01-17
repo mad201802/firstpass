@@ -13,6 +13,7 @@ import io.firstpass.database.models.EncryptedEntryModel;
 import io.firstpass.database.models.MetaModel;
 import io.firstpass.encryption.hashing.SHA256;
 import io.firstpass.encryption.symmetric.models.CipherData;
+import io.firstpass.utils.Utils;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -99,7 +100,7 @@ public class SQLiteDriver implements IEncryptedDatabase {
 
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            Utils.log(e.getMessage());
             return -1;
         }
         return -1;
@@ -157,15 +158,12 @@ public class SQLiteDriver implements IEncryptedDatabase {
             }
 
             if(username != null) {
-                System.out.println("Updating username");
-                System.out.println(username.text);
                 EncryptedModel usernameModel = encryptedDAO.queryForEq("id", entry.getUsername().getId()).get(0);
                 usernameModel.setCipherData(username);
                 encryptedDAO.update(usernameModel);
             }
 
             if(password != null) {
-                System.out.println("Updating password");
                 EncryptedModel passwordModel = encryptedDAO.queryForEq("id", entry.getPassword().getId()).get(0);
                 passwordModel.setCipherData(password);
                 encryptedDAO.update(passwordModel);
@@ -250,7 +248,7 @@ public class SQLiteDriver implements IEncryptedDatabase {
             metaDAO.create(metaModel);
             return metaModel.getId();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            Utils.log(e.getMessage());
             return -1;
         }
     }

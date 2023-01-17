@@ -13,10 +13,10 @@ public class CreateEntryCallback {
             throw new IPCException(400, "Database not loaded");
 
         // Check if category exists
-        if(FirstPass.passwordManager.getAllCategories().stream().filter(category -> category.getId() == request.category_id).findAny().isEmpty())
+        if(FirstPass.passwordManager.getAllCategories().stream().filter(category -> category.getId() == request.category).findAny().isEmpty())
             throw new IPCException(400, "Category does not exist");
 
-        int id = FirstPass.passwordManager.createEntry(request.name, request.username, request.password, request.category_id, request.url, request.notes);
+        int id = FirstPass.passwordManager.createEntry(request.name, request.username, request.password, request.category, request.url, request.notes);
 
         CreateEntryResponse response = new CreateEntryResponse();
         response.id = id;
@@ -24,7 +24,7 @@ public class CreateEntryCallback {
         response.name = request.name;
         response.username = request.username;
         response.password = String.join("", Collections.nCopies(request.password.length(), "*"));
-        response.category_id = request.category_id;
+        response.category = request.category;
         response.notes = request.notes;
 
         return response;

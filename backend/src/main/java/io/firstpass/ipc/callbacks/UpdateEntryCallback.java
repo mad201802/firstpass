@@ -13,10 +13,10 @@ public class UpdateEntryCallback {
         if(FirstPass.passwordManager == null)
             throw new IPCException(400, "Database not loaded");
         // Check if category exists
-        if(FirstPass.passwordManager.getAllCategories().stream().filter(category -> category.getId() == request.category_id).findAny().isEmpty() && request.category_id != -1)
+        if(FirstPass.passwordManager.getAllCategories().stream().filter(category -> category.getId() == request.category).findAny().isEmpty() && request.category != -1)
             throw new IPCException(400, "Category does not exist");
 
-        EntryModel updated = FirstPass.passwordManager.updateEntry(request.id, request.name, request.username, request.password, request.category_id, request.url, request.notes);
+        EntryModel updated = FirstPass.passwordManager.updateEntry(request.id, request.name, request.username, request.password, request.category, request.url, request.notes);
         if(updated == null)
             throw new IPCException(400, "Entry does not exist");
 
@@ -26,7 +26,7 @@ public class UpdateEntryCallback {
         response.name = updated.getName();
         response.username = updated.getUsername();
         response.password = String.join("", Collections.nCopies(updated.getPassword().length(), "*"));
-        response.category_id = updated.getCategory();
+        response.category = updated.getCategory();
         response.notes = updated.getNotes();
 
         return response;

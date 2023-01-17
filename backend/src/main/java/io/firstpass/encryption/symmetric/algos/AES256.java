@@ -84,7 +84,7 @@ public class AES256 implements ISymmetricEncryptionAlgorithm {
         try {
             return SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
         } catch (NoSuchAlgorithmException ex) {
-            System.out.println("Could not get Secret Key Factory");
+            Utils.log("Could not get Secret Key Factory");
             return null;
         }
     }

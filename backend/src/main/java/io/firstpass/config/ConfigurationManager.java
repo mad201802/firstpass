@@ -1,6 +1,8 @@
 package io.firstpass.config;
 
 
+import io.firstpass.utils.Utils;
+
 import java.io.*;
 import java.nio.file.FileSystemException;
 import java.util.Arrays;
@@ -22,9 +24,9 @@ public class ConfigurationManager {
         this.configDirectory = configDirectory;
         this.configFileName = configFileName;
         if(this.initializeConfig()) {
-            System.out.println("Config created or available!");
+            Utils.log("Config created or available!");
         } else {
-            System.out.println("Config not available...");
+            Utils.log("Config not available...");
         }
     }
 
@@ -33,14 +35,14 @@ public class ConfigurationManager {
         try{
              result = this.sysProperties.getProperty(key);
         } catch (Exception e) {
-            System.out.println(e);
+            Utils.log(e.getMessage());
             return result;
         }
         if(result.contains("|")) {
-            System.out.println("<---------------------------------------------->");
-            System.out.println("WARNING! Did you try to get a saved array?");
-            System.out.println("Use getPropertyArray() instead :)");
-            System.out.println("<---------------------------------------------->");
+            Utils.log("<---------------------------------------------->");
+            Utils.log("WARNING! Did you try to get a saved array?");
+            Utils.log("Use getPropertyArray() instead :)");
+            Utils.log("<---------------------------------------------->");
         }
         return result;
     }
@@ -50,7 +52,7 @@ public class ConfigurationManager {
         try{
             data = this.sysProperties.getProperty(key);
         } catch (Exception e) {
-            System.out.println(e);
+            Utils.log(e.getMessage());
             return result;
         }
         result = data.split("\\|");
@@ -63,11 +65,11 @@ public class ConfigurationManager {
             sysProperties.store(new FileWriter(this.configDirectory + "/" + this.configFileName), "Updated config via setProperty()...");
 
         } catch(Exception e) {
-            System.out.println("An error occurred while setting property " + key + " to value " + value + " !");
-            System.out.println(e);
+            Utils.log("An error occurred while setting property " + key + " to value " + value + " !");
+            Utils.log(e.getMessage());
             return;
         }
-        System.out.println("Set property "+ key + " to value " + value);
+        Utils.log("Set property "+ key + " to value " + value);
     }
     public void setProperty(String key, String[] values) {
         final String separator = "|";
@@ -101,21 +103,21 @@ public class ConfigurationManager {
             try {
                 sysProperties.load(new FileInputStream(this.configDirectory + "/" + this.configFileName));
                 boolean hasReqKeys = this.hasRequiredKeys(sysProperties);
-                System.out.println("File has required keys: " + hasReqKeys);
+                Utils.log("File has required keys: " + hasReqKeys);
 
                 if(!hasReqKeys) {
                     // TODO: Implement automatic creation of missing keys
                     sysProperties.setProperty("test", "wert");
                     sysProperties.store(new FileWriter(this.configDirectory + "/" + this.configFileName), "Had to set missing keys...");
-                    System.out.println("Had to set missing keys...");
+                    Utils.log("Had to set missing keys...");
                 }
             } catch (IOException e) {
-                System.out.println("Couldn't load properties!");
-                System.out.println(e);
+                Utils.log("Couldn't load properties!");
+                Utils.log(e.getMessage());
             }
             return true;
         }
-        System.out.println("Something went wrong while initializing the config!");
+        Utils.log("Something went wrong while initializing the config!");
         return false;
 
 
@@ -126,7 +128,7 @@ public class ConfigurationManager {
         if (!folderToCheck.isDirectory()) {
             boolean createdDir = new File(this.configDirectory).mkdirs();
             if (!createdDir) {
-                System.out.println("Couldn't create config directory!");
+                Utils.log("Couldn't create config directory!");
                 throw new FileSystemException(null);
             }
         }
@@ -136,10 +138,10 @@ public class ConfigurationManager {
     public boolean createConfigFile() throws IOException {
         String[] fileNameSplitted = this.configFileName.split("\\.(?=[^\\.]+$)");
         boolean alreadyExists = this.fileInDirectory(fileNameSplitted[0], this.configDirectory);
-        System.out.println("File already exists: " + alreadyExists);
+        Utils.log("File already exists: " + alreadyExists);
         if (!alreadyExists) {
             boolean fileCreated = new File(this.configDirectory + "/" + this.configFileName).createNewFile();
-            System.out.println("Created new file: " + fileCreated);
+            Utils.log("Created new file: " + fileCreated);
             if(!fileCreated) {
                 return false;
             }
@@ -150,16 +152,16 @@ public class ConfigurationManager {
     public boolean fileInDirectory(String filename, String directory) {
         File folder = new File(directory);
         File[] listOfFiles = folder.listFiles();
-        System.out.println("List of files in config dir: " + Arrays.toString(listOfFiles));
+        Utils.log("List of files in config dir: " + Arrays.toString(listOfFiles));
         if (listOfFiles == null) {
-            System.out.println("No files in config dir!");
+            Utils.log("No files in config dir!");
             return false;
         }
         for (File file : listOfFiles) {
             if (file.isFile()) {
                 String[] tempFilename = file.getName().split("\\.(?=[^\\.]+$)"); //split filename from it's extension
                 if (tempFilename[0].equalsIgnoreCase(filename)) { //matching defined filename
-                    System.out.println("File exist: " + tempFilename[0] + "." + tempFilename[1]); // match occures.Apply any condition what you need
+                    Utils.log("File exist: " + tempFilename[0] + "." + tempFilename[1]); // match occures.Apply any condition what you need
                     return true;
                 }
             }

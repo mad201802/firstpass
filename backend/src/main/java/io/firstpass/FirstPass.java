@@ -9,6 +9,7 @@ import io.firstpass.ipc.handler.IPCHandler;
 import io.firstpass.ipc.parser.MessageParser;
 import io.firstpass.logic.StrengthAnalyzer;
 import io.firstpass.manager.PasswordManager;
+import io.firstpass.utils.Utils;
 
 import java.util.HashMap;
 
@@ -18,6 +19,10 @@ public class FirstPass {
     public static StrengthAnalyzer strengthAnalyzer;
 
     public static void main(String[] args) {
+
+        // Disable Logging when run by electron app
+        if (args.length != 0 && args[0].equals("--no-logging")) Utils.useLogging = false;
+
         configuration = new Configuration<>( new DefaultConfig(), "firstpass_conf", false);
         strengthAnalyzer = new StrengthAnalyzer();
 
