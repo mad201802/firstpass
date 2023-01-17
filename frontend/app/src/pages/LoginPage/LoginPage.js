@@ -73,9 +73,22 @@ const LoginPage = () => {
                 </div>
             );
         },
-        onClick: () => {
+        onClick: async () => {
             // TODO create a new entry in recent dbs from filepath
-            console.log("File:", backend.selectDBFile());
+            const db_file = await backend.selectDBFile();
+            try {
+                const { data: db_info } = await backend.call({
+                    type: "ADD_RECENT_DB",
+                    data: {
+                        filepath: db_file,
+                    }
+                });
+                setDatabase(recentDBs.length);
+                setRecentDBs([...recentDBs, db_info]);
+                document.querySelector(".masterpasswordInput input").focus();
+            } catch (e) {
+                setError(e);
+            }
         },
     }
 

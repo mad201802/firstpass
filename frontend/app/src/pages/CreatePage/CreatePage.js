@@ -12,7 +12,8 @@ import {
     KeyRounded,
     MoreHorizRounded,
     InsertDriveFileRounded,
-    ArrowBackIosRounded
+    ArrowBackIosRounded,
+    FormatSizeRounded
 } from "@mui/icons-material";
 
 import backend from "backend"
@@ -29,6 +30,7 @@ const CreatePage = () => {
         const masterpassword = document.querySelector(".masterpasswordA input").value.trim();
         const masterpassword2 = document.querySelector(".masterpasswordB input").value.trim();
         const filepath = document.querySelector(".dbPathInput input").value.trim();
+        const name = document.querySelector(".nameInput input").value.trim();
 
         // TODO: Show error message
         if (masterpassword !== masterpassword2) {
@@ -42,6 +44,7 @@ const CreatePage = () => {
                 data: {
                     masterpassword,
                     filepath,
+                    name
                 }
             });
             setDb(db);
@@ -76,13 +79,19 @@ const CreatePage = () => {
 
                     <div className="createFormInputs">
                         {error && <ErrorMessage error={error} />}
+                        <FormInput
+                                placeholder="Enter Vault Name"
+                                type="text"
+                                className="nameInput"
+                                iconLeft={<FormatSizeRounded />}
+                                autoFocus={true}
+                            />
                         <div className="databaseInput">
                             <FormInput
-                                placeholder="Enter Database Path"
+                                placeholder="Enter Vault Path"
                                 type="text"
                                 className="dbPathInput"
                                 iconLeft={<InsertDriveFileRounded />}
-                                autoFocus={true}
                             />
                             <Button onClick={selectFilePath} >{<MoreHorizRounded />}</Button>
                         </div>

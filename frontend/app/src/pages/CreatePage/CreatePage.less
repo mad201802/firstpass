@@ -41,6 +41,10 @@
     justify-content: center;
     gap: 50px;
 
+    & .formInput {
+        height: 45px;
+    }
+
     .createPageTitle {
         width: 100%;
         display: flex;
@@ -100,6 +104,7 @@
                 transition: border-color 200ms ease;
                 display: grid;
                 place-items: center;
+                min-height: unset !important;
                 &:hover{
                 
                     border-color:var(--primary) ;

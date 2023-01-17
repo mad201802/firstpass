@@ -138,7 +138,7 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
             </div>
             <div className="currentDBInfo">
                 <DnsRounded />
-                <p>DB Name</p>
+                <p>{db.name}</p>
                 <div
                     className="logoutButton"
                     onClick={() => {
