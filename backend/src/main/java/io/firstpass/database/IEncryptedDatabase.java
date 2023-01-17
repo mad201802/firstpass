@@ -5,6 +5,7 @@ import io.firstpass.database.models.EncryptedEntryModel;
 import io.firstpass.database.models.MetaModel;
 import io.firstpass.encryption.symmetric.models.CipherData;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -32,6 +33,7 @@ public interface IEncryptedDatabase {
     int createMeta(String name, String value);
     MetaModel getMeta(int id);
     MetaModel getMeta(String name);
+    HashMap<String, String> getAllMeta();
     boolean updateMeta(int id, String key, String value);
     boolean deleteMeta(int id);
 

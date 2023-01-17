@@ -14,8 +14,12 @@ import io.firstpass.database.models.MetaModel;
 import io.firstpass.encryption.hashing.SHA256;
 import io.firstpass.encryption.symmetric.models.CipherData;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -34,9 +38,8 @@ public class SQLiteDriver implements IEncryptedDatabase {
      * @param filepath The path to the io.firstpass.database file.
      * @throws SQLException If the connection fails.
      */
-    public  SQLiteDriver(String filepath, String masterpassword) throws SQLException {
-        Logger.setGlobalLogLevel(Level.WARNING);
-        this.connectionSource = new JdbcConnectionSource("jdbc:sqlite:" + filepath);
+    public SQLiteDriver(String filepath, String masterpassword) throws SQLException {
+        this(filepath);
 
         encryptedDAO = DaoManager.createDao(connectionSource, EncryptedModel.class);
         TableUtils.createTableIfNotExists(connectionSource, EncryptedModel.class);
@@ -47,12 +50,21 @@ public class SQLiteDriver implements IEncryptedDatabase {
         entryDAO = DaoManager.createDao(connectionSource, EncryptedEntryModel.class);
         TableUtils.createTableIfNotExists(connectionSource, EncryptedEntryModel.class);
 
+        init_meta(masterpassword);
+        init_categories();
+    }
+
+    public SQLiteDriver(String filepath) throws SQLException {
+        Logger.setGlobalLogLevel(Level.WARNING);
+
+        if(!Files.exists(Path.of(filepath))) {
+            throw new SQLException("File does not exist");
+        }
+
+        this.connectionSource = new JdbcConnectionSource("jdbc:sqlite:" + filepath);
+
         metaDAO = DaoManager.createDao(connectionSource, MetaModel.class);
         TableUtils.createTableIfNotExists(connectionSource, MetaModel.class);
-
-        init_meta(masterpassword);
-
-        init_categories();
     }
 
     /**
@@ -241,6 +253,25 @@ public class SQLiteDriver implements IEncryptedDatabase {
         } catch (SQLException e) {
             return null;
         }
+    }
+
+    @Override
+    public HashMap<String, String> getAllMeta() {
+        ArrayList<String> excludes = new ArrayList<>();
+        excludes.add("masterpassword");
+
+        HashMap<String, String> metadata = new HashMap<>();
+        try {
+            List<MetaModel> metaModels = metaDAO.queryForAll();
+            for (MetaModel metaModel : metaModels) {
+                if (!excludes.contains(metaModel.key)) {
+                    metadata.put(metaModel.getKey(), metaModel.getValue());
+                }
+            }
+        } catch (SQLException e) {
+            return null;
+        }
+        return metadata;
     }
     @Override
     public boolean updateMeta(int id, String key, String value) {
