@@ -28,7 +28,7 @@ const AddEntryPopup = ({ setAddEntryPopupVisible, currentCategory}) => {
 
     async function addEntry() {
         setAddEntryPopupVisible(false);
-        const { data: entry } = await backend.call({
+        let { data: entry } = await backend.call({
             type: "CREATE_ENTRY",
             data:{ 
                 ...stateRef.current,
@@ -36,6 +36,9 @@ const AddEntryPopup = ({ setAddEntryPopupVisible, currentCategory}) => {
                 category_id: currentCategory
             }
         });
+        entry.category = entry.category_id;
+        delete entry.category_id;
+        console.log(entry);
         setDb(db => {
             const newDb = { ...db };
             newDb.entries.push(entry);
