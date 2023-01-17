@@ -10,6 +10,8 @@ import io.firstpass.ipc.parser.MessageParser;
 import io.firstpass.logic.StrengthAnalyzer;
 import io.firstpass.manager.PasswordManager;
 
+import java.util.HashMap;
+
 public class FirstPass {
     public static PasswordManager passwordManager;
     public static Configuration<DefaultConfig> configuration;
@@ -40,6 +42,7 @@ public class FirstPass {
         messageParser.addMessageListener("DELETE_CATEGORY", DeleteCategoryRequest.class, SimpleStatusResponse.class, DeleteCategoryCallback::call);
 
         messageParser.addMessageListener("GET_ENTROPY", GetEntropyRequest.class, GetEntropyResponse.class, GetEntropyCallback::call);
+        messageParser.addMessageListener("QUERY_DB", QueryDatabaseRequest.class, HashMap.class, QueryDatabaseCallback::call);
 
         while (true) {
             String message = ipcHandler.readLine();
