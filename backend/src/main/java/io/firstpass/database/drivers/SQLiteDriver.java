@@ -146,22 +146,42 @@ public class SQLiteDriver implements IEncryptedDatabase {
                 return -1;
             }
 
-            CategoryModel category = categoryDAO.queryForId(categoryID);
-            //if category is null, set it to Uncategorized
-            if (category == null) {
-                return -1;
+            if(categoryID != -1) {
+                CategoryModel category = categoryDAO.queryForId(categoryID);
+                //if category is null, set it to Uncategorized
+                if (category == null) {
+                    return -1;
+                }
+
+                entry.setCategory(category);
             }
 
-            EncryptedModel usernameModel = encryptedDAO.queryForEq("id", entry.getUsername().getId()).get(0);
+            if(name != null) {
+                entry.setName(name);
+            }
 
-            EncryptedModel passwordModel = encryptedDAO.queryForEq("id", entry.getPassword().getId()).get(0);
+            if(username != null) {
+                System.out.println("Updating username");
+                System.out.println(username.text);
+                EncryptedModel usernameModel = encryptedDAO.queryForEq("id", entry.getUsername().getId()).get(0);
+                usernameModel.setCipherData(username);
+                encryptedDAO.update(usernameModel);
+            }
 
-            entry.setName(name);
-            entry.setUsername(usernameModel);
-            entry.setPassword(passwordModel);
-            entry.setCategory(category);
-            entry.setUrl(url);
-            entry.setNotes(notes);
+            if(password != null) {
+                System.out.println("Updating password");
+                EncryptedModel passwordModel = encryptedDAO.queryForEq("id", entry.getPassword().getId()).get(0);
+                passwordModel.setCipherData(password);
+                encryptedDAO.update(passwordModel);
+            }
+
+            if(url != null) {
+                entry.setUrl(url);
+            }
+
+            if(notes != null) {
+                entry.setNotes(notes);
+            }
 
             if (entryDAO.update(entry) == 1) {
                 return entry.getId();
