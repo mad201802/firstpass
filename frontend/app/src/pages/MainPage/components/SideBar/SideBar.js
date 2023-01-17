@@ -133,7 +133,7 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
                                         type: "UPDATE_ENTRY",
                                         data: {
                                             id: entry.id,
-                                            category_id: category.id
+                                            category: category.id
                                         }
                                     });
                                     setDb({

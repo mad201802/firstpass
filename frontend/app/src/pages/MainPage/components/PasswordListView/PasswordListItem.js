@@ -10,7 +10,7 @@ function getDomain(url) {
 }
 
 const PasswordListItem = ({ entry, visible }) => {
-    const [imgLoadError, setImgLoadError] = React.useState(!entry.url?.match(/https?:\/\/.\..{2,}/i));
+    const [imgLoadError, setImgLoadError] = React.useState(!entry.url?.match(/https?:\/\/.*\..{2,}/i));
 
     return (
         <div className="passwordListItem" data-hidden={!visible} draggable={true} onDragStart={e => {

@@ -33,11 +33,9 @@ const AddEntryPopup = ({ setAddEntryPopupVisible, currentCategory}) => {
             data:{ 
                 ...stateRef.current,
                 notes: "",
-                category_id: currentCategory
+                category: currentCategory
             }
         });
-        entry.category = entry.category_id;
-        delete entry.category_id;
         console.log(entry);
         setDb(db => {
             const newDb = { ...db };
