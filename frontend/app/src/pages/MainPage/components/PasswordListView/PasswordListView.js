@@ -27,7 +27,7 @@ const PasswordListView = ({ currentCategory, setAddEntryPopupVisible }) => {
     const [entries, setEntries] = useState(null);
 
     useEffect(() => {
-        setEntries(db.entries.filter((entry) => entry.category == category.id));
+        setEntries(db.entries.filter((entry) => entry.category == category?.id));
     }, [db, category]);
 
     const [searchTerm, setSearchTerm] = useState(""); 
@@ -35,13 +35,17 @@ const PasswordListView = ({ currentCategory, setAddEntryPopupVisible }) => {
     return (
         <div className="passwordListView">
             <div className="toolbar">
-                <Button className="addButton" onClick={() => setAddEntryPopupVisible(true)}>
+                <Button className="addButton" onClick={() => setAddEntryPopupVisible(true)} disabled={!category}>
                     <AddRounded />
                     New
                 </Button>
-                <span>
-                    {category.category} - {entries?.length || "0"} Entries
-                </span>
+                { category ? (
+                    <span>
+                        {category.category} - {entries?.length || "0"} Entries
+                    </span>
+                ) : (
+                    <span>No category selected</span>
+                )}
                 <FormInput
                     className="searchInput"
                     placeholder="Search"
@@ -71,7 +75,7 @@ const PasswordListView = ({ currentCategory, setAddEntryPopupVisible }) => {
                 ))}
                 {entries?.length === 0 && (
                     <div className="noEntries">
-                        <h2>No entries in this category</h2>
+                        <h2>{category ? "No entries in this category" : "No category selected"}</h2>
                     </div>
                 )}
             </div>

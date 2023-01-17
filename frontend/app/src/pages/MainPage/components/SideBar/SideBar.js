@@ -17,28 +17,58 @@ import {
 import backend from "backend";
 import { useEffect } from "react";
 import AddCategory from "./components/AddCategory";
+import { Popup } from "components";
 
 const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, settingsVisible }) => {
     const { db, setDb } = useContext(AppContext);
 
     const [addCategoryVisible, setAddCategoryVisible] = React.useState(false);
+    const [deleteConfirmationVisible, setDeleteConfirmationVisible] = React.useState(false);
 
     async function addCategory(name) {
-        const {data: category} = await backend.call({
-            type: "CREATE_CATEGORY",
-            data: {
-                name
-            }
-        });
-        setAddCategoryVisible(false);
-        setDb({
-            ...db,
-            categories: [...db.categories, { category: name, id: category.id }]
-        });
+        try {
+            const {data: category} = await backend.call({
+                type: "CREATE_CATEGORY",
+                data: {
+                    name
+                }
+            });
+            setAddCategoryVisible(false);
+            setDb({
+                ...db,
+                categories: [...db.categories, { category: name, id: category.id }]
+            });
+
+        } catch (e) {
+            console.error(e);
+        }
     }
 
-    async function deleteCategory() {
+    async function deleteCategory(confirmed=false) {
+        if (!confirmed) {
+            setDeleteConfirmationVisible(true);
+            return;
+        }
 
+        setDeleteConfirmationVisible(false);
+            
+        try {
+            const res = await backend.call({
+                type: "DELETE_CATEGORY",
+                data: {
+                    id: currentCategory
+                }
+            });
+            const categories = db.categories.filter((category) => category.id !== currentCategory);
+            setDb({
+                ...db,
+                categories
+            });
+            setCurrentCategory(null);
+
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     useEffect(() => {
@@ -63,7 +93,7 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
                 <div className="toolbarButton edit" onClick={() => {}}>
                     <EditRounded />
                 </div>
-                <div className="toolbarButton delete" onClick={() => {}}>
+                <div className="toolbarButton delete" onClick={() => deleteCategory()}>
                     <DeleteRounded />
                 </div>
                 <div className="toolbarButton add" onClick={() => setAddCategoryVisible(true)}>
@@ -109,6 +139,15 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
                     <LogoutRounded />
                 </div>
             </div>
+            { deleteConfirmationVisible && <Popup
+                onClose={() => setDeleteConfirmationVisible(false)}
+                onSubmit={() => deleteCategory(true)}
+                title="Confirm Action"
+            >
+                {`Are you sure you want to delete category "${
+                    db.categories.find(c => c.id == currentCategory)?.category
+                }"? This action cannot be undone.`}
+            </Popup>}
         </div>
     );
 };
