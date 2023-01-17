@@ -5,7 +5,7 @@ public class StrengthAnalyzer {
      * Provides utilities to rate the strength of a provided password.
      */
 
-    public static enum PasswordStrength {
+    public enum PasswordStrength {
         VERY_WEAK(1),
         WEAK(2),
         MEDIUM(3),
@@ -135,10 +135,12 @@ public class StrengthAnalyzer {
         }
 
 
-        int length = password.length();
+        // If passwort length >= 256, always set length to 256 to prevent calculation error.
+        int length = Math.min(password.length(), 256);
 
         double numberOfCombinations = Math.pow(charsetSize, length);
-        double entropy = Math.log(numberOfCombinations) / Math.log(2);
+        double entropy;
+        entropy = Math.log(numberOfCombinations) / Math.log(2);
         return entropy;
     }
 
