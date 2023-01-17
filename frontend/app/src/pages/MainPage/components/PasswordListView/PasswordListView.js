@@ -24,7 +24,6 @@ const PasswordListView = ({ currentCategory, setAddEntryPopupVisible }) => {
     // db.entries = _entries;
     const category = db.categories.find((category) => category.id === currentCategory);
 
-    console.log("rendering password list view, category" + category.id)
     const [entries, setEntries] = useState(null);
 
     useEffect(() => {
