@@ -26,7 +26,7 @@ public class UpdateEntryCallback {
         response.name = updated.getName();
         response.username = updated.getUsername();
         response.password = String.join("", Collections.nCopies(updated.getPassword().length(), "*"));
-        response.category = updated.getCategory();
+        response.category_id = updated.getCategory();
         response.notes = updated.getNotes();
 
         return response;
