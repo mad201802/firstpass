@@ -1,5 +1,5 @@
 package io.firstpass.ipc.communication.request;
 
-public class QueryDatabaseRequest {
+public class AddRecentDbRequest {
     public String filepath;
 }
