@@ -23,8 +23,8 @@ public class UpdateCategoryCallback {
             throw new IPCException(400, "Category name cannot be empty");
 
         int id = FirstPass.passwordManager.updateCategory(request.id, request.new_name);
-        if (id == -1)
-            throw new IPCException(500, "Failed to create category");
+//        if (id == -1)
+//            throw new IPCException(500, "Failed to create category");
 
         UpdateCategoryResponse response = new UpdateCategoryResponse();
         response.id = id;
