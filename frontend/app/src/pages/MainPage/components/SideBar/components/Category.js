@@ -30,7 +30,7 @@ const Category = ({ currentCategory, category, id, setCurrentCategory, setSettin
                 type: "UPDATE_CATEGORY",
                 data: {
                     id,
-                    name: value,
+                    new_name: value,
                 }
             });
             setDb({
@@ -58,6 +58,7 @@ const Category = ({ currentCategory, category, id, setCurrentCategory, setSettin
 
     async function onDrop(e) {
         e.preventDefault();
+        elRef.current.classList.remove("dragover");
 
         const data = e.dataTransfer.getData("text");
         const entry = db.entries.find(e => e.id == data);

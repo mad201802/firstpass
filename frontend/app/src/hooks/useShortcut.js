@@ -1,7 +1,7 @@
 import React from "react";
 
 const useShortcut = (shortcut, callback, active = true) => {
-    
+    shortcut = shortcut || "";
     const key = shortcut.split(/[\+-]/g).pop().toLowerCase();
     const shift = shortcut.toLowerCase().includes("shift");
     const ctrl = shortcut.toLowerCase().includes("ctrl");

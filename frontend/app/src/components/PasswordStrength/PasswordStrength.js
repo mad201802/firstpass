@@ -2,11 +2,11 @@ import backend from "backend";
 import React, { useEffect, useState } from "react";
 import "./PasswordStrength.less";
 
-const PasswordStrength = ( {password, style}) => {
+const PasswordStrength = ( {password, style, enabled=true}) => {
     const [strength, setStrength] = useState(0.0);
 
     useEffect(() => {
-        if (password.length > 256) return;
+        if (password.length > 256 || !enabled) return;
         backend.call({
             type: "GET_ENTROPY",
             data: {
@@ -15,7 +15,7 @@ const PasswordStrength = ( {password, style}) => {
         }).then(res => {
             setStrength(res.data.entropy.toFixed(1));
         })
-    }, [password]);
+    }, [password, enabled]);
 
     let strength_name;
     if (strength < 15){

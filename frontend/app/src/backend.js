@@ -53,7 +53,6 @@ const call = async (data) => {
     try {
         res = JSON.parse(await ipcRenderer.invoke("call", data));
     } catch (e) {
-        console.log(e)
         throw { message: "Backend returned invalid message", code: 500 }
     }
     if (res.error) throw res.error;
@@ -64,12 +63,12 @@ const call = async (data) => {
  * Show a dialog to open/save a db file
  * @returns {Promise<string[]|string|undefined>} The selected files
  */
-function selectDBFile(type = "open", previousPath = null) {
+function selectDBFile(type = "open", previousPath = "") {
     switch(type) {
         case "open":
             return ipcRenderer.invoke("showOpenDialog", {
                 title: "Select a Firstpass Database",
-                properties: ["openFile"],
+                properties: ["openFile", "multiSelections"],
                 filters: [
                     { name: "Firstpass Database", extensions: ["fpdb"] },
                 ],

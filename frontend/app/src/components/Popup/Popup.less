@@ -5,8 +5,8 @@
     position: absolute;
     top: 0;
     left: 0;
-    background-color: rgba(0,0,0,0.5);
-    backdrop-filter: blur(3px);
+    background-color: rgba(0,0,0,0.2);
+    backdrop-filter: blur(5px);
 
     display: grid;
     place-items: center;
@@ -22,11 +22,11 @@
     }
 
     background-color: var(--bg);
-    border-radius: 10px;
+    border-radius: var(--radius-lg);
     display: flex;
     flex-direction: column;
     padding: 20px;
-    box-shadow: 0 0 10px 0 rgba(0,0,0,0.5);
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
     z-index: 90;
     position: relative;
     overflow: hidden;
@@ -72,8 +72,4 @@
     &:hover{
         background-color: var(--bg-lighter);
     }
-}
-
-.popupContent {
-    
 }

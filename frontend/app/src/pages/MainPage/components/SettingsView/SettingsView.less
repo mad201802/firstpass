@@ -1,7 +1,62 @@
 .settingsView {
     display: flex;
     flex-direction: column;
+    padding: 20px 0 0 40px;
+    overflow: hidden;
 
-    & &Header {
+    & * {
+        user-select: none;
+    }
+
+    &-header {
+        box-shadow: 0 0 10px 10px var(--bg);
+        z-index: 10;
+    }
+
+    &-content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px 40px 40px 0;
+
+        overflow-y: auto;
+        &::-webkit-scrollbar {
+            width: 10px;
+        }
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        &::-webkit-scrollbar-thumb {
+            background: var(--bg-lighter);
+            border-radius: var(--radius);
+        }
+        &::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        .editableProp {
+            p { width: 50%; }
+            input {
+                color: var(--primary);
+            }
+        }
+
+        .resetButton {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            height: 40px;
+            
+            & p {
+                color: var(--text-dark);
+                font-size: 12px;
+                cursor: pointer;
+                padding: 0 10px;
+
+                &:hover {
+                    color: var(--error);
+                }
+            }
+        }
     }
 }

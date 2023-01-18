@@ -61,7 +61,6 @@ const CreatePage = () => {
 
         if (masterpassword !== masterpassword2) {
             setError({code: 400, message: "Passwords don't match"});
-            console.log("Passwords don't match");
             return;
         }
     

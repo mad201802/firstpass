@@ -36,7 +36,6 @@ const AddEntryPopup = ({ setAddEntryPopupVisible, currentCategory}) => {
                 category: currentCategory
             }
         });
-        console.log(entry);
         setDb(db => {
             const newDb = { ...db };
             newDb.entries.push(entry);

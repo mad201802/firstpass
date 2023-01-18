@@ -21,17 +21,17 @@ function matchesSearch(entry, searchTerm) {
 
 const PasswordListView = ({ currentCategory, setAddEntryPopupVisible, setCurrentEntry }) => {
 
-    const { db } = useContext(AppContext);
+    const { db, settings: { createEntryShortcut, searchShortcut } } = useContext(AppContext);
 
     const category = db.categories.find((category) => category.id === currentCategory);
     const entryCount = db.entries.filter((entry) => entry.category == category?.id).length;
 
     const [searchTerm, setSearchTerm] = useState("");
 
-    useShortcut("Ctrl-N", () => {
+    useShortcut(createEntryShortcut, () => {
         setAddEntryPopupVisible(true)
     });
-    useShortcut("Ctrl-F", () => document.querySelector(".searchInput input").focus());
+    useShortcut(searchShortcut, () => document.querySelector(".searchInput input").focus());
     useShortcut("Escape", () => {
         if(document.querySelector(".passwordListView .searchInput input")  === document.activeElement) {
             setSearchTerm("");

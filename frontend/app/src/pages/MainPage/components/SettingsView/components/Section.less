@@ -1,0 +1,53 @@
+.settingsSection {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    --divider: var(--bg-lighter);
+
+    &[data-open="true"] {
+        .settingsSection-header {
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        }
+    }
+
+    &-header {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        background-color: var(--bg-light);
+        border-radius: var(--radius-lg);
+        transition: border-color 200ms ease;
+        cursor: pointer;
+        gap: 5px;
+
+        &:hover{
+            background-color: var(--bg-lighter);
+        }
+
+        & .foldButton {
+            margin-left: auto;
+        }
+
+        & p {
+            font-size: 16px;
+            font-weight: bold;
+            padding: 0 5px;
+        }
+
+    }
+
+    &-content {
+        padding: 10px;
+        overflow: hidden;
+        background-color: var(--bg-light);
+        border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    }
+
+
+    &[data-open="false"] {
+        .settingsSection-content {
+            height: 0;
+            padding: 0;
+        }
+    }
+}

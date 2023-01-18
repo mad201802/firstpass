@@ -11,7 +11,7 @@ import {
     VisibilityOffRounded,
 } from "@mui/icons-material";
 
-const EditableProp = ({ icon, name, placeholder, password, onUpdate, value, multiline, title }) => {
+const EditableProp = ({ icon, name, placeholder, password, onUpdate, value, multiline, title, copyable=false }) => {
     const [editable, setEditable] = useState(false);
     const [copied, setCopied] = useState(false);
     const [hidden, setHidden] = useState(!!password);
@@ -66,7 +66,7 @@ const EditableProp = ({ icon, name, placeholder, password, onUpdate, value, mult
                 <Button className="editButton" onClick={() => setEditable(!editable)}>
                     {editable ? <SaveRounded /> : <EditRounded />}
                 </Button>
-                <Button
+                {copyable && <Button
                     onClick={() => {
                         navigator.clipboard.writeText(value);
                         setCopied(v => {
@@ -75,7 +75,7 @@ const EditableProp = ({ icon, name, placeholder, password, onUpdate, value, mult
                         });
                     }}>
                     {copied ? <CheckRounded style={{ fill: "var(--success)" }} /> : <CopyAllRounded />}
-                </Button>
+                </Button>}
             </div>
         </div>
     );

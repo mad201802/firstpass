@@ -5,5 +5,6 @@ import TitleBar from "./TitleBar/TitleBar";
 import ErrorMessage from "./ErrorMessage/ErrorMessage";
 import Popup from "./Popup/Popup";
 import UrlLogo from "./UrlLogo/UrlLogo";
+import EditableProp from "./EditableProp/EditableProp";
 
-export { Button, DropdownMenu, FormInput, TitleBar, ErrorMessage, Popup, UrlLogo };
+export { Button, DropdownMenu, FormInput, TitleBar, ErrorMessage, Popup, UrlLogo, EditableProp };

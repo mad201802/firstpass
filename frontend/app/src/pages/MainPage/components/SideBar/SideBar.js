@@ -21,7 +21,7 @@ import useShortcut from "hooks/useShortcut";
 import Category from "./components/Category";
 
 const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, settingsVisible, setCurrentEntry }) => {
-    const { db, setDb } = useContext(AppContext);
+    const { db, setDb, settings: { editCategoryShortcut, createCategoryShortcut } } = useContext(AppContext);
 
     const [addCategoryVisible, setAddCategoryVisible] = useState(false);
     const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
@@ -97,11 +97,11 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
     }
 
     useShortcut(
-        "Ctrl-Shift-N",
+        createCategoryShortcut,
         () => setAddCategoryVisible(true)
     );
     useShortcut("Delete", () => deleteCategory());
-    useShortcut("F2", editCategory);
+    useShortcut(editCategoryShortcut, editCategory);
 
     return (
         <div className="sidebar">
@@ -143,7 +143,7 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
             </div>
 
             <div className="settings" data-active={settingsVisible} onClick={() => {
-                    setSettingsVisible(true);
+                    setSettingsVisible(v => !v);
                     setCurrentEntry(null);
                 }}>
                 <SettingsRounded />

@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     height: 60px;
-    padding: 5px 10px;
+    padding: 5px 15px;
     gap: 10px;
     border-bottom: 2px solid var(--divider);
     transition: border-color 200ms ease;
@@ -42,7 +42,6 @@
     }
 
     &[data-title="true"] {
-        padding: 0 10px;
         border-bottom: 2px solid transparent;
 
         & .formInput {
@@ -69,12 +68,12 @@
         
         &::-webkit-scrollbar-track {
             background: var(--bg-light);
-            border-radius: 5px;
+            border-radius: var(--radius);
         }
 
         &::-webkit-scrollbar-thumb {
             background: var(--bg-lighter);
-            border-radius: 5px;
+            border-radius: var(--radius);
         }
 
         &::-webkit-scrollbar-thumb:hover {

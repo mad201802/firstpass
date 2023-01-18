@@ -4,7 +4,8 @@ const path = require("path");
 
 const backend = require("./util/backend");
 
-const { app, BrowserWindow, Menu } = electron;
+const { app, BrowserWindow, Menu, nativeTheme } = electron;
+nativeTheme.themeSource = "dark";
 
 let mainWindow;
 

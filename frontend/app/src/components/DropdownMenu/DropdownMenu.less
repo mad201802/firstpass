@@ -47,6 +47,7 @@
     width: 100%;
 
     min-height: 50px;
+    max-height: 50px;
     border-radius: var(--radius-lg);
     padding: 0 15px 0 5px;
 
@@ -76,7 +77,7 @@
         transition: transform 0.2s ease, opacity 0.2s ease;
 
         background: var(--bg-light);
-        border-radius: 10px;
+        border-radius: var(--radius-lg);
         padding: 5px;
 
         overflow-y: scroll;
@@ -89,7 +90,7 @@
         }
         &::-webkit-scrollbar-thumb {
             background: var(--divider);
-            border-radius: 10px;
+            border-radius: var(--radius-lg);
         }
         &::-webkit-scrollbar-thumb:hover {
             background: var(--primary);

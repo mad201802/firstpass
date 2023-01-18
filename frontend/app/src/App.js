@@ -13,6 +13,45 @@ import AppContext from "contexts/App.context";
 
 const App = () => {
     const [db, setDb] = useState();
+    const [settings, setSettings] = useState({
+        theme: {
+            primary: "#f5b302",
+            primaryLight: "#fed053",
+            primaryDark: "#f5a303",
+
+            bg: "#1f232a",
+            bgLight: "#2b2f36", 
+            bgLighter: "#3b3f46",
+
+            text: "#f5f5f5",
+            textDark: "#b3b3b3",
+
+            radius: "5px",
+            radiusLg: "10px",
+        },
+
+        createCategoryShortcut: "Ctrl+Shift+N",
+        createEntryShortcut: "Ctrl+N",
+        editCategoryShortcut: "F2",
+        searchShortcut: "Ctrl+F",
+
+        ...JSON.parse(localStorage.getItem("settings") || "{}")
+    });
+
+    // Save settings to localstorage
+    useEffect(() => {
+        localStorage.setItem("settings", JSON.stringify(settings));
+    }, [settings]);
+
+    // Apply theme
+    useEffect(() => {
+        for (const [key, value] of Object.entries(settings.theme)) {
+            let pkey = key.replace(/([A-Z])/g, "-$1").toLowerCase();
+            document.body.style.setProperty(`--${pkey}`, value);
+        }
+    }, [settings.theme]);
+
+
     const [login, setLogin] = useState(true);
 
     useEffect(() => {
@@ -46,7 +85,9 @@ const App = () => {
             value={{
                 db,
                 setDb,
-                setLogin
+                setLogin,
+                settings,
+                setSettings,
             }}
         >
             {db ? <MainPage /> : login ? <LoginPage /> : <CreatePage />}
