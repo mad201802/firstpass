@@ -11,7 +11,6 @@ public class CreateEntryCallback {
     public static CreateEntryResponse call(CreateEntryRequest request) throws IPCException {
         if(FirstPass.passwordManager == null)
             throw new IPCException(400, "Database not loaded");
-
         // Check if category exists
         if(FirstPass.passwordManager.getAllCategories().stream().filter(category -> category.getId() == request.category).findAny().isEmpty())
             throw new IPCException(400, "Category does not exist");

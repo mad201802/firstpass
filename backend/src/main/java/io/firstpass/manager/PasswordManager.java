@@ -33,7 +33,7 @@ public class PasswordManager {
          String decryptedPassword = encryptionAlgorithm.decryptText(encryptedEntryModel.getPassword().getCipherData(), masterpassword);
        return new EntryModel(encryptedEntryModel.getId(), encryptedEntryModel.getName(), decryptedUsername, decryptedPassword, encryptedEntryModel.getCategory().getId(), encryptedEntryModel.getNotes(), encryptedEntryModel.getUrl());
    }
-    public ArrayList<EntryModel> getAllEntriesByCategory() {
+    public ArrayList<EntryModel> getAllEntries() {
        ArrayList<EntryModel> entryModels = new ArrayList<>();
        for (EncryptedEntryModel encryptedEntryModel : database.getAllEntries()) {
            String decryptedUsername = encryptionAlgorithm.decryptText(encryptedEntryModel.getUsername().getCipherData(), masterpassword);
@@ -99,6 +99,10 @@ public class PasswordManager {
     public boolean closeDatabase() {
        return database.close();
    }
+
+    public int updateCategory(int id, String newName) {
+        return database.updateCategory(id, newName);
+    }
 }
 
 
