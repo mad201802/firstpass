@@ -1,11 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./Category.less";
 import useShortcut from "hooks/useShortcut";
 import backend from "backend";
 
 import { ListAltRounded } from "@mui/icons-material";
+import AppContext from "contexts/App.context";
 
-const Category = ({ currentCategory, category, id, setCurrentCategory, setSettingsVisible, editCategoryVisible, setEditCategoryVisible }) => {
+const Category = ({ currentCategory, category, id, setCurrentCategory, setSettingsVisible, editCategoryVisible, setEditCategoryVisible, setCurrentEntry }) => {
+
+    const { db, setDb } = useContext(AppContext);
 
     const [value, setValue] = useState(category);
     const elRef = useRef(null);
@@ -59,20 +62,20 @@ const Category = ({ currentCategory, category, id, setCurrentCategory, setSettin
         const data = e.dataTransfer.getData("text");
         const entry = db.entries.find(e => e.id == data);
 
-        if (entry && entry.category !== category.id) {
+        if (entry && entry.category !== id) {
             try {
                 await backend.call({
                     type: "UPDATE_ENTRY",
                     data: {
                         id: entry.id,
-                        category: category.id,
+                        category: id,
                     },
                 });
                 setDb({
                     ...db,
                     entries: db.entries.map(e => {
                         if (e.id == entry.id) {
-                            e.category = category.id;
+                            e.category = id;
                         }
                         return e;
                     }),
@@ -103,6 +106,7 @@ const Category = ({ currentCategory, category, id, setCurrentCategory, setSettin
             data-active={active}
             onClick={() => {
                 setCurrentCategory(id);
+                setCurrentEntry(null);
                 setSettingsVisible(false);
             }}
             onDragOver={onDragOver}
@@ -113,7 +117,7 @@ const Category = ({ currentCategory, category, id, setCurrentCategory, setSettin
         >
             <ListAltRounded />
             {editCategoryVisible && active ? (
-                <input spellCheck={true} autoFocus={true} type="text" value={value} onInput={e => setValue(e.target.value)} onBlur={update} />
+                <input spellCheck={false} autoFocus={true} type="text" value={value} onInput={e => setValue(e.target.value)} onBlur={update} />
             ) : (
                 <p>{category}</p>
             )}

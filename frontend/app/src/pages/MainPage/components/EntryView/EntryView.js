@@ -1,43 +1,114 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import "./EntryView.less";
-import { UrlLogo, Button, FormInput } from "components";
-import { ChevronLeftRounded } from "@mui/icons-material";
+import { UrlLogo, Button, Popup } from "components";
+import useShortcut from "hooks/useShortcut";
+import { ChevronLeftRounded, LinkRounded, NotesRounded, PersonRounded, KeyRounded, CheckRounded, DeleteRounded } from "@mui/icons-material";
+import EditableProp from "./EditableProp";
+import backend from "backend";
+import AppContext from "contexts/App.context";
+import PasswordStrength from "components/PasswordStrength/PasswordStrength";
 
 const EntryView = ({ entry, setCurrentEntry }) => {
 
-    const [state, setState] = React.useState({
-        name: entry.name,
-        url: entry.url,
-        username: entry.username,
-        password: entry.password,
-        notes: entry.notes,
-    });
+    const { db, setDb } = useContext(AppContext);
+
+    const [state, setState] = React.useState(entry);
+    const [confirmPopup, setConfirmPopup] = React.useState(false);
+
+    async function loadPassword() {
+        try {
+            const { data: { password } } = await backend.call({
+                type: "GET_ENTRY",
+                data: { id: entry.id }
+            });
+            setState(s => ({ ...s, password }));
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    useEffect(() => {loadPassword()}, [entry]);
 
     function update(e) {
         setState(s => ({ ...s, [e.target.name]: e.target.value }));
     }
 
+    async function deleteEntry(confirm=false) {
+        if (!confirm) {
+            setConfirmPopup(true);
+            return;
+        }
+        setConfirmPopup(false);
+        try {
+            await backend.call({
+                type: "DELETE_ENTRY",
+                data: { id: entry.id }
+            });
+            setCurrentEntry(null);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async function updateEntry() {
+        if (state.name === entry.name
+            && state.url === entry.url
+            && state.username === entry.username
+            && state.password === entry.password
+            && state.notes === entry.notes) return setCurrentEntry(null);
+        try {
+            const { data: newEntry } = await backend.call({
+                type: "UPDATE_ENTRY",
+                data: { id: entry.id, ...state, category: entry.category }
+            });
+            setDb(db => {
+                const newDb = { ...db };
+                newDb.entries = newDb.entries.map(e => e.id === entry.id ? { ...e, ...newEntry } : e);
+                return newDb;
+            });
+            setCurrentEntry(null);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    useShortcut("Escape", () => {
+        setCurrentEntry(null);
+    });
 
     return (
         <div className="entryView">
 
             <div className="entryView-header">
+                <EditableProp name="name" title={true} value={state.name} onUpdate={update} icon={<UrlLogo entry={{...entry, url: state.url}} />} />
+            </div>
+            <div className="entryView-content">
+                
+                <EditableProp name="url" value={state.url} onUpdate={update} icon={<LinkRounded />} />
+                <EditableProp name="username" value={state.username} onUpdate={update} icon={<PersonRounded />} />
+                <EditableProp name="password" password={true} value={state.password || entry.password || ""} onUpdate={update} icon={<KeyRounded />} />
+                <PasswordStrength password={state.password || entry.password || ""}/>
+                <EditableProp name="notes" multiline={true} value={state.notes} onUpdate={update} icon={<NotesRounded />} />
+            </div>
+            <div className="entryView-footer">
                 <Button className="backButton" onClick={() => setCurrentEntry(null)}>
                     <ChevronLeftRounded />
                     Back
                 </Button>
-                {/* <div className="entryViewHeaderInfo">
-                    <UrlLogo entry={entry} className="entryView-header-logo" />
-                    <div className="entryViewHeaderInfo-name">{entry.name}</div>
-                </div> */}
+                <Button className="deleteButton" onClick={() => deleteEntry()}>
+                    <DeleteRounded />
+                    Delete
+                </Button>
+                <Button className="applyButton" onClick={updateEntry}>
+                    <CheckRounded />
+                    Apply
+                </Button>
             </div>
-            <div className="entryView-content">
-                <FormInput name="name" value={state.name} onInput={update}/>
-                <FormInput name="url" value={state.url} onInput={update}/>
-                <FormInput name="username" value={state.username} onInput={update}/>
-                <FormInput name="password" value={state.password} onInput={update}/>
-                <FormInput name="notes" value={state.notes} onInput={update}/>
-            </div>
+            {confirmPopup && (
+                <Popup title="Delete Entry?" onClose={() => setConfirmPopup(false)} onSubmit={() => deleteEntry(true)} submitText="Delete" type="danger" size="small">
+                    Are you sure you want to delete this entry?<br />
+                    This action cannot be undone.
+                </Popup>
+            )}
         </div>
     );
 };

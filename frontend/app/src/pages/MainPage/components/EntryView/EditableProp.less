@@ -1,0 +1,129 @@
+.editableProp {
+
+    display: flex;
+    align-items: center;
+    height: 60px;
+    padding: 5px 10px;
+    gap: 10px;
+    border-bottom: 2px solid var(--divider);
+    transition: border-color 200ms ease;
+    position: relative;
+    width: 100%;
+
+    &[data-nodivider="true"] {
+        border-bottom: none !important;
+    }
+
+
+    .formInput {
+        border: none;
+        border-radius: unset;
+        height: 35px;
+        padding: 5px;
+        background-color: transparent;
+        flex-grow: 1;
+    }
+
+    &[data-multiline="true"] {
+        align-items: flex-start;
+        flex-grow: 1;
+        padding-right: 0;
+        border: none !important;
+
+        .buttonGroup {
+            position: absolute;
+            top: 7px;
+            right: 10px;
+        }
+
+        & > svg {
+            margin-top: 5px;
+        }
+    }
+
+    &[data-title="true"] {
+        padding: 0 10px;
+        border-bottom: 2px solid transparent;
+
+        & .formInput {
+            padding: 0;
+            height: 100%;
+            & input {
+                font-size: 24px;
+                font-weight: bold;
+                padding: 5px;
+            }
+        }
+    }
+
+    textarea {
+        resize: none;
+        background-color: transparent;
+        height: 100%;
+        flex-grow: 1;
+        padding: 9px 70px 3px 3px;
+
+        &::-webkit-scrollbar {
+            width: 5px;
+        }
+        
+        &::-webkit-scrollbar-track {
+            background: var(--bg-light);
+            border-radius: 5px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: var(--bg-lighter);
+            border-radius: 5px;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+    }
+
+    .buttonGroup {
+        display: flex;
+        margin-left: auto;
+    }
+
+    .button {
+        min-height: unset;
+        height: 30px;
+        aspect-ratio: 1;
+        padding: 0;
+        background-color: transparent;
+        display: grid;
+        place-items: center;
+
+        & svg {
+            width: 18px;
+            fill: var(--text-dark);
+        }
+
+        &:hover {
+            background-color: var(--bg-light);
+            & svg {
+                fill: var(--text);
+            }
+        }
+    }
+
+    &[data-editable="true"] {
+        border-bottom: 2px solid var(--primary);
+        .editButton {
+            background-color: var(--bg-light);
+            & svg {
+                fill: var(--primary);
+            }
+
+            &:hover {
+                background-color: var(--bg-lighter);
+            }
+        }
+
+        & > svg {
+            fill: var(--primary);
+        }
+    }
+}

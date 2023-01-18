@@ -17,8 +17,6 @@ const MainPage = () => {
     const [settingsVisible, setSettingsVisible] = useState(false);
     const [currentEntry, setCurrentEntry] = useState(null);
 
-    useShortcut("Escape", () => setCurrentEntry(null));
-
     return (
         <div className="mainPage">
             <SideBar
@@ -26,6 +24,7 @@ const MainPage = () => {
                 setCurrentCategory={setCurrentCategory}
                 setSettingsVisible={setSettingsVisible}
                 settingsVisible={settingsVisible}
+                setCurrentEntry={setCurrentEntry}
             />
 
             <div className="mainPageContent">

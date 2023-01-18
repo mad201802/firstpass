@@ -11,7 +11,9 @@ const Popup = ({
     children,
     submitText = "Ok",
     closeText = "Cancel",
-    title="Popup"
+    title="Popup",
+    type="default",
+    size="default",
 }) => {
 
     useShortcut("Escape", () => onClose());
@@ -19,7 +21,7 @@ const Popup = ({
 
     return (
         <div className="popupRapper">
-            <div className="popup">
+            <div className="popup" data-size={size}>
                 <div id="closeButton" onClick={onClose}>
                     <CloseRounded id="close" />
                 </div>
@@ -31,7 +33,7 @@ const Popup = ({
                     <Button className="cancelButton" onClick={onClose}>
                         {closeText}
                     </Button>
-                    <Button className="submitButton" onClick={onSubmit}>
+                    <Button className="submitButton" onClick={onSubmit} type={type}>
                         {submitText}
                     </Button>
                 </div>

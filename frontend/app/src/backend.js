@@ -54,7 +54,7 @@ const call = async (data) => {
         res = JSON.parse(await ipcRenderer.invoke("call", data));
     } catch (e) {
         console.log(e)
-        throw { error: "Backend returned invalid message", code: 500 }
+        throw { message: "Backend returned invalid message", code: 500 }
     }
     if (res.error) throw res.error;
     return res;

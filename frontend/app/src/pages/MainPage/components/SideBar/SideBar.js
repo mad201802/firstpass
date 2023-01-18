@@ -19,7 +19,7 @@ import { Popup } from "components";
 import useShortcut from "hooks/useShortcut";
 import Category from "./components/Category";
 
-const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, settingsVisible }) => {
+const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, settingsVisible, setCurrentEntry }) => {
     const { db, setDb } = useContext(AppContext);
 
     const [addCategoryVisible, setAddCategoryVisible] = useState(false);
@@ -128,11 +128,15 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
                         setSettingsVisible={setSettingsVisible}
                         editCategoryVisible={editCategoryVisible}
                         setEditCategoryVisible={setEditCategoryVisible}
+                        setCurrentEntry={setCurrentEntry}
                     />
                 ))}
             </div>
 
-            <div className="settings" data-active={settingsVisible} onClick={() => setSettingsVisible(true)}>
+            <div className="settings" data-active={settingsVisible} onClick={() => {
+                    setSettingsVisible(true);
+                    setCurrentEntry(null);
+                }}>
                 <SettingsRounded />
                 <p>Settings</p>
             </div>
@@ -153,12 +157,17 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
             </div>
             {deleteConfirmationVisible && (
                 <Popup
+                    size="small"
+                    type="danger"
+                    submitText="Delete"
                     onClose={() => setDeleteConfirmationVisible(false)}
                     onSubmit={() => deleteCategory(true)}
-                    title="Confirm Action">
-                    {`Are you sure you want to delete category "${
+                    title="Delete Category">
+                    {`Are you sure you want to delete "${
                         db.categories.find(c => c.id == currentCategory)?.category
-                    }"? This action cannot be undone.`}
+                    }"?`}
+                    <br />
+                    This action cannot be undone.
                 </Popup>
             )}
         </div>

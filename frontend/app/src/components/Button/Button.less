@@ -16,4 +16,15 @@
     &:active {
         background-color: var(--primary-dark);
     }
+
+    &[data-type="danger"] {
+        background-color: var(--error);
+        &:hover {
+            background-color: var(--error-dark);
+        }
+
+        &:active {
+            background-color: var(--error);
+        }
+    }
 }

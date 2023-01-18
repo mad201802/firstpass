@@ -2,7 +2,7 @@ import backend from "backend";
 import React, { useEffect, useState } from "react";
 import "./PasswordStrength.less";
 
-const PasswordStrength = ( {password}) => {
+const PasswordStrength = ( {password, style}) => {
     const [strength, setStrength] = useState(0.0);
 
     useEffect(() => {
@@ -35,7 +35,7 @@ const PasswordStrength = ( {password}) => {
     }
 
     return (
-        <div className="progressWrapper" data-strength={strength_name}>
+        <div className="progressWrapper" data-strength={strength_name} style={style}>
             <div className="progressBar">
                 <div className="progressBarFill" style={{ width: `${strength / 80 * 100}%` }}></div>
             </div>

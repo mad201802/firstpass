@@ -76,15 +76,16 @@ const LoginPage = () => {
         onClick: async () => {
             // TODO create a new entry in recent dbs from filepath
             const db_file = await backend.selectDBFile();
+            if (!db_file) return;
             try {
                 const { data: db_info } = await backend.call({
                     type: "ADD_RECENT_DB",
                     data: {
-                        filepath: db_file,
+                        filepath: db_file[0],
                     }
                 });
                 setDatabase(recentDBs.length);
-                setRecentDBs([...recentDBs, db_info]);
+                setRecentDBs([...recentDBs, {...db_info, filepath: db_file[0]}]);
                 document.querySelector(".masterpasswordInput input").focus();
             } catch (e) {
                 setError(e);
