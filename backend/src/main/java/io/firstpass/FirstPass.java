@@ -47,7 +47,7 @@ public class FirstPass {
         messageParser.addMessageListener("DELETE_CATEGORY", DeleteCategoryRequest.class, SimpleStatusResponse.class, DeleteCategoryCallback::call);
 
         messageParser.addMessageListener("GET_ENTROPY", GetEntropyRequest.class, GetEntropyResponse.class, GetEntropyCallback::call);
-        messageParser.addMessageListener("QUERY_DB", QueryDatabaseRequest.class, HashMap.class, QueryDatabaseCallback::call);
+        messageParser.addMessageListener("ADD_RECENT_DB", AddRecentDbRequest.class, HashMap.class, AddRecentDbCallback::call);
 
         while (true) {
             String message = ipcHandler.readLine();
