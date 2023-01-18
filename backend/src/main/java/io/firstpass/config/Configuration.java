@@ -84,6 +84,10 @@ public class Configuration<T> {
         return this.config;
     }
 
+    public String getFilepath() {
+        return this.filepath;
+    }
+
     /**
      * If configuration file exists, initialize (read) it, else save it to the file system.
      */
