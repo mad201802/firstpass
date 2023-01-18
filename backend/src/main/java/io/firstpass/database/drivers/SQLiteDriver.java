@@ -260,9 +260,9 @@ public class SQLiteDriver implements IEncryptedDatabase {
         }
     }
     @Override
-    public MetaModel getMeta(String name) {
+    public MetaModel getMeta(String key) {
         try {
-            return metaDAO.queryForEq("name", name).get(0);
+            return metaDAO.queryForEq("key", key).get(0);
         } catch (SQLException e) {
             return null;
         }
