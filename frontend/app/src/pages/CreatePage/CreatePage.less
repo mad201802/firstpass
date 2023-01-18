@@ -1,6 +1,9 @@
 
 
 .createPage {
+
+    --inputHeight: clamp(40px, 7vh, 55px);
+
     width: 100%;
     height: 100%;
     
@@ -42,7 +45,7 @@
     gap: 50px;
 
     & .formInput {
-        height: 45px;
+        height: var(--inputHeight);
     }
 
     .createPageTitle {
@@ -62,6 +65,13 @@
     flex-direction: row;
     justify-content: space-evenly;
     width: 100%;
+    margin-bottom: 60px;
+    gap: 10px;
+
+    & .button {
+        width: 50%;
+        box-shadow: 0 0 8px 3px var(--bg);
+    }
 
     &> #back{
         background-color: var(--bg-light);
@@ -105,16 +115,13 @@
                 display: grid;
                 place-items: center;
                 min-height: unset !important;
+                padding: 0 20px;
                 &:hover{
                 
-                    border-color:var(--primary) ;
+                    border-color: var(--primary);
                 }
             }
         }
-    }
-
-    & > .button {
-        width: 50%;
     }
 }
 

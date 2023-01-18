@@ -34,6 +34,10 @@ function registerHandlers() {
         });
     });
 
+    ipcMain.handle("getDocumentsFolder", () => {
+        return app.getPath("documents");
+    });
+
     ipcMain.handle("showOpenDialog", (e, opts) => {
         return dialog.showOpenDialogSync(opts);
     })

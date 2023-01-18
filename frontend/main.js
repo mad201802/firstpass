@@ -32,7 +32,8 @@ app.on("ready", () => {
         minHeight: 500,
         minWidth: 700,
 
-        icon: "firstpass.ico"
+        icon: "firstpass.ico",
+        title: "Firstpass"
     });
 
     mainWindow.loadURL(`file://${__dirname}/app/build/index.html`).then(() => {

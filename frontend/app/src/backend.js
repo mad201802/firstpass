@@ -64,7 +64,7 @@ const call = async (data) => {
  * Show a dialog to open/save a db file
  * @returns {Promise<string[]|string|undefined>} The selected files
  */
-function selectDBFile(type = "open") {
+function selectDBFile(type = "open", previousPath = null) {
     switch(type) {
         case "open":
             return ipcRenderer.invoke("showOpenDialog", {
@@ -73,6 +73,7 @@ function selectDBFile(type = "open") {
                 filters: [
                     { name: "Firstpass Database", extensions: ["fpdb"] },
                 ],
+                defaultPath: previousPath,
             });
 
         case "save":
@@ -81,8 +82,23 @@ function selectDBFile(type = "open") {
                 filters: [
                     { name: "Firstpass Database", extensions: ["fpdb"] },
                 ],
+                defaultPath: previousPath,
             });
     }
+}
+
+
+let _cached_documents_folder;
+/**
+ * Get the documents folder
+ * @returns {Promise<string|null>} The documents folder
+ */
+function getDocumentsFolder() {
+    if (_cached_documents_folder) return Promise.resolve(_cached_documents_folder);
+    return ipcRenderer.invoke("getDocumentsFolder").then(res => {
+        _cached_documents_folder = res.replace(/\\/g, "/");
+        return _cached_documents_folder;
+    });
 }
 
 /**
@@ -95,4 +111,5 @@ export default {
     onError,
     call,
     selectDBFile,
+    getDocumentsFolder,
 };

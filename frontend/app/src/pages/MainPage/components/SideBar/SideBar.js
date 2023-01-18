@@ -1,8 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./SideBar.less";
 
 import FirstpassLogo from "assets/svg/logo_small.svg";
 import AppContext from "contexts/App.context";
+import EggAudio from "assets/audio/egg.mp3";
 
 import {
     DnsRounded,
@@ -25,6 +26,14 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
     const [addCategoryVisible, setAddCategoryVisible] = useState(false);
     const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
     const [editCategoryVisible, setEditCategoryVisible] = useState(false);
+
+
+    const [clickCount, setClickCount] = useState(0);
+    useEffect(() => {
+        if (clickCount !== 10) return;
+        new Audio(EggAudio).play();
+        setClickCount(0);
+    }, [clickCount]);
 
     async function addCategory(name) {
         try {
@@ -96,7 +105,7 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
 
     return (
         <div className="sidebar">
-            <div className="sidebarHeader">
+            <div className="sidebarHeader" onClick={() => setClickCount(c => c+1)}>
                 <FirstpassLogo id="headerLogo" />
                 <p>Firstpass</p>
             </div>

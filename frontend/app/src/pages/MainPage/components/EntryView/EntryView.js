@@ -13,15 +13,18 @@ const EntryView = ({ entry, setCurrentEntry }) => {
     const { db, setDb } = useContext(AppContext);
 
     const [state, setState] = React.useState(entry);
+    const [passwordLoaded, setPasswordLoaded] = React.useState(false);
     const [confirmPopup, setConfirmPopup] = React.useState(false);
 
     async function loadPassword() {
         try {
-            const { data: { password } } = await backend.call({
-                type: "GET_ENTRY",
+            const res = await backend.call({
+                type: "GET_PASSWORD",
                 data: { id: entry.id }
             });
-            setState(s => ({ ...s, password }));
+            setState(s => ({ ...s, password: res.data.password }));
+            console.log(res);
+            setPasswordLoaded(true);
         } catch (e) {
             console.error(e);
         }
@@ -86,7 +89,7 @@ const EntryView = ({ entry, setCurrentEntry }) => {
                 <EditableProp name="url" value={state.url} onUpdate={update} icon={<LinkRounded />} />
                 <EditableProp name="username" value={state.username} onUpdate={update} icon={<PersonRounded />} />
                 <EditableProp name="password" password={true} value={state.password || entry.password || ""} onUpdate={update} icon={<KeyRounded />} />
-                <PasswordStrength password={state.password || entry.password || ""}/>
+                {passwordLoaded && <PasswordStrength password={state.password || entry.password || ""}/>}
                 <EditableProp name="notes" multiline={true} value={state.notes} onUpdate={update} icon={<NotesRounded />} />
             </div>
             <div className="entryView-footer">

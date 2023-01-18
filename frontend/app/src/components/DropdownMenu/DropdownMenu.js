@@ -3,6 +3,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { ChevronRightRounded } from "@mui/icons-material";
 
 import "./DropdownMenu.less";
+import useEventListener from "hooks/useEventListener";
+import useShortcut from "hooks/useShortcut";
 
 const DropdownMenu = ({
     value: currentValue,
@@ -23,18 +25,34 @@ const DropdownMenu = ({
         setIsOpen(false);
     };
 
+    const [resizeTimeout, setResizeTimeout] = useState(null);
+
     const optionListRef = useRef();
+
+    // close dropdown on window resize to prevent bugs
+    useEventListener("resize", () => {
+        setIsOpen(false);
+        optionListRef.current.style.maxHeight = null;
+    }, window);
+
     useEffect(() => {
+        if (!isOpen) return;
+        if (resizeTimeout) return;
         // check if optionList is overflowing the window
-        const optionList = optionListRef.current;
-        const optionListRect = optionList.getBoundingClientRect();
+        // has to be delayed because optionList has not reached full size yet
+        setResizeTimeout(setTimeout(() => {
+            const optionListRect = optionListRef.current.getBoundingClientRect();
 
-        if (optionListRect.bottom > window.innerHeight) {
-            const newHeight = window.innerHeight - optionListRect.top - 10;
-            optionList.style.maxHeight = newHeight + "px";
-        }
+            if (optionListRect.bottom > window.innerHeight) {
+                const newHeight = window.innerHeight - optionListRect.top - 10;
+                optionListRef.current.style.maxHeight = newHeight + "px";
+            }
+        setResizeTimeout(null);
+        }, 100));
 
-    }, [options, customItems, window.innerHeight]);
+    }, [options, customItems, window.innerHeight, isOpen]);
+
+    useShortcut("Escape", () => setIsOpen(false), isOpen);
     
 
     return (

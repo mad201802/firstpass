@@ -33,18 +33,18 @@ const LoginPage = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        // TODO: Load recent DBs from backend
         backend.call({
             type: "LIST_RECENT_DBS",
             data: {},
         }).then(({ data }) => {
             setRecentDBs(data.recentDBs);
         });
-        // setRecentDBs(recentDBs_);
     }, []);
     
 
     async function login() {
+        if (!database) return setError({code: 400, message: "No database selected"});
+        if (masterpassword === "") return setError({code: 400, message: "Masterpassword cannot be empty"});
         const filepath = recentDBs[database].filepath;
     
         try {
