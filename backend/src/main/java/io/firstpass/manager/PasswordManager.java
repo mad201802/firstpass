@@ -99,6 +99,10 @@ public class PasswordManager {
     public boolean closeDatabase() {
        return database.close();
    }
+
+    public int updateCategory(int id, String newName) {
+        return database.updateCategory(id, newName);
+    }
 }
 
 
