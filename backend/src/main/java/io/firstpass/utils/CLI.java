@@ -79,7 +79,7 @@ public class CLI {
     }
 
     public static void getAllPasswords() {
-        ArrayList<EntryModel> entries = passwordManager.getAllEntriesByCategory();
+        ArrayList<EntryModel> entries = passwordManager.getAllEntries();
         if (entries.size() == 0) {
             line("=====");
             line("No passwords found.");
