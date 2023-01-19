@@ -35,14 +35,14 @@
 
 .createForm {
 
-    width: min(90%, 500px);
+    width: clamp(500px, 50%, 800px);
     z-index: 5;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 50px;
+    gap: min(50px, 5vh);
 
     & .formInput {
         height: var(--inputHeight);
@@ -69,11 +69,10 @@
     gap: 10px;
 
     & .button {
-        width: 50%;
-        box-shadow: 0 0 8px 3px var(--bg);
+        box-shadow: 0 0 50px 3px var(--bg);
     }
 
-    &> #back{
+    & > #back{
         background-color: var(--bg-light);
         border: 1px solid var(--bg-lighter);
         transition: border-color 200ms ease;
@@ -83,10 +82,11 @@
         
             border-color:var(--primary) ;
         }
+        width: 30%;
     }
 
-    &> #create{
-        width: 50%;
+    & > #create{
+        width: 70%;
     }
 }
 
@@ -95,6 +95,10 @@
         flex-direction: column;
         gap: 10px;
         width: 100%;
+
+        & .progressWrapper {
+            margin: 0;
+        }
 
         & > .databaseInput {
             display: flex;

@@ -178,7 +178,11 @@
 
         &:hover {
             --clr: var(--primary);  
-            background-color: var(--bg-lighter);          
+            background-color: var(--bg-lighter);       
+            
+            & svg {
+                transform: rotate(90deg);
+            }
         }
         &:active {
             --clr: var(--primary-light);
@@ -186,15 +190,16 @@
         }
         
         & p {
-            color: var(--clr);
             margin-left: 10px;
             flex: 1;
             transition: color 100ms ease;
         }
         & svg {
             fill: var(--clr);
-            transition: fill 100ms ease;
+            transition: fill 100ms ease,
+                        transform 100ms ease;
         }
+
 
     }
 }

@@ -3,7 +3,7 @@ import "./Category.less";
 import useShortcut from "hooks/useShortcut";
 import backend from "backend";
 
-import { ListAltRounded } from "@mui/icons-material";
+import { KeyboardDoubleArrowRightRounded, ListAltRounded } from "@mui/icons-material";
 import AppContext from "contexts/App.context";
 
 const Category = ({ currentCategory, category, id, setCurrentCategory, setSettingsVisible, editCategoryVisible, setEditCategoryVisible, setCurrentEntry }) => {
@@ -11,6 +11,7 @@ const Category = ({ currentCategory, category, id, setCurrentCategory, setSettin
     const { db, setDb } = useContext(AppContext);
 
     const [value, setValue] = useState(category);
+    const [dragover, setDragover] = useState(false);
     const elRef = useRef(null);
     const active = currentCategory === id;
 
@@ -58,7 +59,7 @@ const Category = ({ currentCategory, category, id, setCurrentCategory, setSettin
 
     async function onDrop(e) {
         e.preventDefault();
-        elRef.current.classList.remove("dragover");
+        setDragover(false);
 
         const data = e.dataTransfer.getData("entry.id");
         const entry = db.entries.find(e => e.id == data);
@@ -99,16 +100,17 @@ const Category = ({ currentCategory, category, id, setCurrentCategory, setSettin
 
     function onDragEnter(e) {
         e.preventDefault();
-        elRef.current.classList.add("dragover");
+        setDragover(true);
     }
     function onDragLeave(e) {
         e.preventDefault();
-        elRef.current.classList.remove("dragover");
+        setDragover(false);
     }
 
     return (
         <div
             className="category"
+            data-dragover={dragover}
             data-active={active}
             onClick={() => {
                 setCurrentCategory(id);
@@ -121,7 +123,7 @@ const Category = ({ currentCategory, category, id, setCurrentCategory, setSettin
             onDragLeave={onDragLeave}
             ref={elRef}
         >
-            <ListAltRounded />
+            {dragover ? <KeyboardDoubleArrowRightRounded /> : <ListAltRounded />}
             {editCategoryVisible && active ? (
                 <input spellCheck={false} autoFocus={true} type="text" value={value} onInput={e => setValue(e.target.value)} onBlur={update} />
             ) : (

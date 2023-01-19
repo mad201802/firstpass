@@ -3,7 +3,7 @@ const { contextBridge, ipcRenderer } = electron;
 
 contextBridge.exposeInMainWorld("electron", {
     ipcRenderer: {
-        on: ipcRenderer.on,
+        on: (...args) => ipcRenderer.on(...args),
         send: ipcRenderer.send,
         invoke: ipcRenderer.invoke,
     }

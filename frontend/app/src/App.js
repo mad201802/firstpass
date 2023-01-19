@@ -5,6 +5,7 @@ import "./App.less";
 import MainPage from "pages/MainPage/MainPage";
 import LoginPage from "pages/LoginPage/LoginPage";
 import CreatePage from "pages/CreatePage/CreatePage";
+import FatalErrorPage from "pages/FatalErrorPage/FatalErrorPage";
 
 import backend from "backend";
 
@@ -41,6 +42,7 @@ const App = () => {
 
         ...JSON.parse(localStorage.getItem("settings") || "{}")
     });
+    const [fatalError, setFatalError] = useState(false);
 
     // Save settings to localstorage
     useEffect(() => {
@@ -59,7 +61,10 @@ const App = () => {
     const [login, setLogin] = useState(true);
 
     useEffect(() => {
-        const cb = (data) => console.log("Error", data);
+        const cb = (data) => {
+            setDb(null);
+            if (data.fatal) setFatalError(data);
+        };
         backend.onError(cb);
 
         return () => {
@@ -78,13 +83,15 @@ const App = () => {
 
     useEffect(() => {
         if (window.isPackaged) return;
-        // save db to localstorage
+        // save db to localstorage for development purposes
         if (db) {
             localStorage.setItem("db", JSON.stringify(db));
         } else {
             localStorage.removeItem("db");
         }
     }, [db]);
+
+    if (fatalError) return <FatalErrorPage error={fatalError} />;
 
     return (
         <AppContext.Provider

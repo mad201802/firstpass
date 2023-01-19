@@ -51,9 +51,9 @@ function restart() {
     connect();
 }
 
-function disconnect() {
+async function disconnect() {
     ipc._onExit = () => {};
-    call({ type: "SHUTDOWN" });
+    await call({ type: "CLOSE_DB", data: {} });
     return ipc.terminate(false);
 }
 
@@ -62,7 +62,7 @@ async function call(data) {
     return ipc.recv(MAX_RESPONSE_TIME);
 }
 
-
+let attempts = 0;
 module.exports = {
     connect,
     registerHandlers,
@@ -70,4 +70,5 @@ module.exports = {
     disconnect,
     call,
     onError: (callback) => onError = callback,
+    attempts
 }

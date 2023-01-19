@@ -15,7 +15,7 @@ function getFaviconUrl(url, size=64) {
     return `https://www.google.com/s2/favicons?sz=${size}&domain_url=http://${domain}/`
 }
 
-const UrlLogo = ({ entry, className, ...props }) => {
+const UrlLogo = React.forwardRef(({ entry, className, ...props }, ref) => {
 
     const { settings } = useContext(AppContext);
 
@@ -37,7 +37,7 @@ const UrlLogo = ({ entry, className, ...props }) => {
     }
 
     return (
-        <div className={"urlLogo " + (className || "")} {...props}>
+        <div className={"urlLogo " + (className || "")} {...props} ref={ref}>
             {!settings.loadFavicons || imgLoadError ? (
                 <span>{getDomain(entry.url)?.[0] || entry.name[0]}</span>
             ) : (
@@ -49,6 +49,6 @@ const UrlLogo = ({ entry, className, ...props }) => {
             )}
         </div>
     );
-};
+});
 
 export default UrlLogo;

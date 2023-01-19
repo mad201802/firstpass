@@ -25,6 +25,7 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
 
     const [addCategoryVisible, setAddCategoryVisible] = useState(false);
     const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
+    const [logoutConfirmationVisible, setLogoutConfirmationVisible] = useState(false);
     const [editCategoryVisible, setEditCategoryVisible] = useState(false);
 
 
@@ -58,12 +59,10 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
     async function deleteCategory(confirmed=false) {
         if (currentCategory === 1) return;
         if (!confirmed) {
-            setDeleteConfirmationVisible(true);
+            setLogoutConfirmationVisible(true);
             return;
         }
-
-        setDeleteConfirmationVisible(false);
-            
+        setLogoutConfirmationVisible(false);
         try {
             const res = await backend.call({
                 type: "DELETE_CATEGORY",
@@ -94,6 +93,19 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
     function editCategory() {
         if (currentCategory === 1) return;
         setEditCategoryVisible(true);
+    }
+
+    function logout(confirm=false) {
+        if (!confirm) {
+            setLogoutConfirmationVisible(true);
+            return;
+        }
+        setLogoutConfirmationVisible(false);
+        setDb();
+        backend.call({
+            type: "CLOSE_DB",
+            data: {},
+        });
     }
 
     useShortcut(
@@ -154,13 +166,7 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
                 <p>{db.name}</p>
                 <div
                     className="logoutButton"
-                    onClick={() => {
-                        setDb();
-                        backend.call({
-                            type: "CLOSE_DB",
-                            data: {},
-                        });
-                    }}>
+                    onClick={() => logout()}>
                     <LogoutRounded />
                 </div>
             </div>
@@ -177,6 +183,18 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
                     }"?`}
                     <br />
                     This action cannot be undone.
+                </Popup>
+            )}
+            {logoutConfirmationVisible && (
+                <Popup
+                    size="small"
+                    type="danger"
+                    submitText="Logout"
+                    onClose={() => setLogoutConfirmationVisible(false)}
+                    onSubmit={() => logout(true)}
+                    title="Logout"
+                >
+                    Are you sure you want to logout?
                 </Popup>
             )}
         </div>

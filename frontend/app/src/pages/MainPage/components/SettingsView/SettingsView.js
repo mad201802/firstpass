@@ -17,7 +17,6 @@ const SettingsView = ({ setSettingsVisible }) => {
     useShortcut("Escape", () => setSettingsVisible(false));
 
     function update(e) {
-        console.log(e.target.name, e.target.value);
         setSettings(s => ({ ...s, [e.target.name]: e.target.value }));
     }
     function updateTheme(e) {

@@ -44,8 +44,15 @@ app.on("ready", () => {
         if (!app.isPackaged) mainWindow.webContents.openDevTools({ mode: "detach" });
 
         backend.onError(e => {
-            console.log("sending error", e);
+            console.log("Backend crashed", e);
             mainWindow.webContents.send("backend-error", e);
+            if (backend.attempts < 10) {
+                setTimeout(backend.connect, backend.attempts * 100);
+            } else {
+                mainWindow.webContents.send("backend-error", {...e, fatal: true });
+                console.log("Backend crashed too many times, giving up");
+            }
+            ++backend.attempts;
         });
         backend.connect();
         backend.registerHandlers();

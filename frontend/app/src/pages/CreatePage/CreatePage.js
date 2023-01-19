@@ -4,7 +4,7 @@ import "./CreatePage.less"
 import FirstpassLogo from "assets/svg/logo_full.svg"
 import WavesSvg from "assets/svg/waves.svg"
 
-import { FormInput, TitleBar, Button, ErrorMessage } from "components"
+import { FormInput, TitleBar, Button, ErrorMessage, PasswordStrength } from "components"
 
 import AppContext from "contexts/App.context"
 
@@ -13,7 +13,11 @@ import {
     MoreHorizRounded,
     InsertDriveFileRounded,
     ArrowBackIosRounded,
-    FormatSizeRounded
+    FormatSizeRounded,
+    CheckCircleRounded,
+    CancelRounded,
+    CheckRounded,
+    CloseRounded
 } from "@mui/icons-material";
 
 import backend from "backend"
@@ -99,7 +103,6 @@ const CreatePage = () => {
                 <div className="createForm">
                     <div className="createPageTitle">
                         <FirstpassLogo className="firstpassLogo" />
-                        {/* <p>Create a new Database</p> */}
                     </div>
 
 
@@ -147,7 +150,14 @@ const CreatePage = () => {
                             value={state.masterpassword2}
                             onInput={update}
                             name="masterpassword2"
+                            iconRight={state.masterpassword2 && (
+                                state.masterpassword === state.masterpassword2 ? (
+                                    <CheckRounded style={{ fill:"var(--success)" }} />
+                                ) : (
+                                    <CloseRounded style={{ fill:"var(--error)" }} />)
+                            )}
                         />
+                        <PasswordStrength password={state.masterpassword} />
                     </div>
                     <div className="buttons">
                         <Button id="back" onClick={() => setLogin(true)}>{<ArrowBackIosRounded/>}</Button>

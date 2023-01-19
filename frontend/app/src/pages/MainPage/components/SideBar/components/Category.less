@@ -11,7 +11,12 @@
     cursor: pointer;
     user-select: none;
 
-    transition: background-color 0.1s ease-in-out;
+    --item-clr: var(--bg-light);
+    background-color: var(--item-clr);
+    box-shadow: inset 0px 0 0px var(--primary);
+
+    transition: background-color 0.1s ease-in-out,
+                box-shadow 0.1s ease-in-out;
 
     & p {
         display: -webkit-box;
@@ -28,40 +33,82 @@
         flex-grow: 1;
         background-color: transparent;
     }
-
+    
     &::before {
         content: "";
-        height: 100%;
-        width: 0px;
-        background-color: var(--primary);
-        transition: width 0.1s ease-in-out;
-        left: 0px;
+        opacity: 0;
+        height: calc(var(--radius) * 2);
+        width: calc(var(--radius) * 2);
+        background-color: transparent;
+        border-radius: 50%;
         position: absolute;
-        pointer-events: none;
+        top: 0;
+        right: 0;
+        transform: translateY(-100%);
+        box-shadow: var(--radius) var(--radius) 0 var(--item-clr);
+
+        transition: box-shadow 0.1s ease-in-out;
+    }
+
+    &::after {
+        content: "";
+        opacity: 0;
+        height: calc(var(--radius) * 2);
+        width: calc(var(--radius) * 2);
+        background-color: transparent;
+        border-radius: 50%;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        transform: translateY(100%);
+        box-shadow: var(--radius) calc(-1 * var(--radius)) 0 var(--item-clr);
+
+        transition: box-shadow 0.1s ease-in-out;
     }
     
-    
     &[data-active="true"] {
-        background-color: var(--bg);
+        --item-clr: var(--bg);
         z-index: 11;
         
+        box-shadow: inset 5px 0 0px var(--primary);
+
         &::before {
-            width: 5px;
+            opacity: 1;
         }
+        &::after {
+            opacity: 1;
+        }
+
     }
 
     
-    &:hover, &.dragover {
-        background-color: var(--bg-lighter);
+    &:hover, &[data-dragover="true"] {
+        --item-clr: var(--bg-lighter);
+    }
+
+    &[data-dragover="true"] svg {
+        animation: bobbing 0.75s ease-in-out infinite;
     }
 
     &:active {
-        background-color: var(--bg-light);
+        --item-clr: var(--bg-light);
     }
 
     & svg {
         fill: var(--primary);
         width: 20px;
         pointer-events: none;
+    }
+}
+
+@keyframes bobbing {
+    0% {
+        transform: translateX(-2px);
+    }
+    50% {
+        transform: translateX(2px);
+    }
+    100% {
+        transform: translateX(-2px);
     }
 }
