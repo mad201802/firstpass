@@ -60,7 +60,7 @@ const DropdownMenu = ({
             {icon && <div className="dropdownIcon">{icon}</div>}
 
             <div className="currentOption">
-                {!isNaN(currentValue) ? (
+                {currentValue !== null ? (
                     <DropdownItem data={options[currentValue]} />
                 ) : (
                     placeholder

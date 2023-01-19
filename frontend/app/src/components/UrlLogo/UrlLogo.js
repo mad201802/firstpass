@@ -1,27 +1,54 @@
-import React, { useState } from "react"
-import "./UrlLogo.less"
+import React, { useContext, useState } from "react";
+import "./UrlLogo.less";
+import AppContext from "contexts/App.context";
 
 function getDomain(url) {
     return url
         ?.replace(/https?:\/\//i, "")
         ?.split("/")?.[0]
         ?.split(".")
-        ?.slice(-2, -1)?.[0];
+        ?.slice(-2)?.join(".");
 }
 
-const UrlLogo = ({entry, className, ...props}) => {
-
-    const [imgLoadError, setImgLoadError] = useState(!entry.url?.match(/https?:\/\/.*\..{2,}/i))
-
-  return (
-    <div className={"urlLogo " + (className || "")} {...props}>
-        {imgLoadError ? (
-            <span>{getDomain(entry.url)?.[0] || entry.name[0]}</span>
-        ) : (
-            <img src={entry.url + "/favicon.ico"} alt="favicon" onError={() => setImgLoadError(true)} />
-        )}
-    </div>
-  )
+function getFaviconUrl(url, size=64) {
+    const domain = getDomain(url);
+    return `https://www.google.com/s2/favicons?sz=${size}&domain_url=http://${domain}/`
 }
 
-export default UrlLogo
+const UrlLogo = ({ entry, className, ...props }) => {
+
+    const { settings } = useContext(AppContext);
+
+    const [imgLoadError, setImgLoadError] = useState(!entry.url?.match(/.*\..{2,}/i));
+    const [urls, setUrls] = useState([
+        getFaviconUrl(entry.url, 16),
+        getFaviconUrl(entry.url, 32),
+        getFaviconUrl(entry.url, 64),
+        getFaviconUrl(entry.url, 128),
+        getFaviconUrl(entry.url, 256),
+        `http://${getDomain(entry.url)}/favicon.ico`
+    ]);
+
+    function loadFail() {
+        setUrls(urls => {
+            if (urls.length <= 1) setImgLoadError(true);
+            return urls.slice(0, -1);
+        });
+    }
+
+    return (
+        <div className={"urlLogo " + (className || "")} {...props}>
+            {!settings.loadFavicons || imgLoadError ? (
+                <span>{getDomain(entry.url)?.[0] || entry.name[0]}</span>
+            ) : (
+                <img
+                    src={urls.slice(-1)[0]}
+                    alt=""
+                    onError={loadFail}
+                />
+            )}
+        </div>
+    );
+};
+
+export default UrlLogo;

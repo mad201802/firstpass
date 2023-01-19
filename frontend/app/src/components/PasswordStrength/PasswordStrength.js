@@ -7,6 +7,7 @@ const PasswordStrength = ( {password, style, enabled=true}) => {
 
     useEffect(() => {
         if (password.length > 256 || !enabled) return;
+        if (password.length === 0) return setStrength(0.0);
         backend.call({
             type: "GET_ENTROPY",
             data: {

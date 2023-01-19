@@ -37,6 +37,8 @@ app.on("ready", () => {
         title: "Firstpass"
     });
 
+    mainWindow.webContents.executeJavaScript(`window.isPackaged = ${app.isPackaged};`);
+
     mainWindow.loadURL(`file://${__dirname}/app/build/index.html`).then(() => {
         mainWindow.show();
         if (!app.isPackaged) mainWindow.webContents.openDevTools({ mode: "detach" });

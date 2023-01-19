@@ -2,8 +2,7 @@ import React, { useState, useContext, useRef } from "react";
 import "./AddEntryPopup.less";
 import { LinkRounded, PersonRounded, KeyRounded,FormatSizeRounded } from "@mui/icons-material";
 
-import { FormInput, Popup } from "components";
-import PasswordStrength from "components/PasswordStrength/PasswordStrength";
+import { FormInput, Popup, PasswordStrength } from "components";
 
 import backend from "backend";
 import AppContext from "contexts/App.context";

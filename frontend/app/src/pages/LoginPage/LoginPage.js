@@ -26,7 +26,7 @@ const LoginPage = () => {
 
     const { setDb, setLogin } = useContext(AppContext);
 
-    const [database, setDatabase] = useState();
+    const [database, setDatabase] = useState(null);
     const [recentDBs, setRecentDBs] = useState([]);
 
     const [masterpassword, setMasterpassword] = useState("");
@@ -43,7 +43,7 @@ const LoginPage = () => {
     
 
     async function login() {
-        if (!database) return setError({code: 400, message: "No database selected"});
+        if (database === null) return setError({code: 400, message: "No database selected"});
         if (masterpassword === "") return setError({code: 400, message: "Masterpassword cannot be empty"});
         const filepath = recentDBs[database].filepath;
     
@@ -74,9 +74,12 @@ const LoginPage = () => {
             );
         },
         onClick: async () => {
-            const db_files = await backend.selectDBFile();
+            let db_files = await backend.selectDBFile();
             if (!db_files) return;
-            db_files = db_files.filter(file => !recentDBs.find(db => db.filepath === file));
+            console.log(db_files, recentDBs);
+            db_files = db_files.map(s => s.replace(/\\/g, "/")).filter(file => !recentDBs.find(db => db.filepath === file));
+            console.log(db_files, recentDBs);
+            if (db_files.length === 0) return;
             try {
                 for (const file of db_files) {
                     const { data: db_info } = await backend.call({

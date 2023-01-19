@@ -11,10 +11,9 @@ import {
     CheckRounded,
     DeleteRounded,
 } from "@mui/icons-material";
-import { EditableProp } from "components";
+import { EditableProp, PasswordStrength } from "components";
 import backend from "backend";
 import AppContext from "contexts/App.context";
-import PasswordStrength from "components/PasswordStrength/PasswordStrength";
 
 const EntryView = ({ entry, setCurrentEntry }) => {
     const { db, setDb } = useContext(AppContext);
@@ -112,12 +111,12 @@ const EntryView = ({ entry, setCurrentEntry }) => {
                 <EditableProp
                     name="password"
                     password={true}
-                    value={state.password || entry.password || ""}
+                    value={state.password}
                     onUpdate={update}
                     icon={<KeyRounded />}
                     copyable={true}
                 />
-                <PasswordStrength password={state.password || entry.password || ""} enabled={passwordLoaded} />
+                <PasswordStrength password={state.password} enabled={passwordLoaded} />
                 <EditableProp
                     name="notes"
                     multiline={true}

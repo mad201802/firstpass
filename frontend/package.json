@@ -63,6 +63,7 @@
     },
     "files": [
       "main.js",
+      "preload.js",
       "util/**/*",
       "package.json",
       "app/build/**/*"

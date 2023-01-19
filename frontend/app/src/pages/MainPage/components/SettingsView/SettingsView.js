@@ -1,11 +1,11 @@
 import React, { useContext, useState } from "react";
 import "./SettingsView.less";
-import { Button, EditableProp, FormInput, Popup } from "components";
+import { Button, CheckBoxProp, EditableProp, FormInput, Popup } from "components";
 import useShortcut from "hooks/useShortcut";
 import AppContext from "contexts/App.context";
 import Section from "./components/Section";
-import ColorProp from "components/ColorProp/ColorProp";
-import { ColorLensRounded, ShortcutRounded } from "@mui/icons-material";
+import { ColorProp } from "components";
+import { ColorLensRounded, ShortcutRounded, TuneRounded } from "@mui/icons-material";
 
 const SettingsView = ({ setSettingsVisible }) => {
 
@@ -17,6 +17,7 @@ const SettingsView = ({ setSettingsVisible }) => {
     useShortcut("Escape", () => setSettingsVisible(false));
 
     function update(e) {
+        console.log(e.target.name, e.target.value);
         setSettings(s => ({ ...s, [e.target.name]: e.target.value }));
     }
     function updateTheme(e) {
@@ -55,6 +56,7 @@ const SettingsView = ({ setSettingsVisible }) => {
                 bg: "#1f232a",
                 bgLight: "#2b2f36", 
                 bgLighter: "#3b3f46",
+                divider: "#3b3f46",
 
                 text: "#f5f5f5",
                 textDark: "#b3b3b3",
@@ -68,9 +70,12 @@ const SettingsView = ({ setSettingsVisible }) => {
                 <h1>Settings</h1>
             </div>
             <div className="settingsView-content">
-                {/* <FormInput label="Primary Color" value={primaryColor} onInput={e => setPrimaryColor(e.target.value)} /> */}
+                
+                <Section title="General" icon={<TuneRounded />} open={true}>
+                    <CheckBoxProp label="Load Favicons" value={settings.loadFavicons} name="loadFavicons" onInput={update} />
+                </Section>
 
-                <Section title="Appearance" icon={<ColorLensRounded />} open={true}>
+                <Section title="Appearance" icon={<ColorLensRounded />} open={false}>
                     <ColorProp label="Primary Color" value={theme.primary} name="primary" onInput={updateTheme} />
                     <ColorProp
                         label="Primary Color (Light)"
@@ -88,6 +93,11 @@ const SettingsView = ({ setSettingsVisible }) => {
                     <ColorProp label="Background Color" value={theme.bg} name="bg" onInput={updateTheme} />
                     <ColorProp label="Background Color (Light)" value={theme.bgLight} name="bgLight" onInput={updateTheme} />
                     <ColorProp label="Background Color (Lighter)" value={theme.bgLighter} name="bgLighter" onInput={updateTheme} />
+                    <ColorProp label="Divider Color" value={theme.divider} name="divider" onInput={updateTheme} />
+
+                    <ColorProp label="Text Color" value={theme.text} name="text" onInput={updateTheme} />
+                    <ColorProp label="Text Color (Dark)" value={theme.textDark} name="textDark" onInput={updateTheme} />
+
 
                     <div className="resetButton">
                         <p onClick={() => resetTheme()}>Revert to default theme</p>
