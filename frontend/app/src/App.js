@@ -1,0 +1,133 @@
+import React, { useEffect, useState } from "react";
+
+import "./App.less";
+
+import MainPage from "pages/MainPage/MainPage";
+import LoginPage from "pages/LoginPage/LoginPage";
+import CreatePage from "pages/CreatePage/CreatePage";
+import FatalErrorPage from "pages/FatalErrorPage/FatalErrorPage";
+
+import backend from "backend";
+
+import AppContext from "contexts/App.context";
+
+
+const App = () => {
+    const [db, setDb] = useState();
+    const [settings, setSettings] = useState({
+        theme: {
+            primary: "#f5b302",
+            primaryLight: "#fed053",
+            primaryDark: "#f5a303",
+
+            bg: "#1f232a",
+            bgLight: "#2b2f36", 
+            bgLighter: "#3b3f46",
+
+            divider: "#3b3f46",
+
+            text: "#f5f5f5",
+            textDark: "#b3b3b3",
+            textInv: "#1f232a",
+
+            radius: "5px",
+            radiusLg: "10px",
+        },
+
+        createCategoryShortcut: "Ctrl+Shift+N",
+        createEntryShortcut: "Ctrl+N",
+        editCategoryShortcut: "F2",
+        searchShortcut: "Ctrl+F",
+
+        loadFavicons: true,
+
+        ...JSON.parse(localStorage.getItem("settings") || "{}")
+    });
+    const [fatalError, setFatalError] = useState(false);
+
+    // Save settings to localstorage
+    useEffect(() => {
+        localStorage.setItem("settings", JSON.stringify(settings));
+    }, [settings]);
+
+    // Apply theme
+    useEffect(() => {
+        for (const [key, value] of Object.entries(settings.theme)) {
+            let pkey = key.replace(/([A-Z])/g, "-$1").toLowerCase();
+            document.body.style.setProperty(`--${pkey}`, value);
+        }
+    }, [settings.theme]);
+
+
+    // Rainbow Mode
+    const [rainbowMode, setRainbowMode] = useState(false);
+    useEffect(() => {
+        if (rainbowMode) {
+            window.__hue = 0;
+            window.rainbowInterval = setInterval(() => {
+                const color = `hsl(${window.__hue}, 100%, 65%)`;
+                const colorLight = `hsl(${window.__hue}, 80%, 75%)`;
+                const colorDark = `hsl(${window.__hue}, 80%, 55%)`;
+                document.body.style.setProperty(`--primary`, color);
+                document.body.style.setProperty(`--primary-light`, colorLight);
+                document.body.style.setProperty(`--primary-dark`, colorDark);
+                window.__hue = (window.__hue + 2) % 360;
+            }, 20);
+        } else {
+            clearInterval(window.rainbowInterval);
+        }
+    }, [rainbowMode])
+
+
+    const [login, setLogin] = useState(true);
+
+    useEffect(() => {
+        const cb = (data) => {
+            setDb(null);
+            if (data.fatal) setFatalError(data);
+        };
+        backend.onError(cb);
+
+        return () => {
+            backend.onError(null);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (window.isPackaged) return;
+        // load db from localstorage
+        const db = localStorage.getItem("db");
+        if (db) {
+            setDb(JSON.parse(db));
+        }
+    }, []);
+
+    useEffect(() => {
+        if (window.isPackaged) return;
+        // save db to localstorage for development purposes
+        if (db) {
+            localStorage.setItem("db", JSON.stringify(db));
+        } else {
+            localStorage.removeItem("db");
+        }
+    }, [db]);
+
+    if (fatalError) return <FatalErrorPage error={fatalError} />;
+
+    return (
+        <AppContext.Provider
+            value={{
+                db,
+                setDb,
+                setLogin,
+                settings,
+                setSettings,
+                setRainbowMode
+            }}
+        >
+            {db ? <MainPage /> : login ? <LoginPage /> : <CreatePage />}
+        </AppContext.Provider>
+    );
+};
+
+export default App;

@@ -1,0 +1,111 @@
+
+
+.loginPage {
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    & .wavesSvg {
+        position: absolute;
+        bottom: 0;
+        & :last-child {
+            fill: var(--primary) !important;
+        }
+        & :first-child {
+            fill: var(--bg-lighter) !important;
+        }
+    }
+}
+
+.loginForm-wrapper {
+    flex-grow: 1;
+
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+
+
+}
+
+.loginForm {
+
+    width: min(90%, 500px);
+    z-index: 5;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+
+    & > .formInput {
+        width: 100%;
+    }
+
+    & > .loginFormInputs {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+
+        & > .databaseInput {
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            gap: 10px;
+            width: 100%;
+
+            & .dropdown {
+                flex-grow: 1;
+                max-width: calc(100% - 60px - 10px)
+            }
+
+            & > .button {
+                width: 60px;
+                background-color: var(--bg-light);
+                border: 1px solid var(--bg-lighter);
+                transition: border-color 200ms ease;
+                display: grid;
+                place-items: center;
+                padding: 0;
+                &:hover {
+                    border-color:var(--primary) ;
+                }
+            }
+        }
+    }
+
+    & > .button {
+        width: 50%;
+        box-shadow: 0 0 8px 3px var(--bg);
+    }
+}
+
+.firstpassLogo {
+    width: 50%;
+    
+    & path, & text {
+        fill: var(--primary) !important;
+    }
+}
+
+.recentDB {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    
+    & .name {
+        color: var(--primary);
+    }
+    & .filename {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 0.8rem;
+        opacity: 0.5;
+    }
+}

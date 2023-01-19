@@ -1,0 +1,7 @@
+.idea
+.db
+
+.vscode/*
+!.vscode/tasks.json
+
+dist/

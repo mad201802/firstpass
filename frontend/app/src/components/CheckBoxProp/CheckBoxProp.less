@@ -1,0 +1,26 @@
+.checkBoxProp {
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 60px;
+    // TODO: fix this
+    // border-bottom: 2px solid var(--divider);
+    padding: 0 10px;
+    cursor: pointer;
+
+    & .checkBox {
+        width: 30px;
+        height: 30px;
+        border-radius: 5px;
+        background-color: var(--bg);
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        transition: background-color 0.1s ease;
+
+        &[data-checked="true"] {
+            background-color: var(--primary);
+        }
+    }
+}

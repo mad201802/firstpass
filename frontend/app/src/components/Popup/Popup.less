@@ -1,0 +1,93 @@
+.popupRapper {
+    z-index: 80;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.4);
+    backdrop-filter: blur(3px);
+
+    display: grid;
+    place-items: center;
+}
+
+.popup {
+
+    animation: popupAnimation 0.2s ease-in-out;
+
+    width: max(500px, 50vw);
+    height: max(400px, 75vh);
+
+    &[data-size="small"]{
+        width: 400px;
+        height: 300px;
+    }
+
+    background-color: var(--bg);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
+    z-index: 90;
+    position: relative;
+    overflow: hidden;
+
+    align-items: stretch;
+    overflow: auto;
+
+    & > h1{
+        margin-bottom: 20px;
+    }
+}
+
+#closeButton{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 0 0 0 10px;
+    background-color: transparent;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+
+    &:hover{
+        background-color: var(--bg-light);
+    }
+}
+
+
+
+.buttonBox {
+    margin-top: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.cancelButton {
+    background-color: var(--bg-light);
+    color: var(--text);
+    &:hover{
+        background-color: var(--bg-lighter);
+    }
+}
+
+@keyframes popupAnimation {
+    0%{
+        transform: scale(1);
+        opacity: 0;
+    }
+    50%{
+        transform: scale(1.015);
+        opacity: 1;
+    }
+    100%{
+        transform: scale(1);
+        opacity: 1;
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "scripts": {
+        "build": "cd backend && mvn clean package && cd ../frontend && yarn build",
+        "start": "cd frontend && yarn run dev"
+    }
+}

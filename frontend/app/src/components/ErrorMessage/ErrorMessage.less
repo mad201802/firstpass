@@ -1,0 +1,32 @@
+.errorMessage {
+    color: var(--error);
+    font-size: 0.8rem;
+    padding: 5px;
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--error);
+
+    display: flex;
+    align-items: center;
+
+    & > span {
+        margin-right: 5px;
+        padding: 5px 10px;
+        background: var(--error);
+        border-radius: var(--radius);
+    }
+
+    & .errorIcon {
+        
+        padding: 0 10px;
+        background: var(--error);
+        border-radius: var(--radius);
+        margin-right: 5px;
+        display: grid;
+        place-items: center;
+
+        & svg {
+            width: 18px;
+        }
+    }
+}

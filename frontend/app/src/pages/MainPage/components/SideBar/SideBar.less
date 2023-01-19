@@ -1,0 +1,206 @@
+.sidebar {
+    width: clamp(200px, 30%, 500px);
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    background: var(--bg-light);
+
+    & .sidebarHeader {
+        height: 65px;
+        border-bottom: 2px solid var(--bg);
+
+        display: flex;
+        align-items: center;
+        padding: 0 15px;
+        user-select: none;
+
+        z-index: 11;
+
+        & #headerLogo {
+            height: 35%;
+
+            & path {
+                fill: var(--primary);
+            }
+        }
+
+        & svg {
+            fill: var(--primary);
+        }
+
+        & p {
+            color: var(--text-dark);
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding-left: 10px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+
+            -webkit-app-region: drag;
+        }
+    }
+
+    & .toolbar {
+
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        height: 40px;
+        flex-shrink: 0;
+        padding: 0 5px 0 15px;
+        border-bottom: 2px solid var(--bg);
+
+        z-index: 10;
+        box-shadow: 0 0 10px 10px var(--bg-light);
+
+        & span {
+            margin-right: auto;
+            user-select: none;
+            opacity: 0.5;
+            font-size: 13px;
+        }
+
+        & .toolbarButton {
+            display: grid;
+            place-items: center;
+            width: 26px;
+            height: 26px;
+            border-radius: var(--radius);
+            opacity: 0.5;
+            transition: opacity 100ms ease;
+
+            &:hover {
+                background-color: var(--bg-lighter);
+                opacity: 1;
+            }
+
+            & svg {
+                width: 18px;
+                fill: var(--text);
+            }
+
+            &.add:hover svg {
+                fill: var(--primary);
+            }
+
+            &.delete:hover svg {
+                fill: var(--error);
+            }
+            &.edit:hover svg {
+                fill: var(--primary);
+            }
+        }
+    }
+
+    & .categories {
+        padding-bottom: 10px;
+
+        direction: rtl;
+        & > * {
+            direction: ltr;
+        }
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: var(--bg-lighter);
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-light);
+        }
+    }
+
+    & .currentDBInfo {
+        z-index: 11;
+        min-height: 50px;
+        padding-left: 15px;
+        background-color: var(--primary);
+        
+        & p {
+            color: var(--text-inv);
+            font-weight: 600;
+            margin-left: 10px;
+            flex: 1;
+        }
+        & svg {
+            fill: var(--text-inv);
+        }
+
+        & .logoutButton {
+            height: calc(100% - 16px);
+            aspect-ratio: 1;
+            margin: 8px;
+            border-radius: var(--radius);
+
+            display: grid;
+            place-items: center;
+            transition: filter 0.2s ease-in-out;
+            background-color: var(--primary);
+
+            &:hover {
+                filter: brightness(0.8);
+            }
+        }
+
+        display: flex;
+        align-items: center;
+    }
+    
+    & .settings {
+        display: flex;
+        align-items: center;
+
+        z-index: 10;
+        box-shadow: 0 0 10px 10px var(--bg-light);
+        border-top: 2px solid var(--bg);    
+
+        margin-top: auto;
+        min-height: 50px;
+        padding-left: 15px;
+        background-color: var(--bg-light);
+        transition: background-color 100ms ease;
+        cursor: pointer;
+
+        --clr: var(--text);
+
+        &:hover {
+            --clr: var(--primary);  
+            background-color: var(--bg-lighter);       
+            
+            & svg {
+                transform: rotate(90deg);
+            }
+        }
+        &:active {
+            --clr: var(--primary-light);
+            background-color: var(--bg-light);
+        }
+        
+        & p {
+            margin-left: 10px;
+            flex: 1;
+            transition: color 100ms ease;
+        }
+        & svg {
+            fill: var(--clr);
+            transition: fill 100ms ease,
+                        transform 100ms ease;
+            width: 20px;
+        }
+
+
+    }
+}

@@ -1,0 +1,114 @@
+.category {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+
+    padding: 0 15px;
+    height: 50px;
+    border-left: 0px solid var(--primary);
+
+    cursor: pointer;
+    user-select: none;
+
+    --item-clr: var(--bg-light);
+    background-color: var(--item-clr);
+    box-shadow: inset 0px 0 0px var(--primary);
+
+    transition: background-color 0.1s ease-in-out,
+                box-shadow 0.1s ease-in-out;
+
+    & p {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-word;
+        pointer-events: none;
+    }
+    & input {
+        padding: 3px 0;
+        border-bottom: 2px solid var(--primary);
+        flex-grow: 1;
+        background-color: transparent;
+    }
+    
+    &::before {
+        content: "";
+        opacity: 0;
+        height: calc(var(--radius) * 2);
+        width: calc(var(--radius) * 2);
+        background-color: transparent;
+        border-radius: 50%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translateY(-100%);
+        box-shadow: var(--radius) var(--radius) 0 var(--item-clr);
+
+        transition: box-shadow 0.1s ease-in-out;
+    }
+
+    &::after {
+        content: "";
+        opacity: 0;
+        height: calc(var(--radius) * 2);
+        width: calc(var(--radius) * 2);
+        background-color: transparent;
+        border-radius: 50%;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        transform: translateY(100%);
+        box-shadow: var(--radius) calc(-1 * var(--radius)) 0 var(--item-clr);
+
+        transition: box-shadow 0.1s ease-in-out;
+    }
+    
+    &[data-active="true"] {
+        --item-clr: var(--bg);
+        z-index: 11;
+        
+        box-shadow: inset 5px 0 0px var(--primary);
+
+        &::before {
+            opacity: 1;
+        }
+        &::after {
+            opacity: 1;
+        }
+
+    }
+
+    
+    &:hover, &[data-dragover="true"] {
+        --item-clr: var(--bg-lighter);
+    }
+
+    &[data-dragover="true"] svg {
+        animation: bobbing 0.75s ease-in-out infinite;
+    }
+
+    &:active {
+        --item-clr: var(--bg-light);
+    }
+
+    & svg {
+        fill: var(--primary);
+        width: 20px;
+        pointer-events: none;
+    }
+}
+
+@keyframes bobbing {
+    0% {
+        transform: translateX(-2px);
+    }
+    50% {
+        transform: translateX(2px);
+    }
+    100% {
+        transform: translateX(-2px);
+    }
+}
