@@ -62,7 +62,6 @@ const App = () => {
     // Rainbow Mode
     const [rainbowMode, setRainbowMode] = useState(false);
     useEffect(() => {
-        console.log("rainbow mode", rainbowMode);
         if (rainbowMode) {
             window.__hue = 0;
             window.rainbowInterval = setInterval(() => {

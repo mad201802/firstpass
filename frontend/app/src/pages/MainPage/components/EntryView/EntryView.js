@@ -55,6 +55,11 @@ const EntryView = ({ entry, setCurrentEntry }) => {
                 data: { id: entry.id },
             });
             setCurrentEntry(null);
+            setDb(db => {
+                const newDb = { ...db };
+                newDb.entries = newDb.entries.filter(e => e.id !== entry.id);
+                return newDb;
+            });
         } catch (e) {
             console.error(e);
         }
