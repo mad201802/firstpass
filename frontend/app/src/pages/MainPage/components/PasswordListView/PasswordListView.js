@@ -35,6 +35,7 @@ const PasswordListView = ({ currentCategory, setAddEntryPopupVisible, setCurrent
     useShortcut("Escape", () => {
         if(document.querySelector(".passwordListView .searchInput input")  === document.activeElement) {
             setSearchTerm("");
+            document.activeElement.blur();
         }
     });
 

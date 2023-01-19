@@ -60,7 +60,7 @@ const Category = ({ currentCategory, category, id, setCurrentCategory, setSettin
         e.preventDefault();
         elRef.current.classList.remove("dragover");
 
-        const data = e.dataTransfer.getData("text");
+        const data = e.dataTransfer.getData("entry.id");
         const entry = db.entries.find(e => e.id == data);
 
         if (entry && entry.category !== id) {
@@ -89,7 +89,12 @@ const Category = ({ currentCategory, category, id, setCurrentCategory, setSettin
 
     function onDragOver(e) {
         e.preventDefault();
-        e.dataTransfer.dropEffect = "move";
+        // only allow drop if dataTransfer has entry.id
+        if (e.dataTransfer.types.includes("entry.id")) {
+            e.dataTransfer.dropEffect = "move";
+        } else {
+            e.dataTransfer.dropEffect = "none";
+        }
     }
 
     function onDragEnter(e) {

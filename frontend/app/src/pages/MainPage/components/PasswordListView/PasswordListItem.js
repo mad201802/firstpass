@@ -11,7 +11,8 @@ const PasswordListItem = ({ entry, visible, setCurrentEntry }) => {
             data-hidden={!visible}
             draggable={true}
             onDragStart={e => {
-                e.dataTransfer.setData("text/plain", entry.id);
+                e.dataTransfer.setData("text/plain", entry.name);
+                e.dataTransfer.setData("entry.id", entry.id);
                 e.dropEffect = "move";
             }}
             onClick={() => setCurrentEntry(entry)}
