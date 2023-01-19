@@ -59,10 +59,10 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
     async function deleteCategory(confirmed=false) {
         if (currentCategory === 1) return;
         if (!confirmed) {
-            setLogoutConfirmationVisible(true);
+            setDeleteConfirmationVisible(true);
             return;
         }
-        setLogoutConfirmationVisible(false);
+        setDeleteConfirmationVisible(false);
         try {
             const res = await backend.call({
                 type: "DELETE_CATEGORY",

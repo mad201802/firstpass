@@ -14,8 +14,6 @@ const SettingsView = ({ setSettingsVisible }) => {
 
     const [confirmReset, setConfirmReset] = useState(null);
 
-    useShortcut("Escape", () => setSettingsVisible(false));
-
     function update(e) {
         setSettings(s => ({ ...s, [e.target.name]: e.target.value }));
     }
