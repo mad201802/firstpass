@@ -28,6 +28,7 @@ const App = () => {
 
             text: "#f5f5f5",
             textDark: "#b3b3b3",
+            textInv: "#1f232a",
 
             radius: "5px",
             radiusLg: "10px",

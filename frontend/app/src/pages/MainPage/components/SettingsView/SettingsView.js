@@ -57,6 +57,7 @@ const SettingsView = ({ setSettingsVisible }) => {
 
                 text: "#f5f5f5",
                 textDark: "#b3b3b3",
+                textInv: "#1f232a",
             }
         }));
     }
@@ -94,6 +95,7 @@ const SettingsView = ({ setSettingsVisible }) => {
 
                     <ColorProp label="Text Color" value={theme.text} name="text" onInput={updateTheme} />
                     <ColorProp label="Text Color (Dark)" value={theme.textDark} name="textDark" onInput={updateTheme} />
+                    <ColorProp label="Text Color (Inverted)" value={theme.textInv} name="textInv" onInput={updateTheme} />
 
 
                     <div className="resetButton">
