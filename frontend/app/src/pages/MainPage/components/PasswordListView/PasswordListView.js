@@ -61,7 +61,7 @@ const PasswordListView = ({ currentCategory, setAddEntryPopupVisible, setCurrent
                     onInput={e => setSearchTerm(e.target.value)}
                 />
             </div>
-            <div className="sortingOptions">
+            {/* <div className="sortingOptions">
                 <div className="sortOption">
                     <span>Name</span>
                     <ArrowUpwardRounded />
@@ -75,8 +75,9 @@ const PasswordListView = ({ currentCategory, setAddEntryPopupVisible, setCurrent
                 <div className="sortOption">
                     <span>Last Used</span>
                 </div>
-            </div>
+            </div> */}
             <div className="passwordList">
+                <div style={{ borderBottom: "2px solid var(--divider)" }}></div>
                 {db.entries?.map((entry) => (
                     <PasswordListItem
                         key={entry.id}

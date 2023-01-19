@@ -100,6 +100,10 @@ const Category = ({ currentCategory, category, id, setCurrentCategory, setSettin
 
     function onDragEnter(e) {
         e.preventDefault();
+
+        // only allow drop if dataTransfer has entry.id
+        if (!e.dataTransfer.types.includes("entry.id")) return;
+
         setDragover(true);
     }
     function onDragLeave(e) {

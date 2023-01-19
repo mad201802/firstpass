@@ -21,7 +21,7 @@ import useShortcut from "hooks/useShortcut";
 import Category from "./components/Category";
 
 const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, settingsVisible, setCurrentEntry }) => {
-    const { db, setDb, settings: { editCategoryShortcut, createCategoryShortcut } } = useContext(AppContext);
+    const { db, setDb, settings: { editCategoryShortcut, createCategoryShortcut }, setRainbowMode } = useContext(AppContext);
 
     const [addCategoryVisible, setAddCategoryVisible] = useState(false);
     const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
@@ -33,6 +33,7 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
     useEffect(() => {
         if (clickCount !== 10) return;
         new Audio(EggAudio).play();
+        setRainbowMode(true);
         setClickCount(0);
     }, [clickCount]);
 

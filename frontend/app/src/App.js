@@ -59,6 +59,27 @@ const App = () => {
     }, [settings.theme]);
 
 
+    // Rainbow Mode
+    const [rainbowMode, setRainbowMode] = useState(false);
+    useEffect(() => {
+        console.log("rainbow mode", rainbowMode);
+        if (rainbowMode) {
+            window.__hue = 0;
+            window.rainbowInterval = setInterval(() => {
+                const color = `hsl(${window.__hue}, 100%, 65%)`;
+                const colorLight = `hsl(${window.__hue}, 80%, 75%)`;
+                const colorDark = `hsl(${window.__hue}, 80%, 55%)`;
+                document.body.style.setProperty(`--primary`, color);
+                document.body.style.setProperty(`--primary-light`, colorLight);
+                document.body.style.setProperty(`--primary-dark`, colorDark);
+                window.__hue = (window.__hue + 2) % 360;
+            }, 20);
+        } else {
+            clearInterval(window.rainbowInterval);
+        }
+    }, [rainbowMode])
+
+
     const [login, setLogin] = useState(true);
 
     useEffect(() => {
@@ -102,6 +123,7 @@ const App = () => {
                 setLogin,
                 settings,
                 setSettings,
+                setRainbowMode
             }}
         >
             {db ? <MainPage /> : login ? <LoginPage /> : <CreatePage />}
