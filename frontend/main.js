@@ -1,17 +1,25 @@
 const electron = require("electron");
 const { ipcMain } = require("electron/main");
+const path = require("path");
 
 const backend = require("./util/backend");
 
-const { app, BrowserWindow } = electron;
+const { app, BrowserWindow, Menu, nativeTheme } = electron;
+nativeTheme.themeSource = "dark";
 
 let mainWindow;
 
 app.on("ready", () => {
+
+    // Disable Shortcuts (prevent reloading)
+    if (app.isPackaged)
+        Menu.setApplicationMenu(null);
+
     mainWindow = new BrowserWindow({
         webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false,
+            nodeIntegration: false,
+            contextIsolation: true,
+            preload: path.join(__dirname, "/preload.js"),
             devTools: !app.isPackaged
         },
 
@@ -25,18 +33,29 @@ app.on("ready", () => {
         minHeight: 500,
         minWidth: 700,
 
-        icon: "firstpass.ico"
+        icon: "firstpass.ico",
+        title: "Firstpass"
     });
+
+    mainWindow.webContents.executeJavaScript(`window.isPackaged = ${app.isPackaged};`);
 
     mainWindow.loadURL(`file://${__dirname}/app/build/index.html`).then(() => {
         mainWindow.show();
         if (!app.isPackaged) mainWindow.webContents.openDevTools({ mode: "detach" });
 
         backend.onError(e => {
-            console.log("sending error", e);
+            console.log("Backend crashed", e);
             mainWindow.webContents.send("backend-error", e);
+            if (backend.attempts < 10) {
+                setTimeout(backend.connect, backend.attempts * 100);
+            } else {
+                mainWindow.webContents.send("backend-error", {...e, fatal: true });
+                console.log("Backend crashed too many times, giving up");
+            }
+            ++backend.attempts;
         });
         backend.connect();
+        backend.registerHandlers();
     });
 
     ipcMain.on("minimize", () => {

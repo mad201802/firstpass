@@ -30,11 +30,11 @@ public interface IEncryptedDatabase {
 
 
     // Meta
-    int createMeta(String name, String value);
+    int createMeta(String key, String value);
     MetaModel getMeta(int id);
-    MetaModel getMeta(String name);
+    MetaModel getMeta(String key);
     HashMap<String, String> getAllMeta();
-    boolean updateMeta(int id, String key, String value);
+    boolean updateMeta(String key, String value);
     boolean deleteMeta(int id);
 
     String getEncryptionAlgorithm();

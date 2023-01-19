@@ -87,7 +87,6 @@ class IPC {
      * @param {string} msg The message to send
      */
     send(msg) {
-        console.log("Sending message: " + msg);
         this.process.stdin.write(msg + "\n");
     }
     

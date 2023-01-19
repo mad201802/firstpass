@@ -36,6 +36,7 @@ public class CreateDatabaseCallback {
         ISymmetricEncryptionAlgorithm algo;
         try {
             database = new SQLiteDriver(request.filepath, request.masterpassword);
+            database.createMeta("name", request.name);
         } catch (SQLException e) {
             throw new IPCException(500, "Failed to create database: " + e.getMessage());
         }
@@ -53,18 +54,16 @@ public class CreateDatabaseCallback {
 
         entries.forEach(entry -> entry.setPassword(String.join("", Collections.nCopies(entry.getPassword().length(), "*"))));
 
-        String[] filename_array = request.filepath.split("/");
-        String filename = filename_array[filename_array.length-1];
-
         if(FirstPass.configuration == null) {
             throw new IPCException(500, "Configuration is not read");
         }
 
         if (FirstPass.configuration.getConfig().recentDBs.stream().noneMatch(loaded_db -> loaded_db.filepath.equals(request.filepath))) {
-            FirstPass.configuration.getConfig().recentDBs.add(new LoadedDB(filename, request.filepath));
+            FirstPass.configuration.getConfig().recentDBs.add(new LoadedDB(request.name, request.filepath));
             FirstPass.configuration.saveConfig();
         }
 
+        response.name = request.name;
         response.entries = entries;
         response.categories = categories;
 

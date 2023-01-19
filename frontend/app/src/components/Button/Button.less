@@ -7,7 +7,10 @@
 
     transition: background-color 100ms ease;
 
-    // box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    &[data-size="small"] {
+        padding: 0 15px;
+        min-height: 35px;
+    }
 
     &:hover {
         background-color: var(--primary-light);
@@ -15,5 +18,49 @@
 
     &:active {
         background-color: var(--primary-dark);
+    }
+
+    &[data-type="danger"] {
+        background-color: var(--error);
+        &:hover {
+            background-color: var(--error-dark);
+        }
+
+        &:active {
+            background-color: var(--error);
+        }
+    }
+
+    &[data-type="warning"] {
+        background-color: var(--warning);
+        &:hover {
+            background-color: var(--warning-dark);
+        }
+
+        &:active {
+            background-color: var(--warning);
+        }
+    }
+
+    &[data-type="success"] {
+        background-color: var(--success);
+        &:hover {
+            background-color: var(--success-dark);
+        }
+
+        &:active {
+            background-color: var(--success);
+        }
+    }
+
+    &[data-type="secondary"] {
+        background-color: var(--bg-light);
+        &:hover {
+            background-color: var(--bg-lighter);
+        }
+
+        &:active {
+            background-color: var(--bg-light);
+        }
     }
 }

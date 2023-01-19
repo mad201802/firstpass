@@ -28,13 +28,23 @@
     outline: none;
 
     box-sizing: border-box;
-    font-family: "Work Sans", sans-serif;
+    font-family: "Montserrat", sans-serif;
 
     color: var(--text);
+
+    &::selection {
+        background-color: var(--primary-dark);
+        color: var(--text);
+    }
 }
 
 code {
     font-family: "Courier New", Courier, monospace;
+}
+
+svg.MuiSvgIcon-root {
+    // delete default mui transition
+    transition: none;
 }
 
 

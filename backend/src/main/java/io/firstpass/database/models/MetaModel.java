@@ -10,7 +10,7 @@ import io.firstpass.utils.decorators.Generated;
 @Generated
 @DatabaseTable(tableName = "meta")
 public class MetaModel {
-    @DatabaseField(id = true)
+    @DatabaseField(generatedId = true)
     public Integer id;
     @DatabaseField()
     public String key;

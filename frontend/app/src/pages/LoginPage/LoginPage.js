@@ -9,35 +9,8 @@ import AppContext from "contexts/App.context"
 import backend from "backend"
 
 import { KeyRounded, DnsRounded, AddRounded } from "@mui/icons-material";
+import useShortcut from "hooks/useShortcut";
 
-
-const recentDBs_ = [
-    {
-        name: "Tom's DB",
-        date: "2021-10-10",
-        filepath: "C:\\Users\\tomfl\\Documents\\test.fpdb",
-    },
-    {
-        name: "Avaze' DB",
-        date: "2021-10-10",
-        filepath: "C:\\Users\\Avaze\\Documents\\test.fpdb",
-    },
-    {
-        name: "Maurice' DB",
-        date: "2021-10-10",
-        filepath: "C:\\Users\\mauri\\OneDrive\\Dokumente\\test.fpdb",
-    },
-    {
-        name: "Online Banking",
-        date: "2021-10-10",
-        filepath: "C:\\Users\\test\\Documents\\ein\\wirklich\\sehr\\langer\\pfad\\test2.fp",
-    },
-    {
-        name: "Arbeit",
-        date: "2021-10-10",
-        filepath: "C:\\Users\\test\\Documents\\test3.fp",
-    },
-]
 
 const RecentDB = ({ data }) => {
     return (
@@ -53,25 +26,25 @@ const LoginPage = () => {
 
     const { setDb, setLogin } = useContext(AppContext);
 
-    const [database, setDatabase] = useState();
+    const [database, setDatabase] = useState(null);
     const [recentDBs, setRecentDBs] = useState([]);
 
     const [masterpassword, setMasterpassword] = useState("");
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        // TODO: Load recent DBs from backend
         backend.call({
             type: "LIST_RECENT_DBS",
             data: {},
         }).then(({ data }) => {
             setRecentDBs(data.recentDBs);
         });
-        // setRecentDBs(recentDBs_);
     }, []);
     
 
     async function login() {
+        if (database === null) return setError({code: 400, message: "No database selected"});
+        if (masterpassword === "") return setError({code: 400, message: "Masterpassword cannot be empty"});
         const filepath = recentDBs[database].filepath;
     
         try {
@@ -90,18 +63,7 @@ const LoginPage = () => {
     
     }
 
-    useEffect(() => {
-        const handler = e => {
-            if (e.key === "Enter") {
-                login();
-            }
-        }
-        document.addEventListener("keydown", handler);
-
-        return () => {
-            document.removeEventListener("keydown", handler);
-        }
-    })
+    useShortcut("Enter", login);
 
     const openFileOption = {
         component: () => {
@@ -111,9 +73,28 @@ const LoginPage = () => {
                 </div>
             );
         },
-        onClick: () => {
-            // TODO create a new entry in recent dbs from filepath
-            console.log("File:", backend.selectDBFile());
+        onClick: async () => {
+            let db_files = await backend.selectDBFile();
+            if (!db_files) return;
+            console.log(db_files, recentDBs);
+            db_files = db_files.map(s => s.replace(/\\/g, "/")).filter(file => !recentDBs.find(db => db.filepath === file));
+            console.log(db_files, recentDBs);
+            if (db_files.length === 0) return;
+            try {
+                for (const file of db_files) {
+                    const { data: db_info } = await backend.call({
+                        type: "ADD_RECENT_DB",
+                        data: {
+                            filepath: file,
+                        }
+                    });
+                    setRecentDBs(d => [...d, {...db_info, filepath: file}]);
+                }
+                setDatabase(recentDBs.length);
+                document.querySelector(".masterpasswordInput input").focus();
+            } catch (e) {
+                setError(e);
+            }
         },
     }
 

@@ -1,4 +1,4 @@
-const electron = require("electron");
+// const electron = require("electron");
 const { ipcRenderer } = electron;
 
 
@@ -53,7 +53,7 @@ const call = async (data) => {
     try {
         res = JSON.parse(await ipcRenderer.invoke("call", data));
     } catch (e) {
-        throw { error: "Backend returned invalid message", code: 500 }
+        throw { message: "Backend returned invalid message", code: 500 }
     }
     if (res.error) throw res.error;
     return res;
@@ -63,15 +63,16 @@ const call = async (data) => {
  * Show a dialog to open/save a db file
  * @returns {Promise<string[]|string|undefined>} The selected files
  */
-function selectDBFile(type = "open") {
+function selectDBFile(type = "open", previousPath = "") {
     switch(type) {
         case "open":
             return ipcRenderer.invoke("showOpenDialog", {
                 title: "Select a Firstpass Database",
-                properties: ["openFile"],
+                properties: ["openFile", "multiSelections"],
                 filters: [
                     { name: "Firstpass Database", extensions: ["fpdb"] },
                 ],
+                defaultPath: previousPath,
             });
 
         case "save":
@@ -80,8 +81,23 @@ function selectDBFile(type = "open") {
                 filters: [
                     { name: "Firstpass Database", extensions: ["fpdb"] },
                 ],
+                defaultPath: previousPath,
             });
     }
+}
+
+
+let _cached_documents_folder;
+/**
+ * Get the documents folder
+ * @returns {Promise<string|null>} The documents folder
+ */
+function getDocumentsFolder() {
+    if (_cached_documents_folder) return Promise.resolve(_cached_documents_folder);
+    return ipcRenderer.invoke("getDocumentsFolder").then(res => {
+        _cached_documents_folder = res.replace(/\\/g, "/");
+        return _cached_documents_folder;
+    });
 }
 
 /**
@@ -94,4 +110,5 @@ export default {
     onError,
     call,
     selectDBFile,
+    getDocumentsFolder,
 };

@@ -1,10 +1,14 @@
-import React from "react"
-import "./ErrorMessage.less"
+import React from "react";
+import "./ErrorMessage.less";
+import { ErrorOutlineRounded } from "@mui/icons-material";
 
-const ErrorMessage = ({error}) => {
-  return (
-    <div className="errorMessage"><span>{error.code}</span>{error.message}</div>
-  )
-}
+const ErrorMessage = ({ error, showCode = false }) => {
+    return (
+        <div className="errorMessage">
+            {showCode ? <span>{error.code}</span> : <div className="errorIcon"><ErrorOutlineRounded /></div>}
+            {error.message}
+        </div>
+    );
+};
 
-export default ErrorMessage
+export default ErrorMessage;

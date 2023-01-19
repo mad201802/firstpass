@@ -13,10 +13,9 @@ import io.firstpass.database.models.EncryptedEntryModel;
 import io.firstpass.database.models.MetaModel;
 import io.firstpass.encryption.hashing.SHA256;
 import io.firstpass.encryption.symmetric.models.CipherData;
+import io.firstpass.manager.models.EntryModel;
 import io.firstpass.utils.Utils;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -194,7 +193,15 @@ public class SQLiteDriver implements IEncryptedDatabase {
     @Override
     public boolean deleteEntryById(int id) {
         try {
-            return entryDAO.deleteById(id) == 1;
+            EncryptedEntryModel entry = entryDAO.queryForId(id);
+            if (entry == null) {
+                return false;
+            }
+
+            encryptedDAO.delete(entry.getUsername());
+            encryptedDAO.delete(entry.getPassword());
+            entryDAO.delete(entry);
+            return true;
         } catch (SQLException e) {
             return false;
         }
@@ -240,13 +247,14 @@ public class SQLiteDriver implements IEncryptedDatabase {
         }
     }
 
-
     @Override
-    public int createMeta(String name, String value) {
+    public int createMeta(String key, String value) {
         try {
-            MetaModel metaModel = new MetaModel(name, value);
-            metaDAO.create(metaModel);
-            return metaModel.getId();
+            MetaModel metaModel = new MetaModel(key, value);
+            if(metaDAO.create(metaModel) == 1) {
+                return metaModel.getId();
+            }
+            return -1;
         } catch (SQLException e) {
             Utils.log(e.getMessage());
             return -1;
@@ -261,9 +269,9 @@ public class SQLiteDriver implements IEncryptedDatabase {
         }
     }
     @Override
-    public MetaModel getMeta(String name) {
+    public MetaModel getMeta(String key) {
         try {
-            return metaDAO.queryForEq("name", name).get(0);
+            return metaDAO.queryForEq("key", key).get(0);
         } catch (SQLException e) {
             return null;
         }
@@ -288,10 +296,9 @@ public class SQLiteDriver implements IEncryptedDatabase {
         return metadata;
     }
     @Override
-    public boolean updateMeta(int id, String key, String value) {
+    public boolean updateMeta(String key, String value) {
         try {
-            MetaModel metaModel = metaDAO.queryForId(id);
-            metaModel.setKey(key);
+            MetaModel metaModel = metaDAO.queryForEq("key", key).get(0);
             metaModel.setValue(value);
             return metaDAO.update(metaModel) == 1;
         } catch (SQLException e) {

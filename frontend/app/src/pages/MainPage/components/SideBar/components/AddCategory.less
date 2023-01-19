@@ -1,0 +1,38 @@
+.addCategory {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+
+    & svg {
+        fill: var(--primary);
+        width: 20px;
+    }
+
+    & input {
+        height: 50%;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        padding-left: 10px;
+        overflow: hidden;
+        flex-grow: 1;
+    }
+
+    & button {
+        height: 50%;
+        background-color: var(--primary);
+        border-radius: var(--radius);
+        padding: 0 10px;
+        outline: none;
+        cursor: pointer;
+        transition: background-color 100ms ease;
+        color: var(--text-inv);
+        font-weight: 600;
+        font-size: 12px;
+
+        &:hover {
+            background-color: var(--primary-light);
+        }
+    }
+}

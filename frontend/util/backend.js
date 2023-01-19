@@ -12,7 +12,7 @@ let onError = () => {};
 
 function connect() {
     const jarLocation = app.isPackaged ? "./backend.jar" : "../backend/target/backend-1.0-SNAPSHOT.jar";
-    ipc = new IPC("java", ["-jar", jarLocation]);
+    ipc = new IPC("java", ["-jar", jarLocation, "--no-logging"]);
 
     ipc._onExit = () => {
         onError({ code: 10, message: "The process exited unexpectedly", id: "ERR_EXIT" });
@@ -21,7 +21,9 @@ function connect() {
     ipc.connect().catch(e => {
         onError(e);
     });
+}
 
+function registerHandlers() {
     ipcMain.handle("call", (event, data) => {
         return new Promise((resolve, reject) => {
             call(data).then(res => {
@@ -32,18 +34,26 @@ function connect() {
         });
     });
 
+    ipcMain.handle("getDocumentsFolder", () => {
+        return app.getPath("documents");
+    });
+
     ipcMain.handle("showOpenDialog", (e, opts) => {
         return dialog.showOpenDialogSync(opts);
     })
     ipcMain.handle("showSaveDialog", (e, opts) => {
         return dialog.showSaveDialogSync(opts);
     })
-
 }
 
-function disconnect() {
+function restart() {
+    disconnect();
+    connect();
+}
+
+async function disconnect() {
     ipc._onExit = () => {};
-    call({ type: "SHUTDOWN" });
+    await call({ type: "CLOSE_DB", data: {} });
     return ipc.terminate(false);
 }
 
@@ -52,10 +62,13 @@ async function call(data) {
     return ipc.recv(MAX_RESPONSE_TIME);
 }
 
-
+let attempts = 0;
 module.exports = {
     connect,
-    call,
+    registerHandlers,
+    restart,
     disconnect,
+    call,
     onError: (callback) => onError = callback,
+    attempts
 }

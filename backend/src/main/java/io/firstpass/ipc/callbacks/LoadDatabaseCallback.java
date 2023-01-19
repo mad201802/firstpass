@@ -1,6 +1,7 @@
 package io.firstpass.ipc.callbacks;
 
 import io.firstpass.FirstPass;
+import io.firstpass.config.schemas.LoadedDB;
 import io.firstpass.database.IEncryptedDatabase;
 import io.firstpass.database.drivers.SQLiteDriver;
 import io.firstpass.database.models.CategoryModel;
@@ -49,6 +50,8 @@ public class LoadDatabaseCallback {
             throw new IPCException(500, "Defined encryption algorithm is not supported: " + uae.getMessage());
         }
 
+        String name = database.getMeta("name").value;
+
         FirstPass.passwordManager = new PasswordManager(database, algo, request.masterpassword);
         ArrayList<CategoryModel> categories = (ArrayList<CategoryModel>) FirstPass.passwordManager.getAllCategories();
 
@@ -56,8 +59,14 @@ public class LoadDatabaseCallback {
 
         entries.forEach(entry -> entry.setPassword(String.join("", Collections.nCopies(entry.getPassword().length(), "*"))));
 
+        if (FirstPass.configuration.getConfig().recentDBs.stream().noneMatch(loaded_db -> loaded_db.filepath.equals(request.filepath))) {
+            FirstPass.configuration.getConfig().recentDBs.add(new LoadedDB(name, request.filepath));
+            FirstPass.configuration.saveConfig();
+        }
+
         response.entries = entries;
         response.categories = categories;
+        response.name = name;
 
         return response;
     }

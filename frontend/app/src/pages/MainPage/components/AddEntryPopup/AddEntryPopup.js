@@ -1,53 +1,81 @@
-import React, {useState} from "react";
+import React, { useState, useContext, useRef } from "react";
 import "./AddEntryPopup.less";
-import {
-    CloseRounded,
-    LinkRounded,
-    PersonRounded,
-    KeyRounded
-} from "@mui/icons-material";
+import { LinkRounded, PersonRounded, KeyRounded,FormatSizeRounded } from "@mui/icons-material";
 
-import { Button, FormInput, Popup } from "components";
+import { FormInput, Popup, PasswordStrength } from "components";
 
-const AddEntryPopup = ({ setAddEntryPopupVisible }) => {
+import backend from "backend";
+import AppContext from "contexts/App.context";
 
-    const [username, setUsername] = useState("");
-    const [url, setUrl] = useState("");
-    const [password, setPassword] = useState("");
+const AddEntryPopup = ({ setAddEntryPopupVisible, currentCategory}) => {
 
-    function addEntry() {
+    const [state, setState] = useState({
+        name: "",
+        url: "",
+        username: "",
+        password: "",
+    });
+    const stateRef = useRef();
+    stateRef.current = state;
+
+    function update(e) {
+        setState(s => ({...s, [e.target.name]: e.target.value}));
+    }
+
+
+    const { setDb } = useContext(AppContext);
+
+    async function addEntry() {
         setAddEntryPopupVisible(false);
-        // TODO: Add entry to database
-        console.log(`Adding entry with url: ${url}, username: ${username}, password: ${password}`);
+        let { data: entry } = await backend.call({
+            type: "CREATE_ENTRY",
+            data:{ 
+                ...stateRef.current,
+                notes: "",
+                category: currentCategory
+            }
+        });
+        setDb(db => {
+            const newDb = { ...db };
+            newDb.entries.push(entry);
+            return newDb;
+        });
     }
 
     return (
-        <Popup
-            onClose={() => setAddEntryPopupVisible(false)}
-            onSubmit={addEntry}
-            title="Add Entry"
-            submitText="Add"
-        >
-            <div class="addEntryInputs">
+        <Popup onClose={() => setAddEntryPopupVisible(false)} onSubmit={addEntry} title="Add Entry" submitText="Add">
+            <div className="addEntryInputs">
+                <FormInput
+                    placeholder="Name"
+                    name="name"
+                    autoFocus={true}
+                    iconLeft={<FormatSizeRounded />}
+                    value={state.name}
+                    onInput={update}
+                />
                 <FormInput
                     placeholder="URL"
-                    autoFocus={true}
+                    name="url"
                     iconLeft={<LinkRounded />}
-                    value={url}
-                    onInput={e => setUrl(e.target.value)}
+                    value={state.url}
+                    onInput={update}
                 />
                 <FormInput
                     placeholder="Username"
+                    name="username"
                     iconLeft={<PersonRounded />}
-                    value={username}
-                    onInput={e => setUsername(e.target.value)}
+                    value={state.username}
+                    onInput={update}
                 />
                 <FormInput
                     placeholder="Password"
+                    name="password"
                     iconLeft={<KeyRounded />}
-                    value={password}
-                    onInput={e => setPassword(e.target.value)}
+                    value={state.password}
+                    onInput={update}
+                    type="password"
                 />
+                <PasswordStrength password={state.password} ></PasswordStrength>
             </div>
         </Popup>
     );

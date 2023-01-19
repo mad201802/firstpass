@@ -1,0 +1,26 @@
+.colorProp {
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 60px;
+    border-bottom: 2px solid var(--divider);
+    padding: 0 10px;
+
+    & input {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 50px;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        
+            &::-webkit-color-swatch-wrapper {
+                padding: 0;
+            }
+        &::-webkit-color-swatch {
+            border-radius: var(--radius);
+            border: 2px solid var(--bg-lighter);
+        }
+    }
+}

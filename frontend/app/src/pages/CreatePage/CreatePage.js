@@ -1,10 +1,10 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import "./CreatePage.less"
 
 import FirstpassLogo from "assets/svg/logo_full.svg"
 import WavesSvg from "assets/svg/waves.svg"
 
-import { FormInput, TitleBar, Button, ErrorMessage } from "components"
+import { FormInput, TitleBar, Button, ErrorMessage, PasswordStrength } from "components"
 
 import AppContext from "contexts/App.context"
 
@@ -12,26 +12,59 @@ import {
     KeyRounded,
     MoreHorizRounded,
     InsertDriveFileRounded,
-    ArrowBackIosRounded
+    ArrowBackIosRounded,
+    FormatSizeRounded,
+    CheckCircleRounded,
+    CancelRounded,
+    CheckRounded,
+    CloseRounded
 } from "@mui/icons-material";
 
 import backend from "backend"
+import useShortcut from "hooks/useShortcut"
 
+
+function sanitizeName(name) {
+    return name.toLowerCase().trim()
+        .replace(/[\s_-]+/g, "_")
+        .replace(/\W/g, "");
+}
 
 const CreatePage = () => {
     
     const { setDb, setLogin } = useContext(AppContext);
     const [error, setError] = useState(null);
 
-    async function create() {
-        // TODO refactor this so input states are stored with useState in this component
-        const masterpassword = document.querySelector(".masterpasswordA input").value.trim();
-        const masterpassword2 = document.querySelector(".masterpasswordB input").value.trim();
-        const filepath = document.querySelector(".dbPathInput input").value.trim();
+    const [state, setState] = useState({
+        masterpassword: "",
+        masterpassword2: "",
+        filepath: "",
+        name: ""
+    });
+    const [editedFilepath, setEditedFilepath] = useState(false);
 
-        // TODO: Show error message
+    function update(e) {
+        setState(s => ({ ...s, [e.target.name]: e.target.value }));
+    }
+
+    useEffect(() => {
+        if (!editedFilepath) {
+            backend.getDocumentsFolder().then(documents => {
+                const filepath = documents + "/" + (state.name ? sanitizeName(state.name) : "vault") + ".fpdb";
+                setState(s => ({ ...s, filepath }));
+            });
+        }
+    }, [state.name]);
+
+    async function create() {
+        const { masterpassword, masterpassword2, filepath, name } = state;
+
+        if (name === "") return setError({code: 400, message: "Name cannot be empty"});
+        if (filepath === "") return setError({code: 400, message: "Filepath cannot be empty"});
+        if (masterpassword === "") return setError({code: 400, message: "Masterpassword cannot be empty"});
+
         if (masterpassword !== masterpassword2) {
-            console.log("Passwords don't match");
+            setError({code: 400, message: "Passwords don't match"});
             return;
         }
     
@@ -41,21 +74,24 @@ const CreatePage = () => {
                 data: {
                     masterpassword,
                     filepath,
+                    name
                 }
             });
             setDb(db);
+            setLogin(true);
     
         } catch (e) {
-            console.log(e);
+            console.error(e);
             setError(e);
-            // TODO: Show error message
         }
     
     }
 
+    useShortcut("Enter", create);
+
     async function selectFilePath() {
-        const filepath = await backend.selectDBFile("save");
-        if (filepath) document.querySelector(".dbPathInput input").value = filepath;
+        const filepath = await backend.selectDBFile("save", state.filepath);
+        if (filepath) setState(s => ({ ...s, filepath }));
     }
 
 
@@ -67,19 +103,33 @@ const CreatePage = () => {
                 <div className="createForm">
                     <div className="createPageTitle">
                         <FirstpassLogo className="firstpassLogo" />
-                        <p>Create a new Database</p>
                     </div>
 
 
                     <div className="createFormInputs">
                         {error && <ErrorMessage error={error} />}
+                        <FormInput
+                                placeholder="Enter Vault Name"
+                                type="text"
+                                className="nameInput"
+                                iconLeft={<FormatSizeRounded />}
+                                autoFocus={true}
+                                value={state.name}
+                                onInput={update}
+                                name="name"
+                            />
                         <div className="databaseInput">
                             <FormInput
-                                placeholder="Enter Database Path"
+                                placeholder="Enter Vault Path"
                                 type="text"
                                 className="dbPathInput"
                                 iconLeft={<InsertDriveFileRounded />}
-                                autoFocus={true}
+                                value={state.filepath}
+                                onInput={e => {
+                                    setEditedFilepath(true);
+                                    update(e);
+                                }}
+                                name="filepath"
                             />
                             <Button onClick={selectFilePath} >{<MoreHorizRounded />}</Button>
                         </div>
@@ -88,13 +138,26 @@ const CreatePage = () => {
                             placeholder="Enter Masterpassword"
                             type="password"
                             iconLeft={<KeyRounded />}
+                            value={state.masterpassword}
+                            onInput={update}
+                            name="masterpassword"
                         />
                         <FormInput
                             className="masterpasswordB"
                             placeholder="Enter Masterpassword again"
                             type="password"
                             iconLeft={<KeyRounded />}
+                            value={state.masterpassword2}
+                            onInput={update}
+                            name="masterpassword2"
+                            iconRight={state.masterpassword2 && (
+                                state.masterpassword === state.masterpassword2 ? (
+                                    <CheckRounded style={{ fill:"var(--success)" }} />
+                                ) : (
+                                    <CloseRounded style={{ fill:"var(--error)" }} />)
+                            )}
                         />
+                        <PasswordStrength password={state.masterpassword} />
                     </div>
                     <div className="buttons">
                         <Button id="back" onClick={() => setLogin(true)}>{<ArrowBackIosRounded/>}</Button>
