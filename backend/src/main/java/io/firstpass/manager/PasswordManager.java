@@ -69,8 +69,8 @@ public class PasswordManager {
         return getEntryById(id);
     }
 
-    public void deleteEntryById(int id) {
-        database.deleteEntryById(id);
+    public boolean deleteEntryById(int id) {
+        return database.deleteEntryById(id);
     }
 
 
