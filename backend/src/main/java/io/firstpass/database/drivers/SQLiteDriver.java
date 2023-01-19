@@ -13,6 +13,7 @@ import io.firstpass.database.models.EncryptedEntryModel;
 import io.firstpass.database.models.MetaModel;
 import io.firstpass.encryption.hashing.SHA256;
 import io.firstpass.encryption.symmetric.models.CipherData;
+import io.firstpass.manager.models.EntryModel;
 import io.firstpass.utils.Utils;
 
 import java.nio.file.Files;
@@ -194,7 +195,15 @@ public class SQLiteDriver implements IEncryptedDatabase {
     @Override
     public boolean deleteEntryById(int id) {
         try {
-            return entryDAO.deleteById(id) == 1;
+            EncryptedEntryModel entry = entryDAO.queryForId(id);
+            if (entry == null) {
+                return false;
+            }
+
+            encryptedDAO.delete(entry.getUsername());
+            encryptedDAO.delete(entry.getPassword());
+            entryDAO.delete(entry);
+            return true;
         } catch (SQLException e) {
             return false;
         }
