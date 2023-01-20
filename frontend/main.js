@@ -7,9 +7,22 @@ const backend = require("./util/backend");
 const { app, BrowserWindow, Menu, nativeTheme } = electron;
 nativeTheme.themeSource = "dark";
 
+// If another instance is running, quit this one
+const aquired_lock = app.requestSingleInstanceLock();
+if (!aquired_lock) app.quit();
+
+
 let mainWindow;
 
 app.on("ready", () => {
+
+    // When user tries to launch another instance, focus the main window
+    app.on("second-instance", (e, argv, cwd) => {
+        if (mainWindow) {
+            if (mainWindow.isMinimized()) mainWindow.restore();
+            mainWindow.focus();
+        }
+    });
 
     // Disable Shortcuts (prevent reloading)
     if (app.isPackaged)
