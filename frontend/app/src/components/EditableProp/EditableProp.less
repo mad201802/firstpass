@@ -13,9 +13,24 @@
     &[data-nodivider="true"] {
         border-bottom: none !important;
     }
-
-
+    
     .formInput {
+
+        &[data-url="true"] input {
+            color: var(--primary);
+            text-decoration: underline;
+            cursor: pointer;
+            transition: color 100ms ease;
+            min-width: 0;
+            flex-shrink: 1;
+            flex-grow: 0;
+            margin-right: auto;
+    
+            &:hover {
+                color: var(--primary-light);
+            }
+        }
+
         border: none;
         border-radius: unset;
         height: 35px;
@@ -33,7 +48,7 @@
         .buttonGroup {
             position: absolute;
             top: 7px;
-            right: 10px;
+            right: 15px;
         }
 
         & > svg {
@@ -60,7 +75,7 @@
         background-color: transparent;
         height: 100%;
         flex-grow: 1;
-        padding: 9px 70px 3px 3px;
+        padding: 9px 75px 3px 3px;
 
         &::-webkit-scrollbar {
             width: 5px;

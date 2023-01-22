@@ -8,20 +8,19 @@ import useShortcut from "hooks/useShortcut";
 
 const DropdownMenu = ({
     value: currentValue,
-    onChange: setCurrentValue,
     onChange,
     options,
     placeholder,
     component: DropdownItem,
     icon,
-    customItems
+    customItems,
+    hideSelected=false
 }) => {
     // const [currentValue, setCurrentValue] = useState(df);
     const [isOpen, setIsOpen] = useState(false);
 
     const selectOption = (value) => {
         onChange && onChange(value, options[value]);
-        setCurrentValue(value);
         setIsOpen(false);
     };
 
@@ -61,7 +60,7 @@ const DropdownMenu = ({
 
             <div className="currentOption">
                 {currentValue !== null ? (
-                    <DropdownItem data={options[currentValue]} />
+                    <DropdownItem data={options[currentValue]} current={true} />
                 ) : (
                     placeholder
                 )}
@@ -70,7 +69,9 @@ const DropdownMenu = ({
             <ChevronRightRounded className="dropdownCaret" data-open={isOpen} />
 
             <div className="dropdownOptionList" data-open={isOpen} ref={optionListRef}>
-                {Object.entries(options).map(([v, n]) => (
+                {Object.entries(options)
+                .filter(([v, n]) => !hideSelected || v != currentValue)
+                .map(([v, n]) => (
                     <div
                         className="dropdownOption"
                         key={v}
@@ -79,7 +80,7 @@ const DropdownMenu = ({
                         <DropdownItem data={n} />
                     </div>
                 ))}
-                {customItems.map((item, i) => (
+                {customItems?.map((item, i) => (
                     <div
                         className="dropdownOption"
                         key={i}

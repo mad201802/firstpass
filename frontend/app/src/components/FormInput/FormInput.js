@@ -17,16 +17,18 @@ const FormInput = React.forwardRef(({
     autoFocus = false,
     className,
     error = false,
+    inputProps,
+    ...props
 }, ref) => {
     let classes = "formInput";
     if (error) classes += " error";
     if (className) classes += ` ${className}`;
 
     return (
-        <div className={classes}>
+        <div className={classes} {...props}>
             {iconLeft}
             <input
-                {...{ name, placeholder, type, value, spellCheck, readOnly, onInput, autoFocus, disabled, ref }}
+                {...{ name, placeholder, type, value, spellCheck, readOnly, onInput, autoFocus, disabled, ref, ...inputProps }}
             />
             {iconRight}
         </div>

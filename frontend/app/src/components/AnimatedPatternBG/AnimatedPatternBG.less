@@ -1,0 +1,26 @@
+.patternBg {
+    --bg-size: 200px;
+    background-size: var(--bg-size);
+    width: 200vmax;
+    height: 200vmax;
+    position: absolute;
+    top: -50vmax;
+    left: -50vmax;
+    z-index: 0;
+    animation: patternBg 30s linear infinite;
+    transform-origin: center;
+    opacity: 10%;
+    transform: rotate(45deg);
+}
+
+// long moving and rotating animation of the background-image pattern
+// using background-position
+// and transform: rotate
+@keyframes patternBg {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 0 calc(var(--bg-size) * -10);
+    }
+}

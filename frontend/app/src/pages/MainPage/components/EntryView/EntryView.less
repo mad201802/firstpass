@@ -6,6 +6,9 @@
     flex-direction: column;
     overflow: hidden;
     flex-grow: 1;
+    user-select: none;
+
+    animation: siteAppear 0.2s ease-in-out;
 
     &-header {
         margin: 15px var(--pad-x) 0;
@@ -37,10 +40,16 @@
 
         & .progressWrapper {
             padding-bottom: 20px;
-            margin: 0
-        }
-        & .progressBar {
-            height: 2px;
+            margin: 0;
+
+            & .progressBar {
+                height: 2px;
+                background-color: var(--divider);
+            }
+
+            & .progressLabels {
+                padding: 0 17px;
+            }
         }
     }
 
@@ -53,43 +62,16 @@
         min-height: 40px;
 
         & .button {
-            --hover-clr: var(--primary);
-            --active-clr: var(--primary-dark);
-            &.deleteButton {
-                --hover-clr: var(--error);
-                --active-clr: var(--error-dark);
-            }
-            &.backButton {
-                --hover-clr: var(--bg-lighter);
-                --active-clr: var(--bg-light);
-            }
-
-            height: 100%;
-            min-height: unset;
             padding: 0 20px 0 15px;
-            background-color: var(--bg-light);
             display: flex;
             align-items: center;
             gap: 5px;
-            border-radius: var(--radius);
-            color: var(--text-dark);
             user-select: none;
 
             font-size: 12px;
 
-            &:hover {
-                background-color: var(--hover-clr);
-                color: var(--text);
-                & > svg {
-                    fill: var(--text);
-                }
-            }
-            &:active {
-                background-color: var(--active-clr);
-            }
             & > svg {
                 width: 20px;
-                fill: var(--text-dark);
             }
         }
     }

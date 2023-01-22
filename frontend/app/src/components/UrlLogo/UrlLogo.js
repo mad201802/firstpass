@@ -39,7 +39,7 @@ const UrlLogo = React.forwardRef(({ entry, className, ...props }, ref) => {
     return (
         <div className={"urlLogo " + (className || "")} {...props} ref={ref}>
             {!settings.loadFavicons || imgLoadError ? (
-                <span>{getDomain(entry.url)?.[0] || entry.name[0]}</span>
+                <span>{entry?.name[0]}</span>
             ) : (
                 <img
                     src={urls.slice(-1)[0]}
