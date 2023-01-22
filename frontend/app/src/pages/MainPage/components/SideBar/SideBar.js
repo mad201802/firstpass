@@ -145,7 +145,7 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
                     <Category
                         key={category.id}
                         {...category}
-                        currentCategory={currentCategory}
+                        currentCategory={settingsVisible ? -1 : currentCategory}
                         setCurrentCategory={setCurrentCategory}
                         setSettingsVisible={setSettingsVisible}
                         editCategoryVisible={editCategoryVisible}

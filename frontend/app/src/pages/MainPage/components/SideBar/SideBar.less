@@ -16,13 +16,13 @@
 
         display: flex;
         align-items: center;
-        padding: 0 15px;
+        padding: 0 20px;
         user-select: none;
 
         z-index: 11;
 
         & #headerLogo {
-            height: 35%;
+            height: 30%;
 
             & path {
                 fill: var(--primary);
@@ -34,8 +34,8 @@
         }
 
         & p {
-            color: var(--text-dark);
-            font-size: 1.1rem;
+            color: var(--primary);
+            font-size: 1.3rem;
             font-weight: bold;
             padding-left: 10px;
             height: 100%;
@@ -169,6 +169,7 @@
         z-index: 10;
         box-shadow: 0 0 10px 10px var(--bg-light);
         border-top: 2px solid var(--bg);    
+        border-bottom: 2px solid var(--bg);    
 
         margin-top: auto;
         min-height: 50px;
@@ -176,20 +177,21 @@
         background-color: var(--bg-light);
         transition: background-color 100ms ease;
         cursor: pointer;
+        position: relative;
 
         --clr: var(--text);
 
+        &[data-active="true"] {
+            background-color: var(--bg);
+            box-shadow: inset 5px 0 0 var(--primary);
+        }
         &:hover {
-            --clr: var(--primary);  
+            --clr: var(--primary);
             background-color: var(--bg-lighter);       
             
             & svg {
                 transform: rotate(90deg);
             }
-        }
-        &:active {
-            --clr: var(--primary-light);
-            background-color: var(--bg-light);
         }
         
         & p {
