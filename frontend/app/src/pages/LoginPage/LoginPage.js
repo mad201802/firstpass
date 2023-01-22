@@ -76,7 +76,7 @@ const LoginPage = () => {
         onClick: async () => {
             let db_files = await backend.openFile({ 
                 filters: [ backend.FileFilter.Vault ],
-                title: "Open Database",
+                title: "Open Vault",
                 multi: true,
             });
             if (!db_files) return;
@@ -122,7 +122,7 @@ const LoginPage = () => {
                             }}
                             placeholder={
                                 <span style={{ paddingLeft: "10px" }}>
-                                    Select a database...
+                                    Select a vault...
                                 </span>
                             }
                             icon={<DnsRounded />}

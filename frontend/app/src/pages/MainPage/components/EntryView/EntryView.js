@@ -94,7 +94,8 @@ const EntryView = ({ entry, setCurrentEntry }) => {
     }
 
     useShortcut("Escape", () => {
-        setCurrentEntry(null);
+        if (!unsavedChanges) setCurrentEntry(null);
+        else setConfirmLeavePopup(true);
     });
 
     return (
