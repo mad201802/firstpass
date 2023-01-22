@@ -1,8 +1,9 @@
 .settingsView {
     display: flex;
     flex-direction: column;
-    padding: 20px 0 0 40px;
+    padding-top: 20px;
     overflow: hidden;
+    animation: siteAppear 0.2s ease-in-out;
 
     & * {
         user-select: none;
@@ -11,13 +12,14 @@
     &-header {
         box-shadow: 0 0 10px 10px var(--bg);
         z-index: 10;
+        padding-left: 40px;
     }
 
     &-content {
         display: flex;
         flex-direction: column;
         gap: 20px;
-        padding: 20px 40px 40px 0;
+        padding: 20px 40px 40px 40px;
 
         overflow-y: auto;
         &::-webkit-scrollbar {
@@ -58,5 +60,20 @@
                 }
             }
         }
+    }
+}
+
+@keyframes siteAppear {
+    0%{
+        transform: scale(1);
+        opacity: 0;
+    }
+    50%{
+        transform: scale(1.01);
+        opacity: 1;
+    }
+    100%{
+        transform: scale(1);
+        opacity: 1;
     }
 }

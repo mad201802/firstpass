@@ -2,65 +2,113 @@
     padding: 10px 20px;
     min-height: 50px;
     border-radius: var(--radius-lg);
-    background-color: var(--primary);
-    color: var(--text);
-
     transition: background-color 100ms ease;
+    user-select: none;
+
+    --bg-clr: var(--primary);
+    --hover-clr: var(--primary-light);
+    --active-clr: var(--primary-dark);
+    --text-clr: var(--text-inv);
+    --text-clr-hover: var(--text-inv);
+    --text-clr-active: var(--text-inv);
+
+    background-color: var(--bg-clr);
+    color: var(--text-clr);
+
+
+    & svg {
+        fill: var(--text-clr);
+    }
+    &:hover {
+        background-color: var(--hover-clr);
+        color: var(--text-clr-hover);
+        & svg {
+            fill: var(--text-clr-hover);
+        }
+    }
+    &:active {
+        background-color: var(--active-clr);
+        color: var(--text-clr-active);
+        & svg {
+            fill: var(--text-clr-active);
+        }
+    }
 
     &[data-size="small"] {
         padding: 0 15px;
         min-height: 35px;
+        border-radius: var(--radius);
     }
 
-    &:hover {
-        background-color: var(--primary-light);
-    }
-
-    &:active {
-        background-color: var(--primary-dark);
-    }
 
     &[data-type="danger"] {
-        background-color: var(--error);
-        &:hover {
-            background-color: var(--error-dark);
-        }
-
-        &:active {
-            background-color: var(--error);
-        }
+        --bg-clr: var(--error);
+        --hover-clr: var(--error-dark);
+        --active-clr: var(--error);
+        --text-clr: var(--text);
+        --text-clr-hover: var(--text);
+        --text-clr-active: var(--text);
+    }
+    &[data-type="danger-secondary"] {
+        --bg-clr: var(--bg-light);
+        --hover-clr: var(--error);
+        --active-clr: var(--error-dark);
+        --text-clr: var(--text);
+        --text-clr-hover: var(--text);
+        --text-clr-active: var(--text);
     }
 
     &[data-type="warning"] {
-        background-color: var(--warning);
-        &:hover {
-            background-color: var(--warning-dark);
-        }
-
-        &:active {
-            background-color: var(--warning);
-        }
+        --bg-clr: var(--warning);
+        --hover-clr: var(--warning-dark);
+        --active-clr: var(--warning);
+        --text-clr: var(--text);
+        --text-clr-hover: var(--text);
+        --text-clr-active: var(--text);
     }
 
     &[data-type="success"] {
-        background-color: var(--success);
-        &:hover {
-            background-color: var(--success-dark);
-        }
-
-        &:active {
-            background-color: var(--success);
-        }
+        --bg-clr: var(--success);
+        --hover-clr: var(--success-dark);
+        --active-clr: var(--success);
+        --text-clr: var(--text);
+        --text-clr-hover: var(--text);
+        --text-clr-active: var(--text);
     }
 
     &[data-type="secondary"] {
-        background-color: var(--bg-light);
-        &:hover {
-            background-color: var(--bg-lighter);
-        }
+        --bg-clr: var(--bg-light);
+        --hover-clr: var(--primary);
+        --active-clr: var(--primary-dark);
+        --text-clr: var(--text);
+        --text-clr-hover: var(--text-inv);
+        --text-clr-active: var(--text-inv);
+    }
 
-        &:active {
-            background-color: var(--bg-light);
-        }
+    &[data-type="secondary-light"] {
+        --bg-clr: var(--bg-lighter);
+        --hover-clr: var(--primary);
+        --active-clr: var(--primary-dark);
+        --text-clr: var(--text);
+        --text-clr-hover: var(--text-inv);
+        --text-clr-active: var(--text-inv);
+    }
+
+    &[data-type="tertiary"] {
+        --bg-clr: var(--bg-light);
+        --hover-clr: var(--bg-lighter);
+        --active-clr: var(--bg-light);
+        --text-clr: var(--text);
+        --text-clr-hover: var(--text);
+        --text-clr-active: var(--text);
+    }
+
+    &[data-type="tertiary-light"] {
+        --bg-clr: var(--bg-lighter);
+        --hover-clr: var(--bg-light);
+        --active-clr: var(--bg-lighter);
+        --text-clr: var(--text);
+        --text-clr-hover: var(--text);
+        --text-clr-active: var(--text);
     }
 }

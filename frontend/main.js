@@ -3,8 +3,9 @@ const { ipcMain } = require("electron/main");
 const path = require("path");
 
 const backend = require("./util/backend");
+const themes = require("./util/themes");
 
-const { app, BrowserWindow, Menu, nativeTheme } = electron;
+const { app, BrowserWindow, Menu, nativeTheme, dialog, shell } = electron;
 nativeTheme.themeSource = "dark";
 
 // If another instance is running, quit this one
@@ -71,6 +72,30 @@ app.on("ready", () => {
         backend.registerHandlers();
     });
 
+
+    // Event Handlers
+    ipcMain.handle("getDocumentsFolder", () => {
+        return app.getPath("documents");
+    });
+
+    ipcMain.handle("showOpenDialog", (e, opts) => {
+        return dialog.showOpenDialogSync(opts);
+    });
+    ipcMain.handle("showSaveDialog", (e, opts) => {
+        return dialog.showSaveDialogSync(opts);
+    });
+    ipcMain.on("openURL", (e, url) => {
+        shell.openExternal(url);
+    });
+
+    // Themes
+    ipcMain.handle("getThemes", (e) => themes.getThemes());
+    ipcMain.handle("getTheme", (e, ...args) => themes.getTheme(...args));
+    ipcMain.handle("importTheme", (e, ...args) => themes.importTheme(...args));
+    ipcMain.on("updateTheme", (e, ...args) => themes.updateTheme(...args));
+    ipcMain.handle("deleteTheme", (e, ...args) => themes.deleteTheme(...args));
+
+    // Window Events
     ipcMain.on("minimize", () => {
         mainWindow.minimize();
     });

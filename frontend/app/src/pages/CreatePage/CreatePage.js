@@ -90,7 +90,12 @@ const CreatePage = () => {
     useShortcut("Enter", create);
 
     async function selectFilePath() {
-        const filepath = await backend.selectDBFile("save", state.filepath);
+        const filepath = await backend.openFile({
+            title: "Select Vault Path",
+            defaultPath: state.filepath,
+            buttonLabel: "Select",
+            filters: [ backend.FileFilter.Vault ],
+        });
         if (filepath) setState(s => ({ ...s, filepath }));
     }
 
@@ -131,7 +136,7 @@ const CreatePage = () => {
                                 }}
                                 name="filepath"
                             />
-                            <Button onClick={selectFilePath} >{<MoreHorizRounded />}</Button>
+                            <Button type="tertiary" onClick={selectFilePath} >{<MoreHorizRounded />}</Button>
                         </div>
                         <FormInput
                             className="masterpasswordA"
@@ -160,8 +165,8 @@ const CreatePage = () => {
                         <PasswordStrength password={state.masterpassword} />
                     </div>
                     <div className="buttons">
-                        <Button id="back" onClick={() => setLogin(true)}>{<ArrowBackIosRounded/>}</Button>
-                    <Button onClick={create} id="create">Create</Button>
+                        <Button type="tertiary" id="back" onClick={() => setLogin(true)}>{<ArrowBackIosRounded/>}</Button>
+                        <Button onClick={create} id="create">Create</Button>
                     </div>
                 </div>
             </div>

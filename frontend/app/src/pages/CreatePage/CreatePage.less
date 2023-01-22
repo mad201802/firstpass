@@ -10,6 +10,7 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    user-select: none;
 
     & .wavesSvg {
         position: absolute;
@@ -73,13 +74,11 @@
     }
 
     & > #back{
-        background-color: var(--bg-light);
-        border: 1px solid var(--bg-lighter);
+        border: 1px solid var(--divider);
         transition: border-color 200ms ease;
         display: grid;
         place-items: center;
         &:hover{
-        
             border-color:var(--primary) ;
         }
         width: 30%;
@@ -114,7 +113,7 @@
 
             & > .button {
                 background-color: var(--bg-light);
-                border: 1px solid var(--bg-lighter);
+                border: 1px solid var(--divider);
                 transition: border-color 200ms ease;
                 display: grid;
                 place-items: center;
