@@ -31,7 +31,7 @@
     }
 
     transition: border-color 200ms ease;
-    border: 1px solid var(--divider);
+    border: 1px solid var(--bg-lighter);
 
     &:hover {
         border-color: var(--primary);
@@ -62,7 +62,7 @@
 
     & .dropdownOptionList {
         opacity: 0;
-        border: 1px solid var(--divider);
+        border: 1px solid var(--bg-lighter);
         
         pointer-events: none;
         // display: none;
@@ -80,7 +80,7 @@
         border-radius: var(--radius-lg);
         padding: 5px;
 
-        overflow-y: auto;
+        overflow-y: scroll;
         &::-webkit-scrollbar {
             width: 5px;
         }

@@ -10,9 +10,8 @@ import {
     VisibilityRounded,
     VisibilityOffRounded,
 } from "@mui/icons-material";
-import backend from "backend";
 
-const EditableProp = ({ icon, name, placeholder, password, onUpdate, value, multiline, title, copyable=false, url=false }) => {
+const EditableProp = ({ icon, name, placeholder, password, onUpdate, value, multiline, title, copyable=false }) => {
     const [editable, setEditable] = useState(false);
     const [copied, setCopied] = useState(false);
     const [hidden, setHidden] = useState(!!password);
@@ -34,21 +33,7 @@ const EditableProp = ({ icon, name, placeholder, password, onUpdate, value, mult
     }, [editable]);
 
     return (
-        <div
-            className="editableProp"
-            data-editable={editable}
-            data-multiline={multiline}
-            data-title={title}
-            data-nodivider={password}
-            onDoubleClick={(e) => {
-                if (url && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) return;
-                setEditable(true);
-            }}
-            onClick={(url && !editable) ? ((e) => {
-                if (e.target.tagName !== "INPUT" && e.target.tagName !== "TEXTAREA") return;
-                backend.openURL(value);
-            }) : null}
-        >
+        <div className="editableProp" data-editable={editable} data-multiline={multiline} data-title={title} data-nodivider={password}>
             {icon}
             {!multiline ? (
                 <FormInput
@@ -60,8 +45,6 @@ const EditableProp = ({ icon, name, placeholder, password, onUpdate, value, mult
                     onInput={onUpdate}
                     disabled={!editable}
                     spellCheck={false}
-                    data-url={url && !editable}
-                    inputProps={{ onBlur: () => setEditable(false) }}
                 />
             ) : (
                 <textarea
@@ -72,7 +55,6 @@ const EditableProp = ({ icon, name, placeholder, password, onUpdate, value, mult
                     onInput={onUpdate}
                     disabled={!editable}
                     spellCheck={false}
-                    onBlur={() => setEditable(false)}
                 />
             )}
             <div className="buttonGroup">
@@ -84,18 +66,16 @@ const EditableProp = ({ icon, name, placeholder, password, onUpdate, value, mult
                 <Button className="editButton" onClick={() => setEditable(!editable)}>
                     {editable ? <SaveRounded /> : <EditRounded />}
                 </Button>
-                {copyable && (
-                    <Button
-                        onClick={() => {
-                            navigator.clipboard.writeText(value);
-                            setCopied(v => {
-                                if (!v) setTimeout(() => setCopied(false), 2000);
-                                return true;
-                            });
-                        }}>
-                        {copied ? <CheckRounded style={{ fill: "var(--success)" }} /> : <CopyAllRounded />}
-                    </Button>
-                )}
+                {copyable && <Button
+                    onClick={() => {
+                        navigator.clipboard.writeText(value);
+                        setCopied(v => {
+                            if (!v) setTimeout(() => setCopied(false), 2000);
+                            return true;
+                        });
+                    }}>
+                    {copied ? <CheckRounded style={{ fill: "var(--success)" }} /> : <CopyAllRounded />}
+                </Button>}
             </div>
         </div>
     );

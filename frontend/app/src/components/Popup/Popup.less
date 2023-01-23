@@ -18,7 +18,6 @@
 
     width: max(500px, 50vw);
     height: max(400px, 75vh);
-    user-select: none;
 
     &[data-size="small"]{
         width: 400px;
@@ -68,6 +67,14 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
+}
+
+.cancelButton {
+    background-color: var(--bg-light);
+    color: var(--text);
+    &:hover{
+        background-color: var(--bg-lighter);
+    }
 }
 
 @keyframes popupAnimation {

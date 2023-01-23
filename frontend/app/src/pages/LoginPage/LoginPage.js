@@ -74,15 +74,11 @@ const LoginPage = () => {
             );
         },
         onClick: async () => {
-            let db_files = await backend.openFile({ 
-                filters: [ backend.FileFilter.Vault ],
-                title: "Open Vault",
-                multi: true,
-            });
+            let db_files = await backend.selectDBFile();
             if (!db_files) return;
-
+            console.log(db_files, recentDBs);
             db_files = db_files.map(s => s.replace(/\\/g, "/")).filter(file => !recentDBs.find(db => db.filepath === file));
-            
+            console.log(db_files, recentDBs);
             if (db_files.length === 0) return;
             try {
                 for (const file of db_files) {
@@ -122,14 +118,14 @@ const LoginPage = () => {
                             }}
                             placeholder={
                                 <span style={{ paddingLeft: "10px" }}>
-                                    Select a vault...
+                                    Select a database...
                                 </span>
                             }
                             icon={<DnsRounded />}
                             component={RecentDB}
                             customItems={[openFileOption]}
                         />
-                         <Button type="tertiary" onClick={() => setLogin(false)}>{<AddRounded />}</Button>
+                         <Button onClick={() => setLogin(false)}>{<AddRounded />}</Button>
                          </div>
                         <FormInput
                             placeholder="Enter Masterpassword"

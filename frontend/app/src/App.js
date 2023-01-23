@@ -10,16 +10,29 @@ import FatalErrorPage from "pages/FatalErrorPage/FatalErrorPage";
 import backend from "backend";
 
 import AppContext from "contexts/App.context";
-import { AnimatedPatternBG } from "components";
 
 
 const App = () => {
-    // The database loaded from the backend after login
     const [db, setDb] = useState();
-
-    // Application-wide settings (stored in localstorage)
     const [settings, setSettings] = useState({
-        theme: "*default",
+        theme: {
+            primary: "#f5b302",
+            primaryLight: "#fed053",
+            primaryDark: "#f5a303",
+
+            bg: "#1f232a",
+            bgLight: "#2b2f36", 
+            bgLighter: "#3b3f46",
+
+            divider: "#3b3f46",
+
+            text: "#f5f5f5",
+            textDark: "#b3b3b3",
+            textInv: "#1f232a",
+
+            radius: "5px",
+            radiusLg: "10px",
+        },
 
         createCategoryShortcut: "Ctrl+Shift+N",
         createEntryShortcut: "Ctrl+N",
@@ -30,48 +43,23 @@ const App = () => {
 
         ...JSON.parse(localStorage.getItem("settings") || "{}")
     });
-
-    // The current theme colors
-    const [theme, setTheme] = useState({
-            
-    });
-
     const [fatalError, setFatalError] = useState(false);
-    const [login, setLogin] = useState(true);
-
 
     // Save settings to localstorage
     useEffect(() => {
         localStorage.setItem("settings", JSON.stringify(settings));
     }, [settings]);
 
-
-
-    // ########################################
-    // Theme Management
-    // ########################################
+    // Apply theme
     useEffect(() => {
-        async function loadTheme() {
-            const t = await backend.getTheme(settings.theme);
-            console.log(`Loaded theme "${settings.theme}"`, t);
-            setTheme({ ...theme, ...t });
-        }
-        if (settings.theme) loadTheme();
-    }, [settings.theme]);
-
-    // Apply theme color to body
-    useEffect(() => {
-        for (const [key, value] of Object.entries(theme)) {
+        for (const [key, value] of Object.entries(settings.theme)) {
             let pkey = key.replace(/([A-Z])/g, "-$1").toLowerCase();
             document.body.style.setProperty(`--${pkey}`, value);
         }
-    }, [theme]);
+    }, [settings.theme]);
 
 
-
-    // ########################################
     // Rainbow Mode
-    // ########################################
     const [rainbowMode, setRainbowMode] = useState(false);
     useEffect(() => {
         if (rainbowMode) {
@@ -91,10 +79,8 @@ const App = () => {
     }, [rainbowMode])
 
 
+    const [login, setLogin] = useState(true);
 
-    // ########################################
-    // Fatal Error Handling
-    // ########################################
     useEffect(() => {
         const cb = (data) => {
             setDb(null);
@@ -107,21 +93,18 @@ const App = () => {
         };
     }, []);
 
-
-    // ########################################
-    // Store DB in localstorage (dev only)
-    // ########################################
     useEffect(() => {
         if (window.isPackaged) return;
+        // load db from localstorage
         const db = localStorage.getItem("db");
         if (db) {
             setDb(JSON.parse(db));
         }
     }, []);
 
-    // save db to localstorage for development purposes
     useEffect(() => {
         if (window.isPackaged) return;
+        // save db to localstorage for development purposes
         if (db) {
             localStorage.setItem("db", JSON.stringify(db));
         } else {
@@ -129,26 +112,20 @@ const App = () => {
         }
     }, [db]);
 
-
-
     if (fatalError) return <FatalErrorPage error={fatalError} />;
 
     return (
         <AppContext.Provider
             value={{
-                settings, setSettings,
-                theme, setTheme, setRainbowMode,
-                db, setDb, setLogin,
+                db,
+                setDb,
+                setLogin,
+                settings,
+                setSettings,
+                setRainbowMode
             }}
         >
-            {db ? (
-                <MainPage />
-            ) : (
-                <>
-                    {login ? <LoginPage /> : <CreatePage />}
-                    <AnimatedPatternBG />
-                </>
-            )}
+            {db ? <MainPage /> : login ? <LoginPage /> : <CreatePage />}
         </AppContext.Provider>
     );
 };

@@ -30,7 +30,7 @@ const Popup = ({
                 {children}
 
                 <div className="buttonBox">
-                    <Button type="tertiary" className="cancelButton" onClick={onClose}>
+                    <Button className="cancelButton" onClick={onClose}>
                         {closeText}
                     </Button>
                     <Button className="submitButton" onClick={onSubmit} type={type}>
