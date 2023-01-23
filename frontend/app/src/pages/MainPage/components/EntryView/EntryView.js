@@ -22,9 +22,6 @@ const EntryView = ({ entry, setCurrentEntry }) => {
     const [passwordLoaded, setPasswordLoaded] = React.useState(false);
     const [confirmPopup, setConfirmPopup] = React.useState(false);
 
-    const [unsavedChanges, setUnsavedChanges] = React.useState(false);
-    const [confirmLeavePopup, setConfirmLeavePopup] = React.useState(false);
-
 
     async function loadPassword() {
         try {
@@ -43,7 +40,6 @@ const EntryView = ({ entry, setCurrentEntry }) => {
     }, [entry]);
 
     function update(e) {
-        setUnsavedChanges(true);
         setState(s => ({ ...s, [e.target.name]: e.target.value }));
     }
 
@@ -94,8 +90,7 @@ const EntryView = ({ entry, setCurrentEntry }) => {
     }
 
     useShortcut("Escape", () => {
-        if (!unsavedChanges) setCurrentEntry(null);
-        else setConfirmLeavePopup(true);
+        setCurrentEntry(null);
     });
 
     return (
@@ -110,7 +105,7 @@ const EntryView = ({ entry, setCurrentEntry }) => {
                 />
             </div>
             <div className="entryView-content">
-                <EditableProp name="url" value={state.url} onUpdate={update} icon={<LinkRounded />} copyable={true} url={true} />
+                <EditableProp name="url" value={state.url} onUpdate={update} icon={<LinkRounded />} copyable={true} />
                 <EditableProp
                     name="username"
                     value={state.username}
@@ -137,20 +132,15 @@ const EntryView = ({ entry, setCurrentEntry }) => {
                 />
             </div>
             <div className="entryView-footer">
-                <Button type="tertiary" size="small" className="backButton"
-                    onClick={() => {
-                        if (!unsavedChanges) setCurrentEntry(null);
-                        else setConfirmLeavePopup(true);
-                    }}
-                >
+                <Button className="backButton" onClick={() => setCurrentEntry(null)}>
                     <ChevronLeftRounded />
                     Back
                 </Button>
-                <Button type="danger-secondary" size="small" className="deleteButton" onClick={() => deleteEntry()}>
+                <Button className="deleteButton" onClick={() => deleteEntry()}>
                     <DeleteRounded />
                     Delete
                 </Button>
-                <Button type={unsavedChanges ? "primary" : "tertiary"} size="small" className="applyButton" onClick={updateEntry}>
+                <Button className="applyButton" onClick={updateEntry}>
                     <CheckRounded />
                     Apply
                 </Button>
@@ -167,18 +157,6 @@ const EntryView = ({ entry, setCurrentEntry }) => {
                     Are you sure you want to delete this entry?
                     <br />
                     This action cannot be undone.
-                </Popup>
-            )}
-            {confirmLeavePopup && (
-                <Popup
-                    title="Discard Changes?"
-                    onClose={() => setConfirmLeavePopup(false)}
-                    onSubmit={() => setCurrentEntry(null)}
-                    submitText="Discard"
-                    type="danger"
-                    size="small"
-                >
-                    Are you sure you want to discard your changes?
                 </Popup>
             )}
         </div>

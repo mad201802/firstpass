@@ -5,8 +5,6 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    user-select: none;
-    z-index: 1;
 
     background: var(--bg-light);
 
@@ -16,13 +14,13 @@
 
         display: flex;
         align-items: center;
-        padding: 0 20px;
+        padding: 0 15px;
         user-select: none;
 
         z-index: 11;
 
         & #headerLogo {
-            height: 30%;
+            height: 35%;
 
             & path {
                 fill: var(--primary);
@@ -34,8 +32,8 @@
         }
 
         & p {
-            color: var(--primary);
-            font-size: 1.3rem;
+            color: var(--text-dark);
+            font-size: 1.1rem;
             font-weight: bold;
             padding-left: 10px;
             height: 100%;
@@ -64,8 +62,7 @@
             margin-right: auto;
             user-select: none;
             opacity: 0.5;
-            font-size: 11px;
-            text-transform: uppercase;
+            font-size: 13px;
         }
 
         & .toolbarButton {
@@ -169,7 +166,6 @@
         z-index: 10;
         box-shadow: 0 0 10px 10px var(--bg-light);
         border-top: 2px solid var(--bg);    
-        border-bottom: 2px solid var(--bg);    
 
         margin-top: auto;
         min-height: 50px;
@@ -177,21 +173,20 @@
         background-color: var(--bg-light);
         transition: background-color 100ms ease;
         cursor: pointer;
-        position: relative;
 
         --clr: var(--text);
 
-        &[data-active="true"] {
-            background-color: var(--bg);
-            box-shadow: inset 5px 0 0 var(--primary);
-        }
         &:hover {
-            --clr: var(--primary);
+            --clr: var(--primary);  
             background-color: var(--bg-lighter);       
             
             & svg {
                 transform: rotate(90deg);
             }
+        }
+        &:active {
+            --clr: var(--primary-light);
+            background-color: var(--bg-light);
         }
         
         & p {
