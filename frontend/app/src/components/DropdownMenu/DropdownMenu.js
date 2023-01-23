@@ -34,6 +34,12 @@ const DropdownMenu = ({
         optionListRef.current.style.maxHeight = null;
     }, window);
 
+    useEventListener("click", e => {
+        if (!isOpen) return;
+        if (e.target.closest(".dropdown")) return;
+        setIsOpen(false);
+    })
+
     useEffect(() => {
         if (!isOpen) return;
         if (resizeTimeout) return;
