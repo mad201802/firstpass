@@ -7,6 +7,7 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    user-select: none;
 
     & .wavesSvg {
         position: absolute;
@@ -65,8 +66,7 @@
 
             & > .button {
                 width: 60px;
-                background-color: var(--bg-light);
-                border: 1px solid var(--bg-lighter);
+                border: 1px solid var(--divider);
                 transition: border-color 200ms ease;
                 display: grid;
                 place-items: center;
@@ -80,7 +80,7 @@
 
     & > .button {
         width: 50%;
-        box-shadow: 0 0 8px 3px var(--bg);
+        box-shadow: 0 0 50px 3px var(--bg);
     }
 }
 

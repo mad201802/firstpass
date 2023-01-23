@@ -9,5 +9,19 @@ import EditableProp from "./EditableProp/EditableProp";
 import CheckBoxProp from "./CheckBoxProp/CheckBoxProp";
 import ColorProp from "./ColorProp/ColorProp";
 import PasswordStrength from "./PasswordStrength/PasswordStrength";
+import AnimatedPatternBG from "./AnimatedPatternBG/AnimatedPatternBG";
 
-export { Button, DropdownMenu, FormInput, TitleBar, ErrorMessage, Popup, UrlLogo, EditableProp, CheckBoxProp, ColorProp, PasswordStrength };
+export {
+    Button,
+    DropdownMenu,
+    FormInput,
+    TitleBar,
+    ErrorMessage,
+    Popup,
+    UrlLogo,
+    EditableProp,
+    CheckBoxProp,
+    ColorProp,
+    PasswordStrength,
+    AnimatedPatternBG,
+};

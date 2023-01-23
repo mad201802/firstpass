@@ -42,7 +42,7 @@ const PasswordListView = ({ currentCategory, setAddEntryPopupVisible, setCurrent
     return (
         <div className="passwordListView">
             <div className="toolbar">
-                <Button className="addButton" onClick={() => setAddEntryPopupVisible(true)} disabled={!category}>
+                <Button size="small" type="secondary" className="addButton" onClick={() => setAddEntryPopupVisible(true)} disabled={!category}>
                     <AddRounded />
                     New
                 </Button>
@@ -61,21 +61,21 @@ const PasswordListView = ({ currentCategory, setAddEntryPopupVisible, setCurrent
                     onInput={e => setSearchTerm(e.target.value)}
                 />
             </div>
-            {/* <div className="sortingOptions">
+            <div className="sortingOptions">
                 <div className="sortOption">
-                    <span>Name</span>
-                    <ArrowUpwardRounded />
+                    <span>Name / URL</span>
+                    {/* <ArrowUpwardRounded /> */}
                 </div>
-                <div className="sortOption">
+                {/* <div className="sortOption">
                     <span>Date</span>
                 </div>
                 <div className="sortOption">
                     <span>Type</span>
-                </div>
+                </div> */}
                 <div className="sortOption">
-                    <span>Last Used</span>
+                    <span>USER / PASSWD</span>
                 </div>
-            </div> */}
+            </div>
             <div className="passwordList">
                 <div style={{ borderBottom: "2px solid var(--divider)" }}></div>
                 {db.entries?.map((entry) => (
