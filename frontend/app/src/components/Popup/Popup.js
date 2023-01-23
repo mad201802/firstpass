@@ -17,7 +17,10 @@ const Popup = ({
 }) => {
 
     useShortcut("Escape", () => onClose());
-    useShortcut("Enter", () => onSubmit());
+    useShortcut("Enter", (e) => {
+        e.preventDefault();
+        onSubmit();
+    });
 
     return (
         <div className="popupRapper">

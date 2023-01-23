@@ -9,7 +9,7 @@ const useShortcut = (shortcut, callback, active = true) => {
 
     const handler = e => {
         if (e.key.toLowerCase() === key && e.shiftKey === shift && e.ctrlKey === ctrl && e.altKey === alt) {
-            callback();
+            callback(e);
         }
     }
 
