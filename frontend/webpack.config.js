@@ -70,6 +70,7 @@ module.exports = {
             pages: path.resolve(__dirname, 'app/src/pages'),
             assets: path.resolve(__dirname, 'app/assets'),
             backend: path.resolve(__dirname, 'app/src/backend.js'),
+            util: path.resolve(__dirname, 'app/src/util'),
         },
         extensions: [".js", ".jsx", ".json"],
     },

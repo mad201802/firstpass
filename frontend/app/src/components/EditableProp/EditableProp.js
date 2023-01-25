@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./EditableProp.less";
-import { Button, FormInput } from "components";
+import { Button, FormInput, Tooltip } from "components";
 import useShortcut from "hooks/useShortcut";
 import {
     CheckRounded,
@@ -12,7 +12,19 @@ import {
 } from "@mui/icons-material";
 import backend from "backend";
 
-const EditableProp = ({ icon, name, placeholder, password, onUpdate, value, multiline, title, copyable=false, url=false }) => {
+
+const EditableProp = ({
+    icon,
+    name,
+    placeholder,
+    password,
+    onUpdate,
+    value,
+    multiline,
+    title,
+    copyable = false,
+    url = false,
+}) => {
     const [editable, setEditable] = useState(false);
     const [copied, setCopied] = useState(false);
     const [hidden, setHidden] = useState(!!password);
@@ -40,15 +52,18 @@ const EditableProp = ({ icon, name, placeholder, password, onUpdate, value, mult
             data-multiline={multiline}
             data-title={title}
             data-nodivider={password}
-            onDoubleClick={(e) => {
+            onDoubleClick={e => {
                 if (url && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) return;
                 setEditable(true);
             }}
-            onClick={(url && !editable) ? ((e) => {
-                if (e.target.tagName !== "INPUT" && e.target.tagName !== "TEXTAREA") return;
-                backend.openURL(value);
-            }) : null}
-        >
+            onClick={
+                url && !editable
+                    ? e => {
+                          if (e.target.tagName !== "INPUT" && e.target.tagName !== "TEXTAREA") return;
+                          backend.openURL(value);
+                      }
+                    : null
+            }>
             {icon}
             {!multiline ? (
                 <FormInput
@@ -77,24 +92,30 @@ const EditableProp = ({ icon, name, placeholder, password, onUpdate, value, mult
             )}
             <div className="buttonGroup">
                 {password && (
-                    <Button onClick={() => setHidden(v => !v)}>
-                        {hidden ? <VisibilityRounded /> : <VisibilityOffRounded style={{ fill: "var(--error)" }} />}
-                    </Button>
+                    <Tooltip label={hidden ? "Show Password" : "Hide Password"}>
+                        <Button onClick={() => setHidden(v => !v)}>
+                            {hidden ? <VisibilityRounded /> : <VisibilityOffRounded style={{ fill: "var(--error)" }} />}
+                        </Button>
+                    </Tooltip>
                 )}
-                <Button className="editButton" onClick={() => setEditable(!editable)}>
-                    {editable ? <SaveRounded /> : <EditRounded />}
-                </Button>
-                {copyable && (
-                    <Button
-                        onClick={() => {
-                            navigator.clipboard.writeText(value);
-                            setCopied(v => {
-                                if (!v) setTimeout(() => setCopied(false), 2000);
-                                return true;
-                            });
-                        }}>
-                        {copied ? <CheckRounded style={{ fill: "var(--success)" }} /> : <CopyAllRounded />}
+                <Tooltip label={editable ? "Save" : "Edit"}>
+                    <Button className="editButton" onClick={() => setEditable(!editable)}>
+                        {editable ? <SaveRounded /> : <EditRounded />}
                     </Button>
+                </Tooltip>
+                {copyable && (
+                    <Tooltip label={copied ? "Copied" : "Copy"}>
+                        <Button
+                            onClick={() => {
+                                navigator.clipboard.writeText(value);
+                                setCopied(v => {
+                                    if (!v) setTimeout(() => setCopied(false), 2000);
+                                    return true;
+                                });
+                            }}>
+                            {copied ? <CheckRounded style={{ fill: "var(--success)" }} /> : <CopyAllRounded />}
+                        </Button>
+                    </Tooltip>
                 )}
             </div>
         </div>

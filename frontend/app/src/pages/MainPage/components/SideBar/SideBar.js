@@ -16,7 +16,7 @@ import {
 } from "@mui/icons-material";
 import backend from "backend";
 import AddCategory from "./components/AddCategory";
-import { Popup } from "components";
+import { Popup, Tooltip } from "components";
 import useShortcut from "hooks/useShortcut";
 import Category from "./components/Category";
 
@@ -125,15 +125,21 @@ const SideBar = ({ currentCategory, setCurrentCategory, setSettingsVisible, sett
 
             <div className="toolbar">
                 <span>Categories</span>
-                <div className="toolbarButton edit" onClick={editCategory}>
-                    <EditRounded />
-                </div>
-                <div className="toolbarButton delete" onClick={() => deleteCategory()}>
-                    <DeleteRounded />
-                </div>
-                <div className="toolbarButton add" onClick={() => setAddCategoryVisible(true)}>
-                    <AddBoxRounded />
-                </div>
+                <Tooltip label="Edit Category">
+                    <div className="toolbarButton edit" onClick={editCategory}>
+                        <EditRounded />
+                    </div>
+                </Tooltip>
+                <Tooltip label="Delete Category" position="left">
+                    <div className="toolbarButton delete" onClick={() => deleteCategory()}>
+                        <DeleteRounded />
+                    </div>
+                </Tooltip>
+                <Tooltip label="Add Category"  position="left">
+                    <div className="toolbarButton add" onClick={() => setAddCategoryVisible(true)}>
+                        <AddBoxRounded />
+                    </div>
+                </Tooltip>
             </div>
 
             <div className="categories">

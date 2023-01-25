@@ -1,6 +1,6 @@
 {
   "name": "firstpass",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "main.js",
   "license": "MIT",
   "author": "Firstpass",
@@ -70,7 +70,7 @@
     ],
     "extraFiles": [
       {
-        "from": "../backend/target/backend-1.0-SNAPSHOT.jar",
+        "from": "../backend/target/backend-1.1.0.jar",
         "to": "backend.jar"
       }
     ]
