@@ -2,7 +2,7 @@ import React, { useState, useContext, useRef } from "react";
 import "./AddEntryPopup.less";
 import { LinkRounded, PersonRounded, KeyRounded, FormatSizeRounded, SyncLockRounded } from "@mui/icons-material";
 
-import { FormInput, Popup, PasswordStrength, Button } from "components";
+import { FormInput, Popup, PasswordStrength, Button, Tooltip } from "components";
 
 import backend from "backend";
 import AppContext from "contexts/App.context";
@@ -72,9 +72,11 @@ const AddEntryPopup = ({ setAddEntryPopupVisible, currentCategory }) => {
                     onInput={update}
                     type="password"
                 />
-                <Button className="generateButton" onClick={() => {
-                    setState(s => ({ ...s, password: generatePassword() }));
-                }}>{<SyncLockRounded/>}</Button>
+                <Tooltip label="Generate Password" position="left">
+                    <Button className="generateButton" onClick={() => {
+                        setState(s => ({ ...s, password: generatePassword() }));
+                    }}>{<SyncLockRounded/>}</Button>
+                </Tooltip>
                 </div>
                 <PasswordStrength password={state.password}></PasswordStrength>
             </div>

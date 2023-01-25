@@ -84,10 +84,18 @@
         flex-shrink: 0;
         display: flex;
         align-items: stretch;
-        overflow: hidden;
         border-radius: var(--radius-lg);
         background: var(--bg);
         border: 1px solid var(--divider);
+
+        & > div {
+            &:first-child button {
+                border-radius: var(--radius) 0 0 var(--radius);
+            }
+            &:last-child button {
+                border-radius: 0 var(--radius) var(--radius) 0;
+            } 
+        }
 
         & button {
             width: 35px;

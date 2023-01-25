@@ -11,7 +11,7 @@ import {
     VisibilityOffRounded,
 } from "@mui/icons-material";
 import backend from "backend";
-import { tooltipClasses } from "@mui/material";
+
 
 const EditableProp = ({
     icon,
@@ -29,7 +29,6 @@ const EditableProp = ({
     const [copied, setCopied] = useState(false);
     const [hidden, setHidden] = useState(!!password);
     const inputRef = React.useRef(null);
-    const [isHover, setIsHover] = useState(false);
 
     useShortcut("Tab", () => setEditable(false), editable);
     useShortcut(
@@ -93,29 +92,30 @@ const EditableProp = ({
             )}
             <div className="buttonGroup">
                 {password && (
-                    <Button onClick={() => setHidden(v => !v)}>
-                        {hidden ? <VisibilityRounded /> : <VisibilityOffRounded style={{ fill: "var(--error)" }} />}
-                    </Button>
+                    <Tooltip label={hidden ? "Show Password" : "Hide Password"}>
+                        <Button onClick={() => setHidden(v => !v)}>
+                            {hidden ? <VisibilityRounded /> : <VisibilityOffRounded style={{ fill: "var(--error)" }} />}
+                        </Button>
+                    </Tooltip>
                 )}
-                <div onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
+                <Tooltip label={editable ? "Save" : "Edit"}>
                     <Button className="editButton" onClick={() => setEditable(!editable)}>
                         {editable ? <SaveRounded /> : <EditRounded />}
-                        {isHover ? editable? <span className="buttonTooltip">Save</span>:<span className="buttonTooltip">Edit</span>: ""}
                     </Button>
-                </div>
-                <div onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}></div>
+                </Tooltip>
                 {copyable && (
-                    <Button
-                        title="Copy to clipboard"
-                        onClick={() => {
-                            navigator.clipboard.writeText(value);
-                            setCopied(v => {
-                                if (!v) setTimeout(() => setCopied(false), 2000);
-                                return true;
-                            });
-                        }}>
-                        {copied ? <CheckRounded style={{ fill: "var(--success)" }} /> : <CopyAllRounded />}
-                    </Button>
+                    <Tooltip label={copied ? "Copied" : "Copy"}>
+                        <Button
+                            onClick={() => {
+                                navigator.clipboard.writeText(value);
+                                setCopied(v => {
+                                    if (!v) setTimeout(() => setCopied(false), 2000);
+                                    return true;
+                                });
+                            }}>
+                            {copied ? <CheckRounded style={{ fill: "var(--success)" }} /> : <CopyAllRounded />}
+                        </Button>
+                    </Tooltip>
                 )}
             </div>
         </div>

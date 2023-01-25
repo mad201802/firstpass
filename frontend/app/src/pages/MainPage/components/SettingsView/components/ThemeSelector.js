@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import "./ThemeSelector.less";
 
-import { DropdownMenu, Popup } from "components";
+import { DropdownMenu, Popup, Tooltip } from "components";
 
 import AppContext from "contexts/App.context";
 
@@ -11,9 +11,7 @@ import { BrushRounded, ContentCopy, DeleteRounded, EditRounded, LoginRounded } f
 import ThemeListContext from "contexts/ThemeList.context";
 import useShortcut from "hooks/useShortcut";
 
-
 const ThemeOption = ({ data, current }) => {
-
     const { themes, setThemes, editTheme, setEditTheme: setEditable } = useContext(ThemeListContext);
     const editable = current && editTheme;
 
@@ -24,25 +22,29 @@ const ThemeOption = ({ data, current }) => {
         if (editable) inputRef.current.focus();
         else {
             backend.updateTheme(data.file, { name });
-            setThemes(themes.map(t => t.file === data.file ? { ...t, name } : t));
+            setThemes(themes.map(t => (t.file === data.file ? { ...t, name } : t)));
         }
     }, [editable]);
     useEffect(() => {
         setName(data?.name);
     }, [data?.name]);
-    
+
     function update(e) {
         setName(e.target.value);
     }
 
-    useShortcut("Enter", () => {
-        setEditable(false);
-    }, editable);
+    useShortcut(
+        "Enter",
+        () => {
+            setEditable(false);
+        },
+        editable
+    );
 
     return (
         <div className="themeOption">
             <input
-            ref={inputRef}
+                ref={inputRef}
                 type="text"
                 value={name}
                 readOnly={!editable}
@@ -60,11 +62,9 @@ const ThemeOption = ({ data, current }) => {
             {!current && !data.file.startsWith("*") && <p>CUSTOM</p>}
         </div>
     );
-}
-
+};
 
 const ThemeSelector = () => {
-
     const { settings, setSettings, theme, setTheme } = useContext(AppContext);
 
     const [themes, setThemes] = useState([]);
@@ -79,7 +79,7 @@ const ThemeSelector = () => {
         });
     }, []);
 
-    async function deleteTheme(confirm=false) {
+    async function deleteTheme(confirm = false) {
         if (!confirm) {
             setConfirmDelete(true);
             return;
@@ -91,7 +91,6 @@ const ThemeSelector = () => {
         setSelectedTheme(0);
         setSettings(s => ({ ...s, theme: "*default" }));
     }
-
 
     return (
         <div className="themeSelector">
@@ -114,49 +113,54 @@ const ThemeSelector = () => {
             <div className="themeButtonGroup">
                 {!settings.theme.startsWith("*") && (
                     <>
-                        <button
-                            title="Edit Theme Name"
-                            data-active={editTheme}
-                            className="editButton"
-                            onClick={() => setEditTheme(v => !v)}>
-                            <EditRounded />
-                        </button>
-                        <button title="Delete Theme" className="deleteButton" onClick={() => deleteTheme()}>
-                            <DeleteRounded />
-                        </button>
+                        <Tooltip label="Edit Theme">
+                            <button
+                                data-active={editTheme}
+                                className="editButton"
+                                onClick={() => setEditTheme(v => !v)}>
+                                <EditRounded />
+                            </button>
+                        </Tooltip>
+                        <Tooltip label="Delete Theme">
+                            <button className="deleteButton" onClick={() => deleteTheme()}>
+                                <DeleteRounded />
+                            </button>
+                        </Tooltip>
                     </>
                 )}
-                <button
-                    title="Duplicate Theme"
-                    className="duplicateButton"
-                    onClick={async () => {
-                        const theme = await backend.importTheme(settings.theme);
-                        if (!theme) return;
-                        setThemes(t => [...t, theme]);
-                        setSelectedTheme(themes.length);
-                        setSettings(s => ({ ...s, theme: theme.file }));
-                    }}>
-                    <ContentCopy />
-                </button>
-                <button
-                    title="Import Theme"
-                    className="importButton"
-                    onClick={async () => {
-                        const file = await backend.openFile({
-                            filters: [backend.FileFilter.Theme],
-                            buttonLabel: "Import",
-                            title: "Import Theme",
-                            multi: false,
-                        });
-                        if (!file) return;
-                        const theme = await backend.importTheme(file[0]);
-                        if (!theme) return;
-                        setThemes(t => [...t, theme]);
-                        setSelectedTheme(themes.length);
-                        setSettings(s => ({ ...s, theme: theme.file }));
-                    }}>
-                    <LoginRounded style={{ transform: "scaleX(-1)" }} />
-                </button>
+                <Tooltip label="Duplicate Theme">
+                    <button
+                        className="duplicateButton"
+                        onClick={async () => {
+                            const theme = await backend.importTheme(settings.theme);
+                            if (!theme) return;
+                            setThemes(t => [...t, theme]);
+                            setSelectedTheme(themes.length);
+                            setSettings(s => ({ ...s, theme: theme.file }));
+                        }}>
+                        <ContentCopy />
+                    </button>
+                </Tooltip>
+                <Tooltip label="Import Theme">
+                    <button
+                        className="importButton"
+                        onClick={async () => {
+                            const file = await backend.openFile({
+                                filters: [backend.FileFilter.Theme],
+                                buttonLabel: "Import",
+                                title: "Import Theme",
+                                multi: false,
+                            });
+                            if (!file) return;
+                            const theme = await backend.importTheme(file[0]);
+                            if (!theme) return;
+                            setThemes(t => [...t, theme]);
+                            setSelectedTheme(themes.length);
+                            setSettings(s => ({ ...s, theme: theme.file }));
+                        }}>
+                        <LoginRounded style={{ transform: "scaleX(-1)" }} />
+                    </button>
+                </Tooltip>
             </div>
             {confirmDelete && (
                 <Popup
@@ -165,8 +169,7 @@ const ThemeSelector = () => {
                     submitText="Delete"
                     type="danger"
                     onClose={() => setConfirmDelete(false)}
-                    onSubmit={() => deleteTheme(true)}
-                >
+                    onSubmit={() => deleteTheme(true)}>
                     Are you sure you want to delete this theme?
                     <br />
                     This action cannot be undone.

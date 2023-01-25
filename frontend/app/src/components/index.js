@@ -10,6 +10,7 @@ import CheckBoxProp from "./CheckBoxProp/CheckBoxProp";
 import ColorProp from "./ColorProp/ColorProp";
 import PasswordStrength from "./PasswordStrength/PasswordStrength";
 import AnimatedPatternBG from "./AnimatedPatternBG/AnimatedPatternBG";
+import Tooltip from "./Tooltip/Tooltip";
 
 export {
     Button,
@@ -24,4 +25,5 @@ export {
     ColorProp,
     PasswordStrength,
     AnimatedPatternBG,
+    Tooltip,
 };
