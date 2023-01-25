@@ -1,22 +1,14 @@
 import React, { useState, useContext, useRef } from "react";
 import "./AddEntryPopup.less";
-import { LinkRounded, PersonRounded, KeyRounded, FormatSizeRounded } from "@mui/icons-material";
+import { LinkRounded, PersonRounded, KeyRounded, FormatSizeRounded, SyncLockRounded } from "@mui/icons-material";
 
-import { FormInput, Popup, PasswordStrength } from "components";
+import { FormInput, Popup, PasswordStrength, Button } from "components";
 
 import backend from "backend";
 import AppContext from "contexts/App.context";
-import PasswordGenerator from "components/PasswordGenerator/PasswordGenerator";
+import generatePassword from "util/passwordGenerator";
 
 const AddEntryPopup = ({ setAddEntryPopupVisible, currentCategory }) => {
-    const [generatedPassword, setGeneratedPassword] = useState("");
-
-    const handlePasswordGenerate = generatedPassword => {
-        setGeneratedPassword(generatedPassword);
-        // Write generated password to password FormInput 
-          console.log(generatedPassword);
-          setState(s => ({ ...s, password: generatedPassword }));
-        };
 
     const [state, setState] = useState({
         name: "",
@@ -80,7 +72,9 @@ const AddEntryPopup = ({ setAddEntryPopupVisible, currentCategory }) => {
                     onInput={update}
                     type="password"
                 />
-                <PasswordGenerator onPasswordGenerate={handlePasswordGenerate}></PasswordGenerator>
+                <Button className="generateButton" onClick={() => {
+                    setState(s => ({ ...s, password: generatePassword() }));
+                }}>{<SyncLockRounded/>}</Button>
                 </div>
                 <PasswordStrength password={state.password}></PasswordStrength>
             </div>
