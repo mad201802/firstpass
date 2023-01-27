@@ -9,6 +9,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * A program configuration for firstpass.
+ * @param <T>
+ */
 public class Configuration<T> {
     private T config;
     private final String path;
@@ -119,19 +123,9 @@ public class Configuration<T> {
             if(createFolderStructure) {
                 // Try to create the config directory and/or parent directories.
                 boolean createdDir = new File(path).mkdirs();
-                if (!createdDir) {
-                    //TODO: Log error
-                } else {
-                    //TODO: Log success
-                }
             } else {
                 // Try to only create the config directory itself.
                 boolean createdDir = new File(path).mkdir();
-                if (!createdDir) {
-                    //TODO: Log error
-                } else {
-                    //TODO: Logger
-                }
             }
         } else {
             //TODO: Logger

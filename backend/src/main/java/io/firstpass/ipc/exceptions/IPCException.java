@@ -1,7 +1,8 @@
 package io.firstpass.ipc.exceptions;
 
-import java.util.ArrayList;
-
+/**
+ * This class is used to throw an exception when an error occurs in the IPC
+ */
 public class IPCException extends Exception {
     private final int status;
     private final String error;

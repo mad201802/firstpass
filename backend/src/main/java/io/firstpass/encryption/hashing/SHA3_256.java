@@ -6,8 +6,13 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class SHA256 {
+public class SHA3_256 {
 
+    /**
+     * Hashes the input using SHA3-256
+     * @param input The input to hash
+     * @return The hashed input
+     */
     public static String hash(String input) {
         final MessageDigest digest;
         try {

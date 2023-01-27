@@ -11,9 +11,8 @@ import io.firstpass.database.models.EncryptedModel;
 import io.firstpass.database.models.CategoryModel;
 import io.firstpass.database.models.EncryptedEntryModel;
 import io.firstpass.database.models.MetaModel;
-import io.firstpass.encryption.hashing.SHA256;
+import io.firstpass.encryption.hashing.SHA3_256;
 import io.firstpass.encryption.symmetric.models.CipherData;
-import io.firstpass.manager.models.EntryModel;
 import io.firstpass.utils.Utils;
 
 import java.sql.SQLException;
@@ -341,9 +340,9 @@ public class SQLiteDriver implements IEncryptedDatabase {
 
     private void init_meta(String masterpassword) throws SQLException {
         if (metaDAO.queryForEq("key", "masterpassword").isEmpty()) {
-            metaDAO.create(new MetaModel("masterpassword", SHA256.hash(masterpassword)));
+            metaDAO.create(new MetaModel("masterpassword", SHA3_256.hash(masterpassword)));
         } else {
-            if (!metaDAO.queryForEq("key", "masterpassword").get(0).getValue().equals(SHA256.hash(masterpassword))) {
+            if (!metaDAO.queryForEq("key", "masterpassword").get(0).getValue().equals(SHA3_256.hash(masterpassword))) {
                 throw new SQLException("Incorrect master password");
             }
         }
