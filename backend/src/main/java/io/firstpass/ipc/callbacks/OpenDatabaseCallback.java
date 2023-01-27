@@ -8,7 +8,7 @@ import io.firstpass.database.models.CategoryModel;
 import io.firstpass.encryption.exceptions.UnknownAlgorithmException;
 import io.firstpass.encryption.symmetric.ISymmetricEncryptionAlgorithm;
 import io.firstpass.encryption.symmetric.SymmetricEncryptionFactory;
-import io.firstpass.ipc.communication.request.LoadDatabaseRequest;
+import io.firstpass.ipc.communication.request.OpenDatabaseRequest;
 import io.firstpass.ipc.communication.response.OpenDatabaseResponse;
 import io.firstpass.ipc.exceptions.IPCException;
 import io.firstpass.manager.PasswordManager;
@@ -19,9 +19,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class LoadDatabaseCallback {
+public class OpenDatabaseCallback {
 
-    public static OpenDatabaseResponse call(LoadDatabaseRequest request) throws IPCException {
+    public static OpenDatabaseResponse call(OpenDatabaseRequest request) throws IPCException {
         if (FirstPass.passwordManager != null) {
             throw new IPCException(503, "Database already open");
         }
