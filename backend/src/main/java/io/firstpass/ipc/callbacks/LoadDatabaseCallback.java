@@ -23,7 +23,7 @@ public class LoadDatabaseCallback {
 
     public static OpenDatabaseResponse call(LoadDatabaseRequest request) throws IPCException {
         if (FirstPass.passwordManager != null) {
-            throw new IPCException(69, "Database already open");
+            throw new IPCException(503, "Database already open");
         }
 
         File file = new File(request.filepath);
@@ -53,7 +53,7 @@ public class LoadDatabaseCallback {
         String name = database.getMeta("name").value;
 
         FirstPass.passwordManager = new PasswordManager(database, algo, request.masterpassword);
-        ArrayList<CategoryModel> categories = (ArrayList<CategoryModel>) FirstPass.passwordManager.getAllCategories();
+        ArrayList<CategoryModel> categories = FirstPass.passwordManager.getAllCategories();
 
         ArrayList<EntryModel> entries = FirstPass.passwordManager.getAllEntries();
 
