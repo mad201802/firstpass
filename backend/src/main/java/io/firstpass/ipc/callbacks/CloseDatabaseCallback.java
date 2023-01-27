@@ -15,7 +15,7 @@ public class CloseDatabaseCallback {
                 throw new IPCException(500, "Failed to close database");
             }
         } else {
-            throw new IPCException(500, "No database is open");
+            throw new IPCException(503, "No database is open");
         }
 
         return new SimpleStatusResponse();

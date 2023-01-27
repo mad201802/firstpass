@@ -77,8 +77,8 @@ public class PasswordManager {
     public int createCategory(String name) {
         return database.createCategory(name);
     }
-    public List<CategoryModel> getAllCategories() {
-        return database.getAllCategories();
+    public ArrayList<CategoryModel> getAllCategories() {
+        return (ArrayList<CategoryModel>) database.getAllCategories();
     }
     public boolean deleteCategoryById(int id, boolean deleteEntries) {
         ArrayList<EntryModel> entries = getAllEntriesByCategory(id);

@@ -236,7 +236,22 @@ public class SQLiteDriver implements IEncryptedDatabase {
     }
     @Override
     public int updateCategory(int id, String name) {
-        return 0;
+        if(id == 1) return -1;
+        try {
+            CategoryModel category = categoryDAO.queryForId(id);
+            if (category == null) {
+                return -1;
+            }
+
+            category.setCategory(name);
+            if (categoryDAO.update(category) == 1) {
+                return category.getId();
+            }
+        } catch (SQLException e) {
+            return -1;
+        }
+
+        return -1;
     }
     @Override
     public boolean deleteCategory(int id) {

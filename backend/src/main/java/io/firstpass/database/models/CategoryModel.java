@@ -11,10 +11,10 @@ import io.firstpass.utils.decorators.Generated;
 @DatabaseTable(tableName = "categories")
 public class CategoryModel {
     @DatabaseField(generatedId = true, canBeNull = false)
-    public Integer id;
+    private Integer id;
 
     @DatabaseField()
-    public String category;
+    private String category;
 
     public Integer getId() {
         return id;
