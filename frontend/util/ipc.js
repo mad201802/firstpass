@@ -11,7 +11,6 @@ function timeoutPromise(promise, timeout, message) {
 
 class IPC {
 
-    static ERR_OK = { code: 0, message: "No error occurred", id: "ERR_OK" };
     static ERR_GENERIC = { code: 1, message: "An unknown error occurred", id: "ERR_GENERIC" };
     static ERR_TIMEOUT = { code: 2, message: "The process took too long to respond", id: "ERR_TIMEOUT" };
     static ERR_SPAWN = { code: 3, message: "Could not spawn the child process", id: "ERR_SPAWN" };
@@ -70,7 +69,7 @@ class IPC {
 
         if (!this.$terminationPromise) {
             this.$terminationPromise = new Promise((resolve, reject) => {
-                const errcb = () => reject(IPC.ERR_GENERIC, err);
+                const errcb = (err) => reject(IPC.ERR_GENERIC, err);
                 this.process.once("exit", () => {
                     resolve();
                     this.process.removeListener("error", errcb);
