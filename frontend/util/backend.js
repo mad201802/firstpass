@@ -11,7 +11,7 @@ let onError = () => {};
 
 
 function connect() {
-    const jarLocation = app.isPackaged ? "./backend.jar" : "../backend/target/backend-1.0-SNAPSHOT.jar";
+    const jarLocation = app.isPackaged ? "./backend.jar" : `../backend/target/backend-${process.env.npm_package_version}.jar`;
     ipc = new IPC("java", ["-jar", jarLocation, "--no-logging"]);
 
     ipc._onExit = () => {
