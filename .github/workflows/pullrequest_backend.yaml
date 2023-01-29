@@ -1,12 +1,13 @@
-name: Test Frontend and Backend on Pull Request
+name: Test Backend on Pull Request
 
 on:
   pull_request:
     branches: [ "develop" ]
+    paths: 
+    - 'backend/**'
 
 env:
   BACKEND_PATH: "backend"
-  FRONTEND_PATH: "frontend"
 
 jobs:
   test-backend:
@@ -29,15 +30,3 @@ jobs:
     - name: Publish Test Report
       if: ${{ always() }}
       uses: scacap/action-surefire-report@v1
-
-  test-frontend:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ env.FRONTEND_PATH }}
-    steps:
-    - uses: actions/checkout@v3
-    - name: Install modules
-      run: yarn
-    - name: Run tests
-      run: yarn test
