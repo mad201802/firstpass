@@ -8,7 +8,7 @@ on:
 
 env:
   BACKEND_PATH: "backend"
-  BACKEND_PATH: "frontend"
+  FRONTEND_PATH: "frontend"
 
 jobs:
   # build-backend:
@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ${{ env.BACKEND_PATH }}
+        working-directory: ${{ env.FRONTEND_PATH }}
     steps:
     - uses: actions/checkout@v3
     - name: Install modules
