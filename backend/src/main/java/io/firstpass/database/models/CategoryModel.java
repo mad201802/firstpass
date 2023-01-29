@@ -41,4 +41,8 @@ public class CategoryModel {
         this.category = category;
     }
     public CategoryModel() {}
+
+    public String getName() {
+        return category;
+    }
 }
