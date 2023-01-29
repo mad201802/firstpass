@@ -25,6 +25,7 @@ describe("IPC", () => {
             await ipc.connect();
             expect(ipc.process).toBeDefined();
             expect(ipc.process.pid).toBeDefined();
+            expect(ipc.process.exitCode).toBe(null);
         });
 
         it("should reject with ERR_SPAWN if an error occurs", async () => {
