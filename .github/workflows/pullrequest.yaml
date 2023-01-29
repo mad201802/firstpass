@@ -53,7 +53,9 @@ jobs:
         working-directory: ${{ env.FRONTEND_PATH }}
     steps:
     - uses: actions/checkout@v3
+    - name: Print current working directory
+      run: pwd
     - name: Install modules
-      run: yarn install
-    - name: Run Jest
-      uses: stefanoeb/jest-action@1.0.3
+      run: yarn
+    - name: Run tests
+      run: yarn test
