@@ -71,8 +71,10 @@ describe("IPC", () => {
     describe("send", () => {
         it("should write to stdin", async () => {
             await ipc.connect();
+            ipc.process.stdin.cork();
             ipc.send("hello");
             expect(ipc.process.stdin.writableLength).toBe(6); // 6 bytes for "hello\n"
+            ipc.process.stdin.uncork();
         });
     });
 
