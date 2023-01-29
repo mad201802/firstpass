@@ -36,7 +36,7 @@ public class FirstPass {
 
         MessageParser messageParser = new MessageParser();
         messageParser.addMessageListener("CREATE_DB", CreateDatabaseRequest.class, OpenDatabaseResponse.class, CreateDatabaseCallback::call);
-        messageParser.addMessageListener("OPEN_DB", LoadDatabaseRequest.class, OpenDatabaseResponse.class, LoadDatabaseCallback::call);
+        messageParser.addMessageListener("OPEN_DB", OpenDatabaseRequest.class, OpenDatabaseResponse.class, OpenDatabaseCallback::call);
         messageParser.addMessageListener("CLOSE_DB", EmtpyRequest.class, SimpleStatusResponse.class, CloseDatabaseCallback::call);
         messageParser.addMessageListener("LIST_RECENT_DBS", EmtpyRequest.class, ListRecentDBsResponse.class, ListRecentDBsCallback::call);
 
@@ -44,10 +44,9 @@ public class FirstPass {
         messageParser.addMessageListener("UPDATE_ENTRY", UpdateEntryRequest.class, CreateEntryResponse.class, UpdateEntryCallback::call);
         messageParser.addMessageListener("DELETE_ENTRY", DeleteEntryRequest.class, SimpleStatusResponse.class, DeleteEntryCallback::call);
         messageParser.addMessageListener("GET_PASSWORD", GetPasswordRequest.class, GetPasswordResponse.class, GetPasswordCallback::call);
-        messageParser.addMessageListener("UPDATE_CATEGORY", UpdateCategoryRequest.class, UpdateCategoryResponse.class, UpdateCategoryCallback::call);
-
 
         messageParser.addMessageListener("CREATE_CATEGORY", CreateCategoryRequest.class, CreateCategoryResponse.class, CreateCategoryCallback::call);
+        messageParser.addMessageListener("UPDATE_CATEGORY", UpdateCategoryRequest.class, UpdateCategoryResponse.class, UpdateCategoryCallback::call);
         messageParser.addMessageListener("DELETE_CATEGORY", DeleteCategoryRequest.class, SimpleStatusResponse.class, DeleteCategoryCallback::call);
 
         messageParser.addMessageListener("GET_ENTROPY", GetEntropyRequest.class, GetEntropyResponse.class, GetEntropyCallback::call);

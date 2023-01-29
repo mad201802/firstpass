@@ -11,7 +11,7 @@ public class DeleteEntryCallback {
             throw new IPCException(400, "Database not loaded");
         // Check if category exists
         if(FirstPass.passwordManager.getAllEntries().stream().filter(entry -> entry.getId() == request.id).findAny().isEmpty())
-            throw new IPCException(400, "Entry does not exist");
+            throw new IPCException(404, "Entry does not exist");
 
         if (FirstPass.passwordManager.deleteEntryById(request.id)) {
             return new SimpleStatusResponse();

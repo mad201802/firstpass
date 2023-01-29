@@ -24,11 +24,11 @@ public class CreateDatabaseCallback {
 
     public static OpenDatabaseResponse call(CreateDatabaseRequest request) throws IPCException {
         if (FirstPass.passwordManager != null) {
-            throw new IPCException(69, "Database already open");
+            throw new IPCException(400, "Database already open");
         }
 
         if(Files.exists(new File(request.filepath).toPath())) {
-            throw new IPCException(69, "Database already exists");
+            throw new IPCException(400, "Database already exists");
         }
 
         OpenDatabaseResponse response = new OpenDatabaseResponse();
@@ -48,7 +48,7 @@ public class CreateDatabaseCallback {
         }
 
         FirstPass.passwordManager = new PasswordManager(database, algo, request.masterpassword);
-        ArrayList<CategoryModel> categories = (ArrayList<CategoryModel>) FirstPass.passwordManager.getAllCategories();
+        ArrayList<CategoryModel> categories = FirstPass.passwordManager.getAllCategories();
 
         ArrayList<EntryModel> entries = FirstPass.passwordManager.getAllEntries();
 

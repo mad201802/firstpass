@@ -2,9 +2,12 @@ package io.firstpass.manager.models;
 
 import io.firstpass.utils.decorators.Generated;
 
+/**
+ * This class is used to represent an entry in the database
+ */
 @Generated
 public class EntryModel {
-    private int id;
+    private final int id;
     private String name;
     private String username;
     private String password;

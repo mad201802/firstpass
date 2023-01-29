@@ -10,10 +10,10 @@ import java.util.Collections;
 public class CreateEntryCallback {
     public static CreateEntryResponse call(CreateEntryRequest request) throws IPCException {
         if(FirstPass.passwordManager == null)
-            throw new IPCException(400, "Database not loaded");
+            throw new IPCException(503, "Database not loaded");
         // Check if category exists
         if(FirstPass.passwordManager.getAllCategories().stream().filter(category -> category.getId() == request.category).findAny().isEmpty())
-            throw new IPCException(400, "Category does not exist");
+            throw new IPCException(404, "Category does not exist");
 
         int id = FirstPass.passwordManager.createEntry(request.name, request.username, request.password, request.category, request.url, request.notes);
 

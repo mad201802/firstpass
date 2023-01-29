@@ -7,7 +7,7 @@ import io.firstpass.database.IEncryptedDatabase;
 import io.firstpass.database.drivers.SQLiteDriver;
 import io.firstpass.encryption.symmetric.ISymmetricEncryptionAlgorithm;
 import io.firstpass.encryption.symmetric.SymmetricEncryptionFactory;
-import io.firstpass.ipc.exceptions.IPCException;
+import io.firstpass.logic.StrengthAnalyzer;
 import io.firstpass.manager.PasswordManager;
 
 import java.io.File;
@@ -35,6 +35,11 @@ public class Utils {
         System.out.println("Initialized configuration instance.");
     }
 
+    public static void initStrengthAnalyzerInstance() {
+        FirstPass.strengthAnalyzer = new StrengthAnalyzer();
+        System.out.println("Initialized strength analyzer instance.");
+    }
+
     public static void teardown() {
         if(FirstPass.passwordManager != null)
             FirstPass.passwordManager.closeDatabase();
@@ -42,7 +47,9 @@ public class Utils {
         FirstPass.passwordManager = null;
 
         try {
-            Files.deleteIfExists(new File(DATABASE_NAME).toPath());
+            File file = new File(DATABASE_NAME);
+            if(file.exists())
+                Files.delete(file.toPath());
         } catch (IOException e) {
             System.out.println("Failed to delete database file");
         }
