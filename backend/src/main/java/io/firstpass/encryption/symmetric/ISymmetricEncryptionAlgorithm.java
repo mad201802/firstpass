@@ -12,7 +12,7 @@ public interface ISymmetricEncryptionAlgorithm {
      * @param password The password to use for io.firstpass.encryption.
      * @return The encrypted data.
      */
-    public CipherData encryptText(String text, String password);
+    CipherData encryptText(String text, String password);
 
     /**
      * Decrypts the given data.
@@ -20,5 +20,5 @@ public interface ISymmetricEncryptionAlgorithm {
      * @param password The password to use for decryption.
      * @return The decrypted data.
      */
-    public String decryptText(CipherData data, String password);
+    String decryptText(CipherData data, String password);
 }
