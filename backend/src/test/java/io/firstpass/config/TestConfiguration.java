@@ -38,16 +38,6 @@ public class TestConfiguration {
         configuration.deleteConfigFile();
     }
 
-//    @Test
-//    public void test_createFolderStructure() {
-//        String currentDirectory;
-//        currentDirectory = new File("").getAbsolutePath();
-//        System.out.println("Current working directory : "+currentDirectory);
-//        DefaultConfig defaultConfig = new DefaultConfig();
-//        Configuration<DefaultConfig> configuration = new Configuration<DefaultConfig>(defaultConfig, currentDirectory + File.separator + "fs_test" + File.separator + "didNotExistBefore", "testconfig", true);
-//        Assertions.assertDoesNotThrow(configuration.initConfig());
-//    }
-
     @Test
     @EnabledOnOs({OS.WINDOWS})
     // TODO: @SystemProperty(name = "os.name", value = "Windows") -> Wäre mit den Junit Extensions möglich :)
