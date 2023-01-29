@@ -1,10 +1,8 @@
-name: Test Backend Pull Request
+name: Test Frontend and Backend on Pull Request
 
 on:
-  # pull_request:
-  #   branches: [ "develop" ]
-  push:
-      branches: ["feature/frontend_cicd"]
+  pull_request:
+    branches: [ "develop" ]
 
 env:
   BACKEND_PATH: "backend"
