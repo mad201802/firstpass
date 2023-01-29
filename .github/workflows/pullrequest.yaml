@@ -53,8 +53,8 @@ jobs:
         working-directory: ${{ env.FRONTEND_PATH }}
     steps:
     - uses: actions/checkout@v3
-    - name: Print current working directory
-      run: pwd
+    - name: Is node there?
+      run: node -v
     - name: Install modules
       run: yarn
     - name: Run tests
