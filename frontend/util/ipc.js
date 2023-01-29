@@ -99,8 +99,12 @@ class IPC {
             this.process.stdout.once("data", (data) => {
                 resolve(data.toString().slice(0, -1));
                 this.process.removeListener("error", errcb);
+                this.process.removeListener("exit", errcb);
+                this.process.stderr.removeListener("data", errcb);
             });
             this.process.once("error", errcb);
+            this.process.once("exit", errcb);
+            this.process.stderr.once("data", errcb);
         });
 
         return timeout

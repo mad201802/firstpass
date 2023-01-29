@@ -1,5 +1,13 @@
 // Test IPC communication between parent and child processes
 
 process.stdin.on('data', (data) => {
-    process.stdout.write(data.toString().trim() + " from child\n");
+    const msg = data.toString().trim();
+    switch (msg) {
+        case "simulate crash":
+            throw new Error("Simulated crash");
+
+        default:            
+            process.stdout.write(msg + " from child\n");
+            break;
+    }
 });
