@@ -64,10 +64,11 @@
         box-shadow: var(--radius) calc(-1 * var(--radius)) 0 var(--item-clr);
 
         transition: box-shadow 0.1s ease-in-out;
+        z-index: 1;
     }
     
     &[data-active="true"] {
-        --item-clr: var(--bg);
+        --item-clr: var(--bg) !important;
         // z-index: 11;
         
         box-shadow: inset 5px 0 0px var(--primary);
@@ -92,6 +93,7 @@
 
     &:active {
         --item-clr: var(--bg-light);
+        // filter: brightness(0.9);
     }
 
     & svg {

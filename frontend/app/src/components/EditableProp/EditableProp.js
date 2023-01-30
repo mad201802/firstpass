@@ -57,10 +57,10 @@ const EditableProp = ({
                 setEditable(true);
             }}
             onClick={
-                url && !editable
+                url && !editable && value
                     ? e => {
                           if (e.target.tagName !== "INPUT" && e.target.tagName !== "TEXTAREA") return;
-                          backend.openURL(value);
+                          backend.openURL(value.startsWith("http") ? value : "https://" + value);
                       }
                     : null
             }>

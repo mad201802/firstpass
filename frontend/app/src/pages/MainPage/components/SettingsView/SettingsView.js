@@ -48,14 +48,6 @@ const SettingsView = () => {
                 <h1>Settings</h1>
             </div>
             <div className="settingsView-content">
-                <Section title="General" icon={<TuneRounded />} open={true}>
-                    <CheckBoxProp
-                        label="Load Favicons"
-                        value={settings.loadFavicons}
-                        name="loadFavicons"
-                        onInput={update}
-                    />
-                </Section>
 
                 <Section title="Theme" icon={<ColorLensRounded />} open={true}>
                     <ThemeSelector />
@@ -102,6 +94,27 @@ const SettingsView = () => {
                     </>) : (
                         <p style={{ padding: "10px", opacity: 0.5, fontSize: "12px" }}>To edit this theme, duplicate it using the buttons above.</p>
                     )}
+                </Section>
+
+                <Section title="General" icon={<TuneRounded />} open={true}>
+                    <CheckBoxProp
+                        label="Load Favicons"
+                        value={settings.loadFavicons}
+                        name="loadFavicons"
+                        onInput={update}
+                    />
+                    <CheckBoxProp
+                        label="Compact List View"
+                        value={settings.compactView}
+                        name="compactView"
+                        onInput={update}
+                    />
+                    <CheckBoxProp
+                        label="Show Sensitive Info in List View"
+                        value={settings.showSensitiveInfo}
+                        name="showSensitiveInfo"
+                        onInput={update}
+                    />
                 </Section>
 
                 <Section title="Shortcuts" icon={<ShortcutRounded />} open={true}>
