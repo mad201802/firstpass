@@ -17,14 +17,19 @@
     .formInput {
 
         &[data-url="true"] input {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
             color: var(--primary);
-            text-decoration: underline;
-            cursor: pointer;
+            
+            &:not(:placeholder-shown) {
+                text-decoration: underline;
+                cursor: pointer;
+            }
+
             transition: color 100ms ease;
             min-width: 0;
-            flex-shrink: 1;
-            flex-grow: 0;
-            margin-right: auto;
     
             &:hover {
                 color: var(--primary-light);

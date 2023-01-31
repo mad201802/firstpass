@@ -1,14 +1,18 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import "./PasswordListItem.less";
 import { UrlLogo } from "components";
+import AppContext from "contexts/App.context";
 
 const PasswordListItem = ({ entry, visible, setCurrentEntry }) => {
-    const [imgLoadError, setImgLoadError] = React.useState(!entry.url?.match(/https?:\/\/.*\..{2,}/i));
+
+    const { settings } = useContext(AppContext);
+
     const logoRef = useRef();
 
     return (
         <div
             className="passwordListItem"
+            data-compact={settings.compactView}
             data-hidden={!visible}
             draggable={true}
             onDragStart={e => {
@@ -21,13 +25,17 @@ const PasswordListItem = ({ entry, visible, setCurrentEntry }) => {
         >
             <UrlLogo className="passwordListItem-logo" entry={entry} ref={logoRef}/>
             <div className="passwordListItem-info1">
-                <div className="passwordListItem-name">{entry.name}</div>
-                <div className="passwordListItem-infoURL">{entry.url}</div>
+                <div className="passwordListItem-name">{entry.name || "Unnamed Entry"}</div>
+                {entry.url && settings.showSensitiveInfo && (
+                    <div className="passwordListItem-infoURL">{entry.url.replace(/.+\/\/|www\.|\/.+$/gi, "")}</div>
+                )}
             </div>
-            <div className="passwordListItem-info2">
-                <div className="passwordListItem-infoUsername">{entry.username}</div>
-                <div className="passwordListItem-infoPassword">{entry.password}</div>
-            </div>
+            {settings.showSensitiveInfo && (
+                <div className="passwordListItem-info2">
+                    <div className="passwordListItem-infoUsername">{entry.username}</div>
+                    <div className="passwordListItem-infoPassword">{entry.password}</div>
+                </div>
+            )}
         </div>
     );
 };
