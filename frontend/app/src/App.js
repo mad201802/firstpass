@@ -27,6 +27,8 @@ const App = () => {
         searchShortcut: "Ctrl+F",
 
         loadFavicons: true,
+        compactView: false,
+        showSensitiveInfo: true,
 
         ...JSON.parse(localStorage.getItem("settings") || "{}")
     });

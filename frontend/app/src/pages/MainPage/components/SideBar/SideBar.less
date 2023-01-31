@@ -7,6 +7,7 @@
     overflow: hidden;
     user-select: none;
     z-index: 1;
+    flex-shrink: 0;
 
     background: var(--bg-light);
 
@@ -59,7 +60,7 @@
         z-index: 10;
         border-bottom: 2px solid var(--bg);
 
-        & span {
+        & > span {
             margin-right: auto;
             user-select: none;
             // opacity: 0.5;
