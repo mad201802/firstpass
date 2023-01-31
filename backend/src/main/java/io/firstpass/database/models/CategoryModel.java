@@ -5,16 +5,16 @@ import com.j256.ormlite.table.DatabaseTable;
 import io.firstpass.utils.decorators.Generated;
 
 /**
- * This class is used to represent a category in the io.firstpass.database.
+ * This class is used to represent a category in the database.
  */
 @Generated
 @DatabaseTable(tableName = "categories")
 public class CategoryModel {
     @DatabaseField(generatedId = true, canBeNull = false)
-    public Integer id;
+    private Integer id;
 
     @DatabaseField()
-    public String category;
+    private String category;
 
     public Integer getId() {
         return id;
@@ -41,4 +41,8 @@ public class CategoryModel {
         this.category = category;
     }
     public CategoryModel() {}
+
+    public String getName() {
+        return category;
+    }
 }

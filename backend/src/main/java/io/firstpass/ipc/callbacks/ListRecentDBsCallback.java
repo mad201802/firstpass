@@ -2,7 +2,6 @@ package io.firstpass.ipc.callbacks;
 
 import io.firstpass.FirstPass;
 import io.firstpass.config.schemas.LoadedDB;
-import io.firstpass.ipc.communication.response.GetLoadedDBsResponse;
 import io.firstpass.ipc.communication.response.ListRecentDBsResponse;
 import io.firstpass.ipc.exceptions.IPCException;
 
@@ -14,7 +13,7 @@ public class ListRecentDBsCallback {
 
     public static ListRecentDBsResponse call(Object request) throws IPCException {
         if(FirstPass.configuration == null)
-            throw new IPCException(400, "Configuration not loaded");
+            throw new IPCException(503, "Configuration not loaded");
 
         ListRecentDBsResponse response = new ListRecentDBsResponse();
 

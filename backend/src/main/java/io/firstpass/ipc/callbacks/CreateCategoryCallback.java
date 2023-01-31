@@ -10,10 +10,10 @@ import java.util.Objects;
 public class CreateCategoryCallback {
     public static CreateCategoryResponse call(CreateCategoryRequest request) throws IPCException{
         if(FirstPass.passwordManager == null)
-            throw new IPCException(400, "Database not loaded");
+            throw new IPCException(503, "Database not loaded");
 
         if(FirstPass.passwordManager.getAllCategories().stream().findAny().filter(category -> Objects.equals(category.getCategory(), request.name)).isPresent())
-            throw new IPCException(400, "Category already exists");
+            throw new IPCException(409, "Category already exists");
 
         request.name = request.name.trim();
 

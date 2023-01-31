@@ -11,14 +11,14 @@ import java.util.Collections;
 public class UpdateEntryCallback {
     public static CreateEntryResponse call(UpdateEntryRequest request) throws IPCException{
         if(FirstPass.passwordManager == null)
-            throw new IPCException(400, "Database not loaded");
+            throw new IPCException(503, "Database not loaded");
         // Check if category exists
         if(FirstPass.passwordManager.getAllCategories().stream().filter(category -> category.getId() == request.category).findAny().isEmpty() && request.category != -1)
-            throw new IPCException(400, "Category does not exist");
+            throw new IPCException(404, "Category does not exist");
 
         EntryModel updated = FirstPass.passwordManager.updateEntry(request.id, request.name, request.username, request.password, request.category, request.url, request.notes);
         if(updated == null)
-            throw new IPCException(400, "Entry does not exist");
+            throw new IPCException(404, "Entry does not exist");
 
         CreateEntryResponse response = new CreateEntryResponse();
         response.id = updated.getId();

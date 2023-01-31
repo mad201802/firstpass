@@ -22,9 +22,9 @@ import java.security.spec.KeySpec;
  */
 public class AES256 implements ISymmetricEncryptionAlgorithm {
 
-    private byte[] _salt;
-    private int _iterations;
-    private SecretKeyFactory _secretKeyFactory;
+    private final byte[] _salt;
+    private final int _iterations;
+    private final SecretKeyFactory _secretKeyFactory;
 
     /**
      * Constructor for AES256

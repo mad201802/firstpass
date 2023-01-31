@@ -1,0 +1,23 @@
+name: Test Frontend on Pull Request
+
+on:
+  pull_request:
+    branches: [ "develop" ]
+    paths: 
+    - 'frontend/**'
+
+env:
+  FRONTEND_PATH: "frontend"
+
+jobs:
+  test-frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.FRONTEND_PATH }}
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install modules
+      run: yarn
+    - name: Run tests
+      run: yarn test

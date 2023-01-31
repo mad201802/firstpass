@@ -5,7 +5,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import io.firstpass.utils.decorators.Generated;
 
 /**
- * This class is used to represent a category in the io.firstpass.database.
+ * This class is used to represent a category in the database.
  */
 @Generated
 @DatabaseTable(tableName = "meta")
