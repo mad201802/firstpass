@@ -45,6 +45,7 @@
             }
         }
 
+
         .resetButton {
             display: flex;
             align-items: center;
@@ -79,3 +80,25 @@
         opacity: 1;
     }
 }
+
+.passwordLength {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  & input[type="number"] {
+    width: 60px;
+    height: 30px;
+    font-size: 18px;
+    padding: 5px;
+    text-align: center;
+    border: 1px solid var(--bg-lighter);
+    border-radius: var(--radius);
+    color: var(--primary);
+    background: var(--bg);
+    outline: none;
+    transition: 0.2s;
+    &:focus {
+      border: 1px solid var(--primary);
+    }
+    
+  }
