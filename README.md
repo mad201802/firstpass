@@ -28,6 +28,7 @@ FirstPass is designed to allow users to store their passwords securely and easil
  - User-friendly interface including _customizable Themes_
 
 <h2 id="build">Build from source</h2>
+
 In order to build FirstPass from source you need to have Java 17 installed, as well as npm.
 1.	Build the backend project in the backend folder with `mvn package`
 2.	Navigate into the frontend folder and execute `npm install` (ignore the security warnings for now)
@@ -44,13 +45,15 @@ To install the password manager, follow the instructions for your platform:
 3. Follow the on-screen instructions to complete the installation.
 
 <h3 id="mac">Mac</h2>
-1. Download the` Firstpass-1.1.1.dmg`
+
+1. Download the `Firstpass-1.1.1.dmg`
    file from the releases page.
 2. Double-click the file to mount the disk image.
 3. Drag the application to your Applications folder.
 4. Double-click the application to start it.
 
 <h3 id="linux">Linux</h2>
+
 1. Download the `firstpass-1.1.1.tar.gz`
    file from the releases page.
 2. Open a terminal and navigate to the directory where you downloaded the package.
