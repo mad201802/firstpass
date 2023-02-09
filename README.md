@@ -20,11 +20,12 @@ FirstPass is designed to allow users to store their passwords securely and easil
 </ul>
 
 <h2 id="features">Features</h2>
-- _Encrypted storage_ of passwords using AES-256 encryption
-- Automatically _generates strong passwords_
-- Ability to store and manage passwords for _multiple accounts and websites_
-- _Cross-platform compatibility_ (Windows, Mac, Linux)
-- User-friendly interface including _customizable Themes_
+
+ - _Encrypted storage_ of passwords using AES-256 encryption
+ - Automatically _generates strong passwords_
+ - Ability to store and manage passwords for _multiple accounts and websites_
+ - _Cross-platform compatibility_ (Windows, Mac, Linux)
+ - User-friendly interface including _customizable Themes_
 
 <h2 id="build">Build from source</h2>
 In order to build FirstPass from source you need to have Java 17 installed, as well as npm.
