@@ -32,6 +32,11 @@ public class Utils {
         return Base64.getDecoder().decode(base64String);
     }
 
+    /**
+     * Converts a byte array to a hex string
+     * @param bytes The byte array to convert
+     * @return The hex string
+     */
     public static String bytesToHex(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
         for (byte b : bytes) {

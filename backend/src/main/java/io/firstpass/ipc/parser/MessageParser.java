@@ -14,11 +14,19 @@ public class MessageParser implements IMessageParser {
     private final Gson gson;
     private final HashMap<String, ClassMessageObject> onMessageHashMap;
 
+    /**
+     * This method is used to construct a new message parser
+     */
     public MessageParser() {
         this.gson = new Gson();
         this.onMessageHashMap = new HashMap<>();
     }
 
+    /**
+     * This method is used to parse a message
+     * @param message The message to parse
+     * @return The response message
+     */
     public String onMessage(String message) {
         try {
             BaseIPCRequest request = this.parseRequest(message);
@@ -36,10 +44,25 @@ public class MessageParser implements IMessageParser {
         }
     }
 
+    /**
+     * Add a new message listener to the parser
+     * @param type The type of message to listen for
+     * @param requestClass The request class
+     * @param responseClass The response class
+     * @param onMessage The callback function
+     * @param <T> The request class
+     * @param <U> The response class
+     */
     public <T, U> void addMessageListener(String type, Class<T> requestClass, Class<U> responseClass, IOnMessageRecieve<T, U> onMessage) {
         this.onMessageHashMap.put(type, new ClassMessageObject(requestClass, responseClass, onMessage));
     }
 
+    /**
+     * This method is used to construct an error message
+     * @param code The error code
+     * @param message The error message
+     * @return The error message
+     */
     private String constructErrorMessage(int code, String message) {
         IPCErrorResponse error = new IPCErrorResponse();
         error.code = code;
@@ -51,6 +74,11 @@ public class MessageParser implements IMessageParser {
         return this.gson.toJson(response);
     }
 
+    /**
+     * This method is used to parse a request
+     * @param message The message to parse
+     * @return The parsed request
+     */
     private BaseIPCRequest parseRequest(String message) {
         try {
             return this.gson.fromJson(message, BaseIPCRequest.class);
