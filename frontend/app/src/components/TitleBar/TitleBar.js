@@ -3,6 +3,10 @@ import "./TitleBar.less";
 import { CloseRounded, Crop54Rounded, RemoveRounded } from "@mui/icons-material";
 import backend from "../../backend";
 
+/**
+ * The title bar of the window
+ * @returns The title bar component
+ */
 const TitleBar = () => {
     return (
         <div className="titleBar">

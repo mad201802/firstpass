@@ -2,6 +2,14 @@ import backend from "backend";
 import React, { useEffect, useState } from "react";
 import "./PasswordStrength.less";
 
+/**
+ * Displays the strength of a password
+ * @param {object} props The props
+ * @param {string} props.password The password to compute the strength of
+ * @param {object} props.style The style of the component
+ * @param {boolean} props.enabled Whether the component is enabled or not
+ * @returns The password strength component
+ */
 const PasswordStrength = ( {password, style, enabled=true}) => {
     const [strength, setStrength] = useState(0.0);
 
