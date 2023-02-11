@@ -25,43 +25,42 @@ FirstPass is designed to allow users to store their passwords securely and easil
 
 ## Build from source
 
-In order to build FirstPass from source you need to have Java 17 installed, as well as npm.
-1.	Build the backend project in the backend folder with `mvn package`
-2.	Navigate into the frontend folder and execute `npm install` (ignore the security warnings for now)
-3.	Start the frontend build with `npm run dev`
+In order to build FirstPass from source you need to have NodeJS, Java 17, npm & yarn. \
+To build, navigate to the project directory and run:
+```bash
+npm run dist
+```
+This will build the backend and the frontend and package it into a distributable package for you platform. \
+The output will be in the `dist` folder.
 
 ## Installation
 To install the password manager, follow the instructions for your platform:
 
 ### Windows
 
-1. Download the `Firstpass.Setup.1.1.1.exe`
-   file from the releases page.
+1. Download the `Firstpass Setup X.X.X.exe` file from the releases page.
 2. Double-click the file to start the installation process.
 3. Follow the on-screen instructions to complete the installation.
 
-### Mac (not working as of now)
+### Mac (only tar.gz works as of now, untested)
 
-1. Download the `Firstpass-1.1.1.dmg`
-   file from the releases page.
-2. Double-click the file to mount the disk image.
-3. Drag the application to your Applications folder.
-4. Double-click the application to start it.
+1. Download the `firstpass-X.X.X-mac.tar.gz` file from the releases page.
+2. Extract the archive to your desired install location.
+4. Navigate into the extracted directory and execute the `Firstpass` executable.
+
 
 ### Linux (only tar.gz works as of now)
 
-1. Download the `firstpass-1.1.1.tar.gz`
+1. Download the `firstpass-X.X.X.tar.gz`
    file from the releases page.
-2. Open a terminal and navigate to the directory where you downloaded the package.
-3. Extract the contents of the downloaded file by running the following command:<br>
-   `tar -xzvf firstpass-1.1.1.tar.gz`
-4. Navigate into the extracted directory and execute the `Firstpass` executable.
+2. Extract the archive to your desired install location.	
+3. Navigate into the extracted directory and execute the `Firstpass` executable.
 
 
 ## Usage
 
 - _**Start the password manager**_ and create a new database or log in to an existing database.
-- Add a _**new password**_ by clicking the "New Password" button and entering the required information.
+- Add a _**new password**_ by clicking the "Add" button and entering the required information.
 - _**Add, edit or delete a category**_ by clicking the three buttons at the top of the sidebar
 - You can also **_generate a strong password_** by clicking the button next to the password input field
 - To **_update, delete or show a password_**, just click on its entry in the password list
@@ -69,11 +68,21 @@ To install the password manager, follow the instructions for your platform:
 - To **_add a new Theme_**, go to the settings menu and clone an existing Theme or load a JSON-File in the right format
 
 
+## Troubleshooting
+In case you encounter any problems, feel free to contact us via [email](md148@hdm-stuttgart.de) or open an issue on GitHub.
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first
 to discuss what you would like to change.
-Please make sure to update tests as appropriate.
+Please make sure to update tests accordingly.
 
 ## Copyright
-FirstPass (c) 2022 Alex Bossert, Antonia Herdtner, Leonard Laisé, Luca von Kannen, Maurice Dolibois, Michael Dick, Tom Flocken
+FirstPass (c) 2022
+[Alex Bossert](mailto:ab306@hdm-stuttgart.de),
+[Antonia Herdtner](mailto:ah247@hdm-stuttgart.de),
+[Leonard Laisé](mailto:ll071@hdm-stuttgart.de),
+[Luca von Kannen](mailto:lv042@hdm-stuttgart.de),
+[Maurice Dolibois](mailto:md147@hdm-stuttgart.de),
+[Michael Dick](mailto:md148@hdm-stuttgart.de),
+[Tom Flocken](mailto:tf054@hdm-stuttgart.de) \
 SPDX-License-Identifier: GPL-3.0

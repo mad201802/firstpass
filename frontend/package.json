@@ -11,7 +11,7 @@
   },
   "scripts": {
     "start": "electron ./main.js",
-    "build": "webpack --config webpack.config.js",
+    "build": "webpack --config webpack.config.js --mode production",
     "dev": "concurrently \"webpack --config webpack.config.js --watch\" \"electronmon ./main.js\"",
     "dist": "electron-builder build",
     "dist:win": "yarn dist --win nsis --win zip",
@@ -46,7 +46,8 @@
     "mac": {
       "icon": "firstpass.icns",
       "target": [
-        "dmg"
+        "dmg",
+        "tar.gz"
       ]
     },
     "linux": {
