@@ -38,13 +38,16 @@
             background: var(--primary);
         }
 
+        .checkBoxProp + .checkBoxProp {
+            border-top: 2px solid var(--divider);
+        }
+
         .editableProp {
             p { width: 50%; }
             input {
                 color: var(--primary);
             }
         }
-
 
         .resetButton {
             display: flex;
@@ -80,25 +83,3 @@
         opacity: 1;
     }
 }
-
-.passwordLength {
-    margin-right: 10px;
-    margin-left: 10px;
-  }
-  & input[type="number"] {
-    width: 60px;
-    height: 30px;
-    font-size: 18px;
-    padding: 5px;
-    text-align: center;
-    border: 1px solid var(--bg-lighter);
-    border-radius: var(--radius);
-    color: var(--primary);
-    background: var(--bg);
-    outline: none;
-    transition: 0.2s;
-    &:focus {
-      border: 1px solid var(--primary);
-    }
-    
-  }

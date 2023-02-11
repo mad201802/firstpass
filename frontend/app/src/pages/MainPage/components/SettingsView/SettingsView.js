@@ -5,10 +5,9 @@ import useShortcut from "hooks/useShortcut";
 import AppContext from "contexts/App.context";
 import Section from "./components/Section";
 import { ColorProp } from "components";
-import { ColorLensRounded, ShortcutRounded, TuneRounded, SyncLockRounded } from "@mui/icons-material";
+import { ColorLensRounded, ShortcutRounded, TuneRounded } from "@mui/icons-material";
 import backend from "backend";
 import ThemeSelector from "./components/ThemeSelector";
-import generatePassword from "util/passwordGenerator";
 
 
 const SettingsView = () => {
@@ -49,6 +48,54 @@ const SettingsView = () => {
                 <h1>Settings</h1>
             </div>
             <div className="settingsView-content">
+
+                <Section title="Theme" icon={<ColorLensRounded />} open={true}>
+                    <ThemeSelector />
+
+                    {!settings.theme.startsWith("*") ? (
+                    <>
+                        <ColorProp label="Primary Color" value={theme.primary} name="primary" onInput={updateTheme} />
+                        <ColorProp
+                            label="Primary Color (Light)"
+                            value={theme.primaryLight}
+                            name="primaryLight"
+                            onInput={updateTheme}
+                        />
+                        <ColorProp
+                            label="Primary Color (Dark)"
+                            value={theme.primaryDark}
+                            name="primaryDark"
+                            onInput={updateTheme}
+                        />
+
+                        <ColorProp label="Background Color" value={theme.bg} name="bg" onInput={updateTheme} />
+                        <ColorProp
+                            label="Background Color (Light)"
+                            value={theme.bgLight}
+                            name="bgLight"
+                            onInput={updateTheme}
+                        />
+                        <ColorProp
+                            label="Background Color (Lighter)"
+                            value={theme.bgLighter}
+                            name="bgLighter"
+                            onInput={updateTheme}
+                        />
+                        <ColorProp label="Divider Color" value={theme.divider} name="divider" onInput={updateTheme} />
+
+                        <ColorProp label="Text Color" value={theme.text} name="text" onInput={updateTheme} />
+                        <ColorProp label="Text Color (Dark)" value={theme.textDark} name="textDark" onInput={updateTheme} />
+                        <ColorProp
+                            label="Text Color (Inverted)"
+                            value={theme.textInv}
+                            name="textInv"
+                            onInput={updateTheme}
+                        />
+                    </>) : (
+                        <p style={{ padding: "10px", opacity: 0.5, fontSize: "12px" }}>To edit this theme, duplicate it using the buttons above.</p>
+                    )}
+                </Section>
+
                 <Section title="General" icon={<TuneRounded />} open={true}>
                     <CheckBoxProp
                         label="Load Favicons"
@@ -56,89 +103,18 @@ const SettingsView = () => {
                         name="loadFavicons"
                         onInput={update}
                     />
-                </Section>
-
-                <Section title="Password Generation" icon={<SyncLockRounded />} open={true}>
-                    <div className="passwordLength">
-                        <label>Length:  min</label>
-                        <input type="number" className="minLength" min="8" max="20" value="8"></input>
-                        <label> max</label>
-                        <input type="number" className="maxLength" min="8" max="20" value="20"></input>
-                    </div>
-
-                    <CheckBoxProp label="Use Symbols" value={settings.useSymbols} name="useSymbols" onInput={update} />
-                    <CheckBoxProp label="Use Numbers" value={settings.useNumbers} name="useNumbers" onInput={update} />
                     <CheckBoxProp
-                        label="Use Uppercase"
-                        value={settings.useUppercase}
-                        name="useUppercase"
+                        label="Compact List View"
+                        value={settings.compactView}
+                        name="compactView"
                         onInput={update}
                     />
-                </Section>
-
-                <Section title="Theme" icon={<ColorLensRounded />} open={true}>
-                    <ThemeSelector />
-
-                    {!settings.theme.startsWith("*") ? (
-                        <>
-                            <ColorProp
-                                label="Primary Color"
-                                value={theme.primary}
-                                name="primary"
-                                onInput={updateTheme}
-                            />
-                            <ColorProp
-                                label="Primary Color (Light)"
-                                value={theme.primaryLight}
-                                name="primaryLight"
-                                onInput={updateTheme}
-                            />
-                            <ColorProp
-                                label="Primary Color (Dark)"
-                                value={theme.primaryDark}
-                                name="primaryDark"
-                                onInput={updateTheme}
-                            />
-
-                            <ColorProp label="Background Color" value={theme.bg} name="bg" onInput={updateTheme} />
-                            <ColorProp
-                                label="Background Color (Light)"
-                                value={theme.bgLight}
-                                name="bgLight"
-                                onInput={updateTheme}
-                            />
-                            <ColorProp
-                                label="Background Color (Lighter)"
-                                value={theme.bgLighter}
-                                name="bgLighter"
-                                onInput={updateTheme}
-                            />
-                            <ColorProp
-                                label="Divider Color"
-                                value={theme.divider}
-                                name="divider"
-                                onInput={updateTheme}
-                            />
-
-                            <ColorProp label="Text Color" value={theme.text} name="text" onInput={updateTheme} />
-                            <ColorProp
-                                label="Text Color (Dark)"
-                                value={theme.textDark}
-                                name="textDark"
-                                onInput={updateTheme}
-                            />
-                            <ColorProp
-                                label="Text Color (Inverted)"
-                                value={theme.textInv}
-                                name="textInv"
-                                onInput={updateTheme}
-                            />
-                        </>
-                    ) : (
-                        <p style={{ padding: "10px", opacity: 0.5, fontSize: "12px" }}>
-                            To edit this theme, duplicate it using the buttons above.
-                        </p>
-                    )}
+                    <CheckBoxProp
+                        label="Show Sensitive Info in List View"
+                        value={settings.showSensitiveInfo}
+                        name="showSensitiveInfo"
+                        onInput={update}
+                    />
                 </Section>
 
                 <Section title="Shortcuts" icon={<ShortcutRounded />} open={true}>
