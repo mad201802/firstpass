@@ -6,6 +6,19 @@ import "./DropdownMenu.less";
 import useEventListener from "hooks/useEventListener";
 import useShortcut from "hooks/useShortcut";
 
+/**
+ * A dropdown menu component
+ * @param {object} props The props
+ * @param {string} props.value The current value of the dropdown menu
+ * @param {function} props.onChange The function to call when the value is changed
+ * @param {object} props.options The options of the dropdown menu
+ * @param {string} props.placeholder The placeholder of the dropdown menu
+ * @param {function} props.component The component to use for each option
+ * @param {object} props.icon The icon to use for the dropdown menu
+ * @param {object} props.customItems The custom items to add to the dropdown menu
+ * @param {boolean} props.hideSelected Whether to hide the selected option in the dropdown option list
+ * @returns The dropdown menu component
+ */
 const DropdownMenu = ({
     value: currentValue,
     onChange,
@@ -16,7 +29,6 @@ const DropdownMenu = ({
     customItems,
     hideSelected=false
 }) => {
-    // const [currentValue, setCurrentValue] = useState(df);
     const [isOpen, setIsOpen] = useState(false);
 
     const selectOption = (value) => {

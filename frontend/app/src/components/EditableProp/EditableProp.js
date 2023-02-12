@@ -12,7 +12,21 @@ import {
 } from "@mui/icons-material";
 import backend from "backend";
 
-
+/**
+ * Displays an editable property
+ * @param {object} props The props
+ * @param {JSX.Element} props.icon The icon to display
+ * @param {string} props.name The name of the input
+ * @param {string} props.placeholder The placeholder of the input
+ * @param {boolean} props.password Whether the input is a password
+ * @param {function} props.onUpdate The function to call when the input is updated
+ * @param {string} props.value The value of the input
+ * @param {boolean} props.multiline Whether the input is multiline
+ * @param {boolean} props.title Whether the input is a title
+ * @param {boolean} props.copyable Whether the input is copyable
+ * @param {boolean} props.url Whether the input is a url
+ * @returns The editable prop component
+ */
 const EditableProp = ({
     icon,
     name,
