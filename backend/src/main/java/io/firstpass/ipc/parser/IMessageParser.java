@@ -8,7 +8,7 @@ import io.firstpass.ipc.interfaces.IOnMessageRecieve;
 public interface IMessageParser {
 
     /**
-     * This method is used to parse a message
+     * This method is used to parse a incoming message from the IPC stream
      * @param message The message to parse
      * @return The response message
      */

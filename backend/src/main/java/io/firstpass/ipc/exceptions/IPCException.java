@@ -1,7 +1,7 @@
 package io.firstpass.ipc.exceptions;
 
 /**
- * This class is used to throw an exception when an error occurs in the IPC
+ * This class is used to throw an exception when an error occurs in the IPC Communication
  */
 public class IPCException extends Exception {
     private final int status;
