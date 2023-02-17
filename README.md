@@ -42,7 +42,8 @@ FirstPass is designed to allow users to store their passwords securely and easil
 
 ## Installation <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Floppy%20Disk.png" alt="Floppy Disk" width="25" height="25" style="transform: translateY(5px)" />
 
-To install the password manager, follow the instructions for your platform:
+To install the password manager, follow the instructions for your platform. \
+Make sure you have the Java 17 JRE installed.
 
 ### Windows
 
@@ -50,19 +51,26 @@ To install the password manager, follow the instructions for your platform:
 2. Double-click the file to start the installation process.
 3. Follow the on-screen instructions to complete the installation.
 
-### Mac <span style="opacity: 0.5">(only tar.gz works as of now, untested)</span>
+### Mac
 
-1. Download the `firstpass-X.X.X-mac.tar.gz` file from the releases page.
-2. Extract the archive to your desired install location.
-4. Navigate into the extracted directory and execute the `Firstpass` executable.
+1. Download the `Firstpass-X.X.X.dmg` file from the releases page.
+2. Run the file to start the installation process.
+4. Follow the on-screen instructions to complete the installation.
 
 
-### Linux <span style="opacity: 0.5">(only tar.gz works as of now)</span>
+### Linux
 
-1. Download the `firstpass-X.X.X.tar.gz`
-   file from the releases page.
-2. Extract the archive to your desired install location.	
-3. Navigate into the extracted directory and execute the `Firstpass` executable.
+1. Download the `Firstpass-X.X.X.AppImage` file from the releases page.
+2. You may need to run `chmod +x Firstpass-X.X.X.AppImage`.	
+3. Run the file: `./Firstpass-X.X.X.AppImage`
+
+### Archive Install
+For every platform we also provide an archive containing all program files. To install using an archive, download the right one for your platform:
+- Windows: `Firstpass-X.X.X-win.zip`
+- Mac: `Firstpass-X.X.X-mac.tar.gz`
+- Linux: `Firstpass-X.X.X.tar.gz`
+
+After downloading the archive, extract it to a folder of your choice. Then, run the `Firstpass` executable inside.
 
 <br>
 
@@ -81,10 +89,11 @@ To install the password manager, follow the instructions for your platform:
 ## Build from source <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Hammer%20and%20Wrench.png" alt="Hammer and Wrench" width="25" height="25" style="transform: translateY(5px)" />
 
 
-In order to build FirstPass from source you need to have [NodeJS](https://nodejs.org/), [Java 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html), npm & [yarn](https://yarnpkg.com/). \
+In order to build FirstPass from source you need to have [NodeJS](https://nodejs.org/), [Java 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) & [Maven](https://maven.apache.org/), npm & [yarn](https://yarnpkg.com/). \
 To build, navigate to the project directory and run:
 ```bash
-npm run dist
+npm run build   # builds backend and frontend
+npm run dist    # packages the app into a distributable package
 ```
 This will build the backend and the frontend and package it into a distributable package for you platform. \
 The output will be in the `dist` folder.

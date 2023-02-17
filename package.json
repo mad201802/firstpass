@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "build": "cd backend && mvn clean package && cd ../frontend && yarn build",
+        "build": "cd backend && mvn clean package && cd ../frontend && yarn && yarn build",
         "start": "cd frontend && yarn run dev",
         "dist": "npm run build && cd frontend && yarn dist"
     }
