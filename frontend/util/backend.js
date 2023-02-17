@@ -1,4 +1,5 @@
 const IPC = require("./ipc");
+const path = require("path");
 
 const { ipcMain, dialog, app } = require("electron");
 
@@ -11,7 +12,7 @@ let onError = () => {};
 
 
 function connect() {
-    const jarLocation = app.isPackaged ? "./backend.jar" : `../backend/target/backend-${process.env.npm_package_version}.jar`;
+    const jarLocation = app.isPackaged ? path.join(process.resourcesPath, "backend.jar") : `../backend/target/backend-${process.env.npm_package_version}.jar`;
     ipc = new IPC("java", ["-jar", jarLocation, "--no-logging"]);
 
     ipc._onExit = () => {
