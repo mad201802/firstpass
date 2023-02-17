@@ -62,13 +62,6 @@ public class SQLiteDriver implements IEncryptedDatabase {
         TableUtils.createTableIfNotExists(connectionSource, MetaModel.class);
     }
 
-    /**
-     * This method is used to add a new entry to the io.firstpass.database.
-     * @param name The name of the entry.
-     * @param username The username of the entry.
-     * @param password The password of the entry.
-     * @return The ID of the entry.
-     */
     @Override
     public int createEntry(String name, CipherData username, CipherData password, int categoryID, String url, String notes) {
         try {

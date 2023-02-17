@@ -3,13 +3,13 @@ package io.firstpass.encryption.symmetric;
 import io.firstpass.encryption.symmetric.models.CipherData;
 
 /**
- * Interface for symmetric io.firstpass.encryption algorithms.
+ * Interface for symmetric encryption algorithms.
  */
 public interface ISymmetricEncryptionAlgorithm {
     /**
      * Encrypts the given data.
      * @param text The String to encrypt.
-     * @param password The password to use for io.firstpass.encryption.
+     * @param password The password to use for encryption.
      * @return The encrypted data.
      */
     CipherData encryptText(String text, String password);

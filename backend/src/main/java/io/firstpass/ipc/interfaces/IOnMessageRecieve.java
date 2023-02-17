@@ -11,7 +11,7 @@ public interface IOnMessageRecieve<T, U> {
 
     /**
      * This method is used to define a callback function
-     * @param data The data to process
+     * @param data The request data
      * @return The response data
      * @throws IPCException An exception thrown when an error occurs
      */

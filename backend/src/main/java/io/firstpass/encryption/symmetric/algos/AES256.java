@@ -18,7 +18,7 @@ import java.security.spec.InvalidParameterSpecException;
 import java.security.spec.KeySpec;
 
 /**
- * AES 256 io.firstpass.encryption algorithm
+ * AES 256 encryption algorithm
  */
 public class AES256 implements ISymmetricEncryptionAlgorithm {
 
@@ -28,8 +28,8 @@ public class AES256 implements ISymmetricEncryptionAlgorithm {
 
     /**
      * Constructor for AES256
-     * @param salt Salt to use for io.firstpass.encryption
-     * @param iterations Number of iterations to use for io.firstpass.encryption
+     * @param salt Salt to use for encryption
+     * @param iterations Number of iterations to use for encryption
      */
     public AES256(String salt, int iterations) {
         this._salt = salt.getBytes(StandardCharsets.UTF_8);
@@ -40,7 +40,7 @@ public class AES256 implements ISymmetricEncryptionAlgorithm {
     /**
      * Encrypts the given data
      * @param text The String to encrypt.
-     * @param password The password to use for io.firstpass.encryption.
+     * @param password The password to use for encryption.
      * @return The encrypted data.
      */
     @Override
@@ -90,8 +90,8 @@ public class AES256 implements ISymmetricEncryptionAlgorithm {
     }
 
     /**
-     * Generates a random IV for io.firstpass.encryption based on the given cipher
-     * @param cipher The cipher to use for io.firstpass.encryption
+     * Generates a random IV for encryption based on the given cipher
+     * @param cipher The cipher to use for encryption
      * @return The generated IV
      */
     private byte[] generateRandomIV(Cipher cipher) {
