@@ -92,9 +92,9 @@ After downloading the archive, extract it to a folder of your choice. Then, run 
 In order to build FirstPass from source you need to have [NodeJS](https://nodejs.org/), [Java 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) & [Maven](https://maven.apache.org/), npm & [yarn](https://yarnpkg.com/). \
 To build, navigate to the project directory and run:
 ```bash
-npm run build   # builds backend and frontend
-npm run dist    # packages the app into a distributable package
+npm run dist    # builds backend, frontend and packages the app
 ```
+**Note:** On Mac, you need to run `export CSC_IDENTITY_AUTO_DISCOVERY=false` first, to prevent the build from trying to do code signing. \
 This will build the backend and the frontend and package it into a distributable package for you platform. \
 The output will be in the `dist` folder.
 
