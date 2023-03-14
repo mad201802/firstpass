@@ -29,6 +29,11 @@ FirstPass is designed to allow users to store their passwords securely and easil
 
 <br>
 
+# Attention!
+No Security Audit was accomplished. **Please do not use Firstpass as your real world password manager.**
+
+<br>
+
 ## Features <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Star-Struck.png" alt="Star-Struck" width="25" height="25" style="transform: translateY(5px)" />
 
 
